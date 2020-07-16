@@ -40,44 +40,44 @@ public class CreateItem extends Command {
 
         switch (type) {
             case "gem":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newGem(amount));
+                inv.addItem(ItemHandler.newGem(amount));
                 return true;
             case "orb":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newOrb(tier, amount));
+                inv.addItem(ItemHandler.newOrb(tier, amount));
                 return true;
             case "shard":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newShard(tier, amount));
+                inv.addItem(ItemHandler.newShard(tier, amount));
                 return true;
             case "scrap":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newScrap(tier, amount));
+                inv.addItem(ItemHandler.newScrap(tier, amount));
                 return true;
             case "sword":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newWeapon(tier, rarity, "SWORD"));
+                inv.addItem(ItemHandler.newWeapon(tier, rarity, "SWORD"));
                 return true;
             case "axe":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newWeapon(tier, rarity, "AXE"));
+                inv.addItem(ItemHandler.newWeapon(tier, rarity, "AXE"));
                 return true;
             case "shovel":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newWeapon(tier, rarity, "SHOVEL"));
+                inv.addItem(ItemHandler.newWeapon(tier, rarity, "SHOVEL"));
                 return true;
             case "hoe":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newWeapon(tier, rarity, "HOE"));
+                inv.addItem(ItemHandler.newWeapon(tier, rarity, "HOE"));
                 return true;
             case "boots":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newBoots(tier,  rarity));
+                inv.addItem(ItemHandler.newBoots(tier,  rarity));
                 return true;
             case "leggings":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newLeggings(tier,  rarity));
+                inv.addItem(ItemHandler.newLeggings(tier,  rarity));
                 return true;
             case "chestplate":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newChestplate(tier,  rarity));
+                inv.addItem(ItemHandler.newChestplate(tier,  rarity));
                 return true;
             case "helmet":
-                inv.setItem(inv.firstEmpty(), ItemHandler.newHelmet(tier,  rarity));
+                inv.addItem(ItemHandler.newHelmet(tier,  rarity));
                 return true;
             default:
-                for (ItemStack item : ItemHandler.newSet(tier,  rarity)) {
-                    inv.setItem(inv.firstEmpty(), item);
+                for (ItemStack item : ItemHandler.newSet(tier, rarity)) {
+                    inv.addItem(item);
                 }
                 return true;
         }
