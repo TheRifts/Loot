@@ -1,7 +1,6 @@
 package me.Lozke.data;
 
-import me.Lozke.managers.ItemHandler;
-import me.Lozke.utils.Items;
+import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.Text;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -16,14 +15,19 @@ public enum Shard {
 
     public static Shard[] types = Shard.values();
 
+    public ItemStack getItem(int amount) {
+        Tier tier = Tier.valueOf(this.name());
+        return new ItemWrapper()
+                .setMaterial(Material.BLAZE_POWDER)
+                .setAmount(amount)
+                .setName(tier.getColorCode() + tier.name() + " Shard of Alteration")
+                .setLore(Text.colorize("&7Place on equipment to " + tier.getColorCode() + "&nrandomize&7 all bonus stats"))
+                .setTier(tier)
+                .addKey(ARNamespacedKey.REAL_ITEM)
+                .getItem();
+    }
+
     public ItemStack getItem() {
-        return ItemHandler.setTier(Items.formatItem(new ItemStack(Material.BLAZE_POWDER),
-                Tier.valueOf(this.name()).getColorCode() +
-                        this.name() +
-                        " Shard of Alteration",
-                new String[]{(Text.colorize("&7Place on equipment to " +
-                        Tier.valueOf(this.name()).getColorCode() +
-                        "&nrandomize&7 all bonus stats"))}),
-                Tier.valueOf(this.name()));
+        return getItem(1);
     }
 }

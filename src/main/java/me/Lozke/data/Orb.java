@@ -1,7 +1,6 @@
 package me.Lozke.data;
 
-import me.Lozke.managers.ItemHandler;
-import me.Lozke.utils.Items;
+import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.Text;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -16,15 +15,19 @@ public enum Orb {
 
     public static Orb[] types = Orb.values();
 
+    public ItemStack getItem(int amount) {
+        Tier tier = Tier.valueOf(this.name());
+        return new ItemWrapper()
+                .setMaterial(Material.MAGMA_CREAM)
+                .setAmount(amount)
+                .setName(tier.getColorCode() + tier.name() + " Orb of Alteration")
+                .setLore(Text.colorize("&7Place on equipment to " + tier.getColorCode() + "&nrandomize&7 all bonus attributes"))
+                .setTier(tier)
+                .addKey(ARNamespacedKey.REAL_ITEM)
+                .getItem();
+    }
+
     public ItemStack getItem() {
-        return ItemHandler.setTier(Items.formatItem(
-                new ItemStack(Material.MAGMA_CREAM),
-                Tier.valueOf(this.name()).getColorCode() +
-                        this.name() +
-                        " Orb of Alteration",
-                new String[]{(Text.colorize("&7Place on equipment to " +
-                        Tier.valueOf(this.name()).getColorCode() +
-                        "&nrandomize&7 all bonus attributes"))}),
-                Tier.valueOf(this.name()));
+        return getItem(1);
     }
 }

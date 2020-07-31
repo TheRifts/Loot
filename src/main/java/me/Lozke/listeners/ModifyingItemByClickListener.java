@@ -1,52 +1,45 @@
 package me.Lozke.listeners;
 
-import me.Lozke.data.Tier;
-import me.Lozke.managers.ItemHandler;
+import me.Lozke.managers.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 public class ModifyingItemByClickListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        ItemStack cursorItem = event.getCursor();
-        ItemStack currentItem = event.getCurrentItem();
         Inventory inventory = event.getClickedInventory();
-
-        if (inventory == null ||
-                !event.getClickedInventory().getType().equals(InventoryType.PLAYER) ||
-                !ItemHandler.isTiered(currentItem) ||
-                !ItemHandler.isTiered(cursorItem)) {
+        if (inventory == null || !inventory.getType().equals(InventoryType.PLAYER) || event.getAction() != InventoryAction.SWAP_WITH_CURSOR || event.getCursor() == null || event.getCurrentItem() == null) {
             return;
         }
 
-        Tier tierCursor = ItemHandler.getTier(cursorItem);
-        Tier tierCurrent = ItemHandler.getTier(currentItem);
-        //Ensure item is same tier as item it is being applied to
-        if (tierCursor!= tierCurrent) {
+        ItemWrapper cursorItem = new ItemWrapper(event.getCursor());
+        ItemWrapper currentItem = new ItemWrapper(event.getCurrentItem());
+
+        if (!cursorItem.isRealItem() || !currentItem.isTiered() || !cursorItem.isTiered() || cursorItem.getTier() != currentItem.getTier()) {
             return;
         }
 
         //Orb
-        if (cursorItem.getType().equals(Material.MAGMA_CREAM)) {
+        if (cursorItem.getItem().getType().equals(Material.MAGMA_CREAM)) {
             event.setCancelled(true);
-            ItemHandler.randomizeAttributes(currentItem);
+            currentItem.randomizeAttributes().format();
         }
         //Shard
-        else if (cursorItem.getType().equals(Material.BLAZE_POWDER)) {
+        else if (cursorItem.getItem().getType().equals(Material.BLAZE_POWDER)) {
             event.setCancelled(true);
-            ItemHandler.randomizeStats(currentItem);
+            currentItem.randomizeStats().format();
         }
         else {
             return;
         }
 
         //Consume the item
-        cursorItem.setAmount(cursorItem.getAmount() - 1);
+        cursorItem.getItem().setAmount(cursorItem.getItem().getAmount() - 1);
     }
 }

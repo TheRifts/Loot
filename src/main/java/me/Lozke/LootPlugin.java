@@ -2,6 +2,7 @@ package me.Lozke;
 
 import me.Lozke.commands.*;
 import me.Lozke.listeners.ModifyingItemByClickListener;
+import me.Lozke.listeners.PouchListener;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
 import me.Lozke.utils.config.VersionedSmartYamlConfiguration;
@@ -27,12 +28,16 @@ public class LootPlugin extends JavaPlugin {
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ModifyingItemByClickListener(), this);
+        pm.registerEvents(new PouchListener(), this);
 
         try {
             Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register(this.getName(), new CheckCommand());
             commandMap.register(this.getName(), new CreateItem());
+            commandMap.register(this.getName(), new ItemRename());
+            commandMap.register(this.getName(), new ValueCommand());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
