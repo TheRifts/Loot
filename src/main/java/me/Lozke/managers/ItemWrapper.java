@@ -46,13 +46,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemWrapper setName(String name) {
         itemMeta.setDisplayName(Text.colorize(name));
         item.setItemMeta(itemMeta);
-        return this;
+        return new ItemWrapper(item);
     }
 
     public ItemWrapper setLore(String... strings) {
         itemMeta.setLore(Arrays.asList(strings));
         item.setItemMeta(itemMeta);
-        return this;
+        return new ItemWrapper(item);
     }
 
     public ItemWrapper setAmount(int amount) {
@@ -63,7 +63,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemWrapper setMaterial(Material material) {
         item.setType(material);
         itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
-        return this;
+        return new ItemWrapper(item);
     }
 
     public ItemStack format() {
@@ -368,28 +368,32 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     @Override
     public ItemWrapper addKey(NamespacedKey namespacedKey, PersistentDataType dataType, Object key) {
         super.addKey(namespacedKey, dataType, key);
+        this.itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey, Object key) {
         super.addKey(namespacedKey, key);
+        this.itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey) {
         super.addKey(namespacedKey);
+        this.itemMeta = item.getItemMeta();
         return this;
     }
 
     @Override
     public ItemWrapper removeKey(NamespacedKey namespacedKey) {
         super.removeKey(namespacedKey);
+        this.itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper removeKey(ARNamespacedKey namespacedKey) {
         super.removeKey(namespacedKey);
+        this.itemMeta = item.getItemMeta();
         return this;
     }
-
 }
