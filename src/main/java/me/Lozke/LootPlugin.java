@@ -29,7 +29,9 @@ public class LootPlugin extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ModifyingItemByClickListener(), this);
         pm.registerEvents(new PouchListener(), this);
+        pm.registerEvents(new AnvilListener(), this);
         pm.registerEvents(new ItemDurabilityDamageListener(), this);
+        pm.registerEvents(new AnvilChatListener(), this);
 
         try {
             Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
