@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -139,6 +140,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             }
             Rarity rarity = getRarity();
             list.add(Text.colorize(rarity.getColorCode() + "&o" + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
+            list.add(Text.colorize("&8" + getInt(ARNamespacedKey.DURABILITY) + "/" + getInt(ARNamespacedKey.MAX_DURABILITY)));
         }
         itemMeta.setLore(list);
         item.setItemMeta(itemMeta);
@@ -359,6 +361,47 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             }
         }
         return null;
+    }
+
+    public ItemWrapper setDurabality(int durabality) {
+        addKey(ARNamespacedKey.DURABILITY, durabality);
+        return updateDurabaility();
+    }
+
+    public int getDurabality() {
+        return getInt(ARNamespacedKey.DURABILITY);
+    }
+
+    public ItemWrapper setMaxDurabality(int durabality) {
+        addKey(ARNamespacedKey.MAX_DURABILITY, durabality);
+        return updateDurabaility();
+    }
+
+    public int getMaxDurabality() {
+        return getInt(ARNamespacedKey.MAX_DURABILITY);
+    }
+
+    public ItemWrapper setDurabalityAsPercentage(double durabality) {
+        int newDura = (int) (Math.round(getInt(ARNamespacedKey.MAX_DURABILITY) * durabality));
+        newDura = Math.min(newDura, getInt(ARNamespacedKey.MAX_DURABILITY));
+        addKey(ARNamespacedKey.DURABILITY, newDura);
+        return updateDurabaility();
+    }
+
+    public double getDurabalityAsPercentage() {
+        return (double) getDurabality() / getMaxDurabality();
+    }
+
+    public ItemWrapper updateDurabaility() {
+        List<String> lore = itemMeta.getLore();
+        lore.set(lore.size() - 1, Text.colorize("&8" + getDurabality() + "/" + getMaxDurabality()));
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+
+        Damageable meta = (Damageable) itemMeta;
+        meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabalityAsPercentage())));
+        item.setItemMeta((ItemMeta) meta);
+        return this;
     }
 
     /*

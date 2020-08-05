@@ -1,8 +1,7 @@
 package me.Lozke;
 
 import me.Lozke.commands.*;
-import me.Lozke.listeners.ModifyingItemByClickListener;
-import me.Lozke.listeners.PouchListener;
+import me.Lozke.listeners.*;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
 import me.Lozke.utils.config.VersionedSmartYamlConfiguration;
@@ -29,6 +28,7 @@ public class LootPlugin extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ModifyingItemByClickListener(), this);
         pm.registerEvents(new PouchListener(), this);
+        pm.registerEvents(new ItemDurabilityDamageListener(), this);
 
         try {
             Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -38,6 +38,7 @@ public class LootPlugin extends JavaPlugin {
             commandMap.register(this.getName(), new CreateItem());
             commandMap.register(this.getName(), new ItemRename());
             commandMap.register(this.getName(), new ValueCommand());
+            commandMap.register(this.getName(), new SetDurabalityPercent());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
