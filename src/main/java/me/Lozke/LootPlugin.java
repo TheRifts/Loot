@@ -22,6 +22,7 @@ public class LootPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
 
         gearData = defaultSettingsLoad("geardata.yml");
 
