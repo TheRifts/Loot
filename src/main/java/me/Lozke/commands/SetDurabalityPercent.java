@@ -32,7 +32,7 @@ public class SetDurabalityPercent extends Command {
         if (percent > 0.99) {
             percent = percent / 100;
         }
-        itemWrapper.setDurabalityAsPercentage(percent);
+        itemWrapper.setDurabilityAsPercentage(percent);
         return true;
     }
 }

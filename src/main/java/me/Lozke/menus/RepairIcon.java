@@ -18,7 +18,7 @@ public class RepairIcon extends CloseIcon {
     public void onItemClick(MenuClickEvent event) {
         super.onItemClick(event);
         ItemWrapper itemWrapper = new ItemWrapper(((RepairSelector) event.getMenu()).getItem());
-        double newDura = repairAmount + itemWrapper.getDurabalityAsPercentage();
-        itemWrapper.setDurabalityAsPercentage(newDura);
+        double newDura = repairAmount + itemWrapper.getDurabilityAsPercentage();
+        itemWrapper.setDurabilityAsPercentage(newDura);
     }
 }

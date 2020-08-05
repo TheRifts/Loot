@@ -8,6 +8,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,15 +52,15 @@ public class AnvilManager {
     }
 
     public void handleEvent(PlayerInteractEvent event) {
-        ItemStack playerItem = event.getPlayer().getItemInHand();
+        ItemStack playerItem = event.getPlayer().getInventory().getItemInMainHand();
 
         ItemWrapper itemWrapper = new ItemWrapper(playerItem);
         if (!itemWrapper.isRealItem()) return;
         else event.getPlayer().getInventory().remove(playerItem);
 
-        Location location = event.getClickedBlock().getLocation().add(0, .25, 0);
+        Location location = event.getClickedBlock().getLocation().add(.5, 1.1, .5);
         Item itemEntity = location.getWorld().dropItem(location, playerItem);
-        itemEntity.setGravity(false);
+        itemEntity.setVelocity(new Vector());
         itemEntity.setPickupDelay(Integer.MAX_VALUE);
 
         event.getPlayer().sendMessage(Text.colorize("&eIt will cost you &a&l" + "0" + "G &eto repair your '" + itemWrapper.getItem().getItemMeta().getDisplayName() + "&a'"));
@@ -104,7 +105,7 @@ public class AnvilManager {
 
     public void repairItem(UUID uuid) {
         ItemWrapper itemWrapper = new ItemWrapper(getItemStack(uuid));
-        itemWrapper.setDurabalityAsPercentage(1);
+        itemWrapper.setDurabilityAsPercentage(1);
         Bukkit.getPlayer(uuid).sendMessage(Text.colorize("&c&l-0G"));
         stopTracking(uuid);
     }

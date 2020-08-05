@@ -15,9 +15,13 @@ public class AnvilListener implements Listener {
     public void onAnvilClick(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || !(event.getClickedBlock().getBlockData().getAsString().contains("anvil"))) return;
         event.setCancelled(true);
-        ItemWrapper itemWrapper = new ItemWrapper(event.getItem());
+        if (AnvilManager.getInstance().isTracked(event.getPlayer())) {
+            event.getPlayer().sendMessage(Text.colorize("&cYou're already repairing an item"));
+            return;
+        }
+        ItemWrapper itemWrapper = new ItemWrapper(event.getPlayer().getInventory().getItemInMainHand());
         if (!itemWrapper.isRealItem()) return;
-        if (itemWrapper.getDurabalityAsPercentage() > 0.99) {
+        if (itemWrapper.getDurabilityAsPercentage() > 0.99) {
             event.getPlayer().sendMessage(Text.colorize("&cThis item is already repaired."));
             return;
         }

@@ -363,43 +363,50 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         return null;
     }
 
-    public ItemWrapper setDurabality(int durabality) {
-        addKey(ARNamespacedKey.DURABILITY, durabality);
-        return updateDurabaility();
+    public ItemWrapper addDurability(int durability) {
+        int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
+        int currentDurability = getInt(ARNamespacedKey.DURABILITY);
+        addKey(ARNamespacedKey.DURABILITY, Math.min(maxDurability, currentDurability + durability));
+        return this;
+    }
+
+    public ItemWrapper setDurability(int durability) {
+        addKey(ARNamespacedKey.DURABILITY, durability);
+        return updateDurability();
     }
 
     public int getDurabality() {
         return getInt(ARNamespacedKey.DURABILITY);
     }
 
-    public ItemWrapper setMaxDurabality(int durabality) {
-        addKey(ARNamespacedKey.MAX_DURABILITY, durabality);
-        return updateDurabaility();
+    public ItemWrapper setMaxDurability(int durability) {
+        addKey(ARNamespacedKey.MAX_DURABILITY, durability);
+        return updateDurability();
     }
 
-    public int getMaxDurabality() {
+    public int getMaxDurability() {
         return getInt(ARNamespacedKey.MAX_DURABILITY);
     }
 
-    public ItemWrapper setDurabalityAsPercentage(double durabality) {
-        int newDura = (int) (Math.round(getInt(ARNamespacedKey.MAX_DURABILITY) * durabality));
+    public ItemWrapper setDurabilityAsPercentage(double durability) {
+        int newDura = (int) (Math.round(getInt(ARNamespacedKey.MAX_DURABILITY) * durability));
         newDura = Math.min(newDura, getInt(ARNamespacedKey.MAX_DURABILITY));
         addKey(ARNamespacedKey.DURABILITY, newDura);
-        return updateDurabaility();
+        return updateDurability();
     }
 
-    public double getDurabalityAsPercentage() {
-        return (double) getDurabality() / getMaxDurabality();
+    public double getDurabilityAsPercentage() {
+        return (double) getDurabality() / getMaxDurability();
     }
 
-    public ItemWrapper updateDurabaility() {
+    public ItemWrapper updateDurability() {
         List<String> lore = itemMeta.getLore();
-        lore.set(lore.size() - 1, Text.colorize("&8" + getDurabality() + "/" + getMaxDurabality()));
+        lore.set(lore.size() - 1, Text.colorize("&8" + getDurabality() + "/" + getMaxDurability()));
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
         Damageable meta = (Damageable) itemMeta;
-        meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabalityAsPercentage())));
+        meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabilityAsPercentage())));
         item.setItemMeta((ItemMeta) meta);
         return this;
     }

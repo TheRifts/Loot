@@ -16,6 +16,6 @@ public class ItemDurabilityDamageListener implements Listener {
         if (!wrapper.hasKey(ARNamespacedKey.REAL_ITEM) || event.isCancelled()) return;
         else event.setDamage(0);
 
-        wrapper.setDurabality(wrapper.getDurabality() - 1);
+        wrapper.addDurability(-1);
     }
 }
