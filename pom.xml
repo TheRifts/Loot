@@ -53,7 +53,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/Lozke/AgorianRifts-Core</url>
+            <url>https://maven.pkg.github.com/AgorianRifts/Core</url>
         </repository>
         <repository>
             <id>spigotmc-repo</id>
