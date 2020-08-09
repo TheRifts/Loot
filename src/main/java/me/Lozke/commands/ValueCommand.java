@@ -1,21 +1,18 @@
 package me.Lozke.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.managers.ItemWrapper;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ValueCommand extends Command {
+@CommandAlias("value")
+public class ValueCommand extends BaseCommand {
 
-    public ValueCommand() {
-        super("value");
-    }
-
-    @Override
-    public boolean execute(CommandSender sender, String s, String[] strings) {
-        Player player = (Player) sender;
+    @Default
+    public static void onValue(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemWrapper itemWrapper = new ItemWrapper(item);
         if (itemWrapper.isRealItem()) {
@@ -24,6 +21,5 @@ public class ValueCommand extends Command {
         else {
             player.sendMessage("value: 0g");
         }
-        return true;
     }
 }

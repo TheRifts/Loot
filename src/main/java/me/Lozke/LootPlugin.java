@@ -1,18 +1,17 @@
 package me.Lozke;
 
+import co.aikar.commands.BukkitCommandManager;
 import me.Lozke.commands.*;
 import me.Lozke.listeners.*;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
 import me.Lozke.utils.config.VersionedSmartYamlConfiguration;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 public class LootPlugin extends JavaPlugin {
 
@@ -33,18 +32,12 @@ public class LootPlugin extends JavaPlugin {
         pm.registerEvents(new ItemDurabilityDamageListener(), this);
         pm.registerEvents(new AnvilChatListener(), this);
 
-        try {
-            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            bukkitCommandMap.setAccessible(true);
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            commandMap.register(this.getName(), new CheckCommand());
-            commandMap.register(this.getName(), new CreateItem());
-            commandMap.register(this.getName(), new ItemRename());
-            commandMap.register(this.getName(), new ValueCommand());
-            commandMap.register(this.getName(), new SetDurabalityPercent());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        BukkitCommandManager manager = new BukkitCommandManager(this);
+        manager.registerCommand(new CheckCommand());
+        manager.registerCommand(new CreateItem());
+        manager.registerCommand(new ItemRename());
+        manager.registerCommand(new SetDurabalityPercent());
+        manager.registerCommand(new ValueCommand());
     }
 
     @Override

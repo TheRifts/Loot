@@ -1,30 +1,26 @@
 package me.Lozke.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
 import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.Text;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetDurabalityPercent extends Command {
+@CommandAlias("setdurabalitypercent")
+public class SetDurabalityPercent extends BaseCommand {
 
-    public SetDurabalityPercent() {
-        super("setdurabalitypercent");
-    }
-
-    @Override
-    public boolean execute(CommandSender commandSender, String commandLabel, String[] args) {
-        Player player = (Player) commandSender;
+    @Default
+    public boolean execute(Player player, @Default("1.0") Double percent) {
         if (player.getItemInHand().getType() == Material.AIR) {
-            player.sendMessage(Text.colorize("Hold an item"));
+            player.sendMessage(Text.colorize("Must be holding an item"));
             return true;
         }
         ItemWrapper itemWrapper = new ItemWrapper(player.getItemInHand());
         if (!itemWrapper.isRealItem()) {
             return true;
         }
-        double percent = Double.parseDouble(args[0]);
         if (percent < 0) {
             player.sendMessage("cannot be negative.");
             return true;
