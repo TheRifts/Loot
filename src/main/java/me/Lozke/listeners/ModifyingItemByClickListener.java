@@ -1,7 +1,7 @@
 package me.Lozke.listeners;
 
+import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemWrapper;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -25,18 +25,53 @@ public class ModifyingItemByClickListener implements Listener {
             return;
         }
 
-        //Orb
-        if (cursorItem.getItem().getType().equals(Material.MAGMA_CREAM)) {
-            event.setCancelled(true);
-            currentItem.randomizeAttributes().format();
-        }
-        //Shard
-        else if (cursorItem.getItem().getType().equals(Material.BLAZE_POWDER)) {
-            event.setCancelled(true);
-            currentItem.randomizeStats().format();
-        }
-        else {
-            return;
+        switch (cursorItem.getItem().getType()) {
+            case MAGMA_CREAM: //Orb
+                event.setCancelled(true);
+                currentItem.randomizeAttributes().format();
+                break;
+            case BLAZE_POWDER: //Shard
+                event.setCancelled(true);
+                currentItem.randomizeStats().format();
+                break;
+            case LEATHER:
+                if (currentItem.getTier() == Tier.T1) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case IRON_BARS:
+                if (currentItem.getTier() == Tier.T2) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case LIGHT_GRAY_DYE:
+                if (currentItem.getTier() == Tier.T3) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case LIGHT_BLUE_DYE:
+                if (currentItem.getTier() == Tier.T4) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case YELLOW_DYE:
+                if (currentItem.getTier() == Tier.T5) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case BLACK_DYE:
+                if (currentItem.getTier() == Tier.T6) {
+                    event.setCancelled(true);
+                    currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            default:
+                return;
         }
 
         //Consume the item
