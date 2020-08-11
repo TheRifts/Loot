@@ -1,5 +1,6 @@
 package me.Lozke.listeners;
 
+import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemWrapper;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,7 @@ public class ModifyingItemByClickListener implements Listener {
         switch (cursorItem.getItem().getType()) {
             case MAGMA_CREAM: //Orb
                 event.setCancelled(true);
+                if (!currentItem.getBoolean(ARNamespacedKey.CAN_ORB)) return;
                 currentItem.randomizeAttributes().format();
                 break;
             case BLAZE_POWDER: //Shard

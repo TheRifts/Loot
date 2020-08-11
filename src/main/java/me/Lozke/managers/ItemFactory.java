@@ -130,8 +130,8 @@ public class ItemFactory {
         itemWrapper.addKey(ARNamespacedKey.TIER, tier.name());
         itemWrapper.addKey(ARNamespacedKey.RARITY, rarity.name());
         itemWrapper.addKey(ARNamespacedKey.CAN_ORB);
-        itemWrapper.addKey(ARNamespacedKey.DURABILITY, tier.getMaxDurabality());
-        itemWrapper.addKey(ARNamespacedKey.MAX_DURABILITY, tier.getMaxDurabality());
+        itemWrapper.addKey(ARNamespacedKey.DURABILITY, tier.getMaxDurability());
+        itemWrapper.addKey(ARNamespacedKey.MAX_DURABILITY, tier.getMaxDurability());
         itemWrapper.randomizeAttributes();
 
         item = itemWrapper.getItem();
