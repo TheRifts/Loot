@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.Serializable;
 import java.util.Map;
 
-public class Scroll implements Serializable {
+public class ScrollData implements Serializable {
 
     private Map<Modifier, Object> scrollDataMap;
     private double successPercent;
@@ -23,7 +23,7 @@ public class Scroll implements Serializable {
     private transient ItemStack stack;
     private transient NamespacedKeyWrapper wrapper;
 
-    public Scroll(ItemStack stack) {
+    public ScrollData(ItemStack stack) {
         this.stack = stack;
         this.wrapper = new NamespacedKeyWrapper(stack);
 
@@ -36,7 +36,7 @@ public class Scroll implements Serializable {
         wrapper.addKey(ARNamespacedKey.REAL_ITEM);
     }
 
-    public Scroll() {
+    public ScrollData() {
         this(new ItemStack(Material.MAP));
     }
 

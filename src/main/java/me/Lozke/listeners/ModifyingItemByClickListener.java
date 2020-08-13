@@ -1,7 +1,7 @@
 package me.Lozke.listeners;
 
 import me.Lozke.data.ARNamespacedKey;
-import me.Lozke.data.Scroll.Scroll;
+import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.NumGenerator;
@@ -80,8 +80,8 @@ public class ModifyingItemByClickListener implements Listener {
                 Double successChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_SUCCESS_CHANCE);
                 Double roll = NumGenerator.fraction();
                 if (roll < successChance) {
-                    List<Scroll> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
-                    scrolls.add(new Scroll(cursorItem.getItem()));
+                    List<ScrollData> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
+                    scrolls.add(new ScrollData(cursorItem.getItem()));
                     currentItem.addKey(ARNamespacedKey.USED_SCROLLS, scrolls);
                     currentItem.format();
                 }

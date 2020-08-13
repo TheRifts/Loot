@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.Scroll;
+import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.managers.ItemWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -38,10 +38,10 @@ public class CheckCommand extends BaseCommand {
             }
             if (itemWrapper.hasKey(ARNamespacedKey.USED_SCROLLS)) {
                 player.sendMessage("Max Amount of Scrolls: " + itemWrapper.getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT));
-                List<Scroll> list = (List<Scroll>) itemWrapper.getList(ARNamespacedKey.USED_SCROLLS);
+                List<ScrollData> list = (List<ScrollData>) itemWrapper.getList(ARNamespacedKey.USED_SCROLLS);
                 if (list != null) {
                     player.sendMessage("Amount of Applied Scrolls: " + list.size());
-                    for (Scroll scroll : list) {
+                    for (ScrollData scroll : list) {
                         player.sendMessage("Success Chance: " + scroll.getSuccessPercent());
                         player.sendMessage("Destroy Chance: " + scroll.getDestroyPercent());
                         player.sendMessage("Scroll Type: " + scroll.getScrollType());

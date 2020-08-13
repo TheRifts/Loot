@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
-public class ScrollDataTag implements PersistentDataType<PersistentDataContainer, Scroll>, IAddKeyWrapper {
+public class ScrollDataTag implements PersistentDataType<PersistentDataContainer, ScrollData>, IAddKeyWrapper {
 
     private JavaPlugin plugin;
     private PersistentDataContainer container;
@@ -33,12 +33,12 @@ public class ScrollDataTag implements PersistentDataType<PersistentDataContainer
     }
 
     @Override
-    public Class<Scroll> getComplexType() {
-        return Scroll.class;
+    public Class<ScrollData> getComplexType() {
+        return ScrollData.class;
     }
 
     @Override
-    public PersistentDataContainer toPrimitive(Scroll scroll, PersistentDataAdapterContext persistentDataAdapterContext) {
+    public PersistentDataContainer toPrimitive(ScrollData scroll, PersistentDataAdapterContext persistentDataAdapterContext) {
         this.container = persistentDataAdapterContext.newPersistentDataContainer();
         addMap(DATA_MAP, scroll.getScrollData());
         addDouble(SUCCESS, scroll.getSuccessPercent());
@@ -50,8 +50,8 @@ public class ScrollDataTag implements PersistentDataType<PersistentDataContainer
     }
 
     @Override
-    public Scroll fromPrimitive(PersistentDataContainer container, PersistentDataAdapterContext persistentDataAdapterContext) {
-        Scroll scroll = new Scroll();
+    public ScrollData fromPrimitive(PersistentDataContainer container, PersistentDataAdapterContext persistentDataAdapterContext) {
+        ScrollData scroll = new ScrollData();
         scroll.setScrollData(container.get(DATA_MAP, MAP_DATA_TYPE));
         scroll.setSuccessPercent(container.get(SUCCESS, PersistentDataType.DOUBLE));
         scroll.setDestroyPercent(container.get(DESTROY, PersistentDataType.DOUBLE));

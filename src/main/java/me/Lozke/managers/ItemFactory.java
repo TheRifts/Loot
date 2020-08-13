@@ -3,7 +3,7 @@ package me.Lozke.managers;
 import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
 import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.Scroll;
+import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.data.Scroll.ScrollType;
 import me.Lozke.utils.*;
 import org.bukkit.Material;
@@ -82,7 +82,7 @@ public class ItemFactory {
     }
 
     public static ItemStack newScroll(ScrollType scrollType, ItemType itemType, double successChance, double destroyChance, String[] modifierArgs) {
-        Scroll scroll = new Scroll();
+        ScrollData scroll = new ScrollData();
 
         scroll.setScrollType(scrollType);
         scroll.setItemTypeToModify(itemType);

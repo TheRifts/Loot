@@ -3,7 +3,7 @@ package me.Lozke.managers;
 import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
 import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.Scroll;
+import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -82,11 +82,11 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         if (hasKey(ARNamespacedKey.REAL_ITEM)) {
             String[] itemType = item.getType().toString().split("_");
 
-            List<Scroll> usedScrolls = (List<Scroll>) getList(ARNamespacedKey.USED_SCROLLS);
+            List<ScrollData> usedScrolls = (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS);
             Map<Modifier, Object> modifiers = new HashMap<>();
 
             //Carefully stitch all the scrollModifiers together
-            for (Scroll scroll : usedScrolls) {
+            for (ScrollData scroll : usedScrolls) {
                 Map<Modifier, Object> scrollModifierMap = scroll.getScrollData();
                 for (Modifier modifier : scrollModifierMap.keySet()) {
                     double val = (double) scrollModifierMap.get(modifier);
