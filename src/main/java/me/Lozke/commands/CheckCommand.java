@@ -4,12 +4,13 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import me.Lozke.data.ARNamespacedKey;
-import me.Lozke.data.Attribute;
+import me.Lozke.data.Scroll.Modifier;
+import me.Lozke.data.Scroll.Scroll;
 import me.Lozke.managers.ItemWrapper;
-import me.Lozke.utils.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Map;
 
 @CommandAlias("verify|check")
@@ -19,7 +20,7 @@ public class CheckCommand extends BaseCommand {
     public static void onCheck(Player player) {
         ItemWrapper itemWrapper = new ItemWrapper(player.getInventory().getItemInMainHand());
         if (itemWrapper.isRealItem()) {
-            player.sendMessage(itemWrapper.getString(ARNamespacedKey.REAL_ITEM));
+            player.sendMessage(itemWrapper.getBoolean(ARNamespacedKey.REAL_ITEM) + " ");
             if (itemWrapper.hasKey(ARNamespacedKey.ATTRIBUTES)) {
                 Map map = itemWrapper.getMap(ARNamespacedKey.ATTRIBUTES);
                 for (Object key : map.keySet()) {
@@ -31,7 +32,24 @@ public class CheckCommand extends BaseCommand {
                 for (Object key : heldItems.keySet()) {
                     if (heldItems.get(key) != null && ((byte[]) heldItems.get(key)).length > 0) {
                         ItemStack heldItem = ItemStack.deserializeBytes((byte[]) heldItems.get(key));
-                        Logger.broadcast(heldItem.toString());
+                        player.sendMessage(heldItem.toString());
+                    }
+                }
+            }
+            if (itemWrapper.hasKey(ARNamespacedKey.USED_SCROLLS)) {
+                player.sendMessage("Max Amount of Scrolls: " + itemWrapper.getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT));
+                List<Scroll> list = (List<Scroll>) itemWrapper.getList(ARNamespacedKey.USED_SCROLLS);
+                if (list != null) {
+                    player.sendMessage("Amount of Applied Scrolls: " + list.size());
+                    for (Scroll scroll : list) {
+                        player.sendMessage("Success Chance: " + scroll.getSuccessPercent());
+                        player.sendMessage("Destroy Chance: " + scroll.getDestroyPercent());
+                        player.sendMessage("Scroll Type: " + scroll.getScrollType());
+                        player.sendMessage("Item Type to Enchant: " + scroll.getItemTypeToModify());
+                        Map<Modifier, Object> modifierMap = scroll.getScrollData();
+                        for (Modifier key : modifierMap.keySet()) {
+                            player.sendMessage("Modifier: " + key + " Value: " + modifierMap.get(key));
+                        }
                     }
                 }
             }

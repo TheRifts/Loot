@@ -2,6 +2,9 @@ package me.Lozke.managers;
 
 import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
+import me.Lozke.data.Scroll.Modifier;
+import me.Lozke.data.Scroll.Scroll;
+import me.Lozke.data.Scroll.ScrollType;
 import me.Lozke.utils.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -78,6 +81,26 @@ public class ItemFactory {
                 .getItem();
     }
 
+    public static ItemStack newScroll(ScrollType scrollType, ItemType itemType, double successChance, double destroyChance, String[] modifierArgs) {
+        Scroll scroll = new Scroll();
+
+        scroll.setScrollType(scrollType);
+        scroll.setItemTypeToModify(itemType);
+        scroll.setSuccessPercent(successChance);
+        scroll.setDestroyPercent(destroyChance);
+
+        for (int i = 0; i < modifierArgs.length; i = i+2) {
+            if (i + 1 > modifierArgs.length) {
+                break;
+            }
+            Modifier modifier = Modifier.valueOf(modifierArgs[i]);
+            Double amount = Double.valueOf(modifierArgs[i+1]);
+            scroll.addModifier(modifier, amount);
+        }
+
+        return scroll.getItem();
+    }
+
     private static ItemStack createItem(Tier tier, Rarity rarity, String material, String itemType) {
         ItemStack item = null;
         ItemWrapper itemWrapper = null;
@@ -132,6 +155,8 @@ public class ItemFactory {
         itemWrapper.addKey(ARNamespacedKey.CAN_ORB);
         itemWrapper.addKey(ARNamespacedKey.DURABILITY, tier.getMaxDurability());
         itemWrapper.addKey(ARNamespacedKey.MAX_DURABILITY, tier.getMaxDurability());
+        itemWrapper.addKey(ARNamespacedKey.SCROLL_MAX_AMOUNT, NumGenerator.roll(10));
+
         itemWrapper.randomizeAttributes();
 
         item = itemWrapper.getItem();

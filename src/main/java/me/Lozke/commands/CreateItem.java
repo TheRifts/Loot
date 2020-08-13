@@ -2,10 +2,12 @@ package me.Lozke.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import me.Lozke.data.ItemType;
 import me.Lozke.data.Rarity;
+import me.Lozke.data.Scroll.ScrollType;
 import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemFactory;
-import me.Lozke.utils.Logger;
+import me.Lozke.utils.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -85,5 +87,15 @@ public class CreateItem extends BaseCommand {
     @Syntax("[value]")
     public static void createGemNote(Player player, @Default("1") Integer amount) {
         player.getInventory().addItem(ItemFactory.newGemNote(amount));
+    }
+
+    @Subcommand("scroll")
+    @Syntax("scrolltype itemtype [success-chance] [destroy-chance] <modifier,modifieramount>")
+    public static void createScroll(Player player, ScrollType scrollType, ItemType itemType, @Default("1") Double successChance, @Default("0") Double destroyChance, @Split(",| ") String[] args) {
+        if (args.length % 2 != 0) {
+            player.sendMessage(Text.colorize("&cInvalid Scroll Modifer/Amount Combination)"));
+            return;
+        }
+        player.getInventory().addItem(ItemFactory.newScroll(scrollType, itemType, successChance, destroyChance, args));
     }
 }

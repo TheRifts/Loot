@@ -31,6 +31,7 @@ public class LootPlugin extends JavaPlugin {
         pm.registerEvents(new AnvilListener(), this);
         pm.registerEvents(new ItemDurabilityDamageListener(), this);
         pm.registerEvents(new AnvilChatListener(), this);
+        pm.registerEvents(new ScrollRightClickListener(), this);
 
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.registerCommand(new CheckCommand());

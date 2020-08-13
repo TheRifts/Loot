@@ -1,14 +1,18 @@
 package me.Lozke.listeners;
 
 import me.Lozke.data.ARNamespacedKey;
+import me.Lozke.data.Scroll.Scroll;
 import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.NumGenerator;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+
+import java.util.List;
 
 public class ModifyingItemByClickListener implements Listener {
 
@@ -22,7 +26,7 @@ public class ModifyingItemByClickListener implements Listener {
         ItemWrapper cursorItem = new ItemWrapper(event.getCursor());
         ItemWrapper currentItem = new ItemWrapper(event.getCurrentItem());
 
-        if (!cursorItem.isRealItem() || !currentItem.isTiered() || !cursorItem.isTiered() || cursorItem.getTier() != currentItem.getTier()) {
+        if (!cursorItem.isRealItem() || !currentItem.isRealItem()) {
             return;
         }
 
@@ -70,6 +74,23 @@ public class ModifyingItemByClickListener implements Listener {
                 if (currentItem.getTier() == Tier.T6) {
                     event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
+                }
+                break;
+            case MAP: //Scroll
+                Double successChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_SUCCESS_CHANCE);
+                Double roll = NumGenerator.fraction();
+                if (roll < successChance) {
+                    List<Scroll> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
+                    scrolls.add(new Scroll(cursorItem.getItem()));
+                    currentItem.addKey(ARNamespacedKey.USED_SCROLLS, scrolls);
+                    currentItem.format();
+                }
+                else {
+                    Double destroyChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_DESTROY_CHANCE);
+                    roll = NumGenerator.fraction();
+                    if (roll < destroyChance) {
+                        inventory.remove(currentItem.getItem());
+                    }
                 }
                 break;
             default:

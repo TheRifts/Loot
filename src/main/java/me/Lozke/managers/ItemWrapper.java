@@ -2,6 +2,8 @@ package me.Lozke.managers;
 
 import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
+import me.Lozke.data.Scroll.Modifier;
+import me.Lozke.data.Scroll.Scroll;
 import me.Lozke.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -47,13 +49,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemWrapper setName(String name) {
         itemMeta.setDisplayName(Text.colorize(name));
         item.setItemMeta(itemMeta);
-        return new ItemWrapper(item);
+        return this;
     }
 
     public ItemWrapper setLore(String... strings) {
         itemMeta.setLore(Arrays.asList(strings));
         item.setItemMeta(itemMeta);
-        return new ItemWrapper(item);
+        return this;
     }
 
     public ItemWrapper setAmount(int amount) {
@@ -64,7 +66,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemWrapper setMaterial(Material material) {
         item.setType(material);
         itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
-        return new ItemWrapper(item);
+        return this;
+    }
+
+    public ItemWrapper setModelData(int val) {
+        itemMeta.setCustomModelData(val);
+        item.setItemMeta(itemMeta);
+        return this;
     }
 
     public ItemStack format() {
@@ -74,6 +82,21 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         if (hasKey(ARNamespacedKey.REAL_ITEM)) {
             String[] itemType = item.getType().toString().split("_");
 
+            List<Scroll> usedScrolls = (List<Scroll>) getList(ARNamespacedKey.USED_SCROLLS);
+            Map<Modifier, Object> modifiers = new HashMap<>();
+
+            //Carefully stitch all the scrollModifiers together
+            for (Scroll scroll : usedScrolls) {
+                Map<Modifier, Object> scrollModifierMap = scroll.getScrollData();
+                for (Modifier modifier : scrollModifierMap.keySet()) {
+                    double val = (double) scrollModifierMap.get(modifier);
+                    if (modifiers.containsKey(modifier)) {
+                        val += (double) modifiers.get(modifier);
+                    }
+                    modifiers.put(modifier, val);
+                }
+            }
+
             if (hasKey(ARNamespacedKey.HEALTH_POINTS)) {
                 int val = AgorianRifts.getGearData().getInt(getTier().name() + "." + itemType[1] + ".HI");
                 double rarityMultiplier = AgorianRifts.getGearData().getInt("MULTIPLIER.ARMOR." + getRarity().name()),
@@ -81,13 +104,28 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 int hiRange = (int) Math.ceil(val * rarityMultiplier);
 
                 ChatColor statColor = percentageToColor((double) getInt(ARNamespacedKey.HEALTH_POINTS) / hiRange);
-                list.add(Text.colorize("&7HP: " + statColor + "+" + get(ARNamespacedKey.HEALTH_POINTS)));
+                if (modifiers.containsKey(Modifier.HP)) {
+                    list.add(Text.colorize("&7HP: " + statColor + "+" + get(ARNamespacedKey.HEALTH_POINTS)) + " &7(+" + modifiers.get(Modifier.HP) + "%)");
+                }
+                else {
+                    list.add(Text.colorize("&7HP: " + statColor + "+" + get(ARNamespacedKey.HEALTH_POINTS)));
+                }
 
                 if (hasKey(ARNamespacedKey.HP_REGEN)) {
-                    list.add(Text.colorize("&7HP/s: &c+" + get(ARNamespacedKey.HP_REGEN)));
+                    if (modifiers.containsKey(Modifier.HP_REGEN)) {
+                        list.add(Text.colorize("&7HP/s: &c+" + get(ARNamespacedKey.HP_REGEN) + " &7(+" + modifiers.get(Modifier.HP_REGEN) + "%)"));
+                    }
+                    else {
+                        list.add(Text.colorize("&7HP/s: &c+" + get(ARNamespacedKey.HP_REGEN)));
+                    }
                 }
                 if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
-                    list.add(Text.colorize("&7ENERGY: &c+" + get(ARNamespacedKey.ENERGY_REGEN) + "%"));
+                    if (modifiers.containsKey(Modifier.ENERGY)) {
+                        list.add(Text.colorize("&7ENERGY: &c+" + get(ARNamespacedKey.ENERGY_REGEN) + "% " + "&7(+" + modifiers.get(Modifier.ENERGY) + "%)"));
+                    }
+                    else {
+                        list.add(Text.colorize("&7ENERGY: &c+" + get(ARNamespacedKey.ENERGY_REGEN) + "%"));
+                    }
                 }
             }
 
@@ -99,7 +137,12 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 ChatColor loStatColor = percentageToColor(loDMG/dmgHI);
                 ChatColor hiStatColor = percentageToColor(hiDMG/dmgHI);
 
-                list.add(Text.colorize("&7DMG: " + loStatColor + loDMG + "&7 - " + hiStatColor + hiDMG));
+                if (modifiers.containsKey(Modifier.DMG)) {
+                    list.add(Text.colorize("&7DMG: " + loStatColor + loDMG + "&7 - " + hiStatColor + hiDMG) + "&7(" + modifiers.get(Modifier.DMG) + ")");
+                }
+                else {
+                    list.add(Text.colorize("&7DMG: " + loStatColor + loDMG + "&7 - " + hiStatColor + hiDMG));
+                }
             }
 
             if (hasKey(ARNamespacedKey.ATTRIBUTES)) {
@@ -118,7 +161,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                     int value = (int) valueMap.get(key);
                     ChatColor statColor = percentageToColor((double)percentageMap.get(key));
                     String[] split = loreDisplay.split(": ");
-                    String lore = "&7" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value));
+                    String lore = "";
+                    if (modifiers.containsKey(Modifier.ALL_STAT)) {
+                        lore = "&7" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + " &7(+" + modifiers.get(Modifier.ALL_STAT) + ")";
+                    }
+                    else {
+                        lore = "&7" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value));
+                    }
                     list.add(Text.colorize(lore));
                     if (!affix.equalsIgnoreCase("")) {
                         sb.append(affix).append(" ");
@@ -138,9 +187,14 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 Tier tier = getTier();
                 itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
             }
+            int usedAmount = getList(ARNamespacedKey.USED_SCROLLS).size();
+            int maxAmount = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
+            list.add(Text.colorize("&7Scroll Slots: " + (maxAmount - usedAmount) + "/" + maxAmount));
+
+            //list.add(Text.colorize("&7Durability: " + getInt(ARNamespacedKey.DURABILITY) + " / " + getInt(ARNamespacedKey.MAX_DURABILITY)));
+
             Rarity rarity = getRarity();
-            list.add(Text.colorize(rarity.getColorCode() + "&o" + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
-            list.add(Text.colorize("&8" + getInt(ARNamespacedKey.DURABILITY) + "/" + getInt(ARNamespacedKey.MAX_DURABILITY)));
+            list.add(Text.colorize(rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
         }
         itemMeta.setLore(list);
         item.setItemMeta(itemMeta);
@@ -418,19 +472,19 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     @Override
     public ItemWrapper addKey(NamespacedKey namespacedKey, PersistentDataType dataType, Object key) {
         super.addKey(namespacedKey, dataType, key);
-        this.itemMeta = item.getItemMeta();
+        itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey, Object key) {
         super.addKey(namespacedKey, key);
-        this.itemMeta = item.getItemMeta();
+        itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey) {
         super.addKey(namespacedKey);
-        this.itemMeta = item.getItemMeta();
+        itemMeta = item.getItemMeta();
         return this;
     }
 
@@ -443,7 +497,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     @Override
     public ItemWrapper removeKey(ARNamespacedKey namespacedKey) {
         super.removeKey(namespacedKey);
-        this.itemMeta = item.getItemMeta();
+        itemMeta = item.getItemMeta();
         return this;
     }
 }
