@@ -3,10 +3,12 @@ package me.Lozke.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Subcommand;
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.Scroll.Modifier;
 import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.managers.ItemWrapper;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +28,9 @@ public class CheckCommand extends BaseCommand {
                 for (Object key : map.keySet()) {
                     player.sendMessage(key + ": " + map.get(key));
                 }
+            }
+            if (itemWrapper.hasKey(ARNamespacedKey.SCROLL_MAX_AMOUNT)) {
+                player.sendMessage("Max Scrolls: " + itemWrapper.get(ARNamespacedKey.SCROLL_MAX_AMOUNT));
             }
             if (itemWrapper.hasKey(ARNamespacedKey.HELD_ITEMS)) {
                 Map heldItems = itemWrapper.getMap(ARNamespacedKey.HELD_ITEMS);
@@ -57,5 +62,12 @@ public class CheckCommand extends BaseCommand {
         else {
             player.sendMessage("This is NOT a Agorian Rifts™ Item!");
         }
+    }
+
+    @Subcommand("refresh")
+    public static void onRefresh(Player player) {
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        if (stack == null || stack.getType() == Material.AIR) return;
+        new ItemWrapper(stack).format();
     }
 }
