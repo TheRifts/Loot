@@ -12,6 +12,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class LootPlugin extends JavaPlugin {
 
@@ -37,13 +38,16 @@ public class LootPlugin extends JavaPlugin {
         manager.registerCommand(new CheckCommand());
         manager.registerCommand(new CreateItem());
         manager.registerCommand(new ItemRename());
+        manager.registerCommand(new Reload());
         manager.registerCommand(new SetDurabalityPercent());
         manager.registerCommand(new ValueCommand());
+
+        Logger.getLogger(this.getName()).info("The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
     }
 
     @Override
     public void onDisable() {
-
+        Logger.getLogger(this.getName()).info("The monkeys have left given up on making loot (\u001b[31mPlugin Disabled\u001b[0m)");
     }
 
     private VersionedSmartYamlConfiguration defaultSettingsLoad(String name) {
