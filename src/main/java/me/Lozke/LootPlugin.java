@@ -3,6 +3,7 @@ package me.Lozke;
 import co.aikar.commands.BukkitCommandManager;
 import me.Lozke.commands.*;
 import me.Lozke.listeners.*;
+import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
 import me.Lozke.utils.config.VersionedSmartYamlConfiguration;
@@ -12,7 +13,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 public class LootPlugin extends JavaPlugin {
 
@@ -42,12 +42,12 @@ public class LootPlugin extends JavaPlugin {
         manager.registerCommand(new SetDurabalityPercent());
         manager.registerCommand(new ValueCommand());
 
-        Logger.getLogger(this.getName()).info("The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
+        Logger.log(this, "The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
     }
 
     @Override
     public void onDisable() {
-        Logger.getLogger(this.getName()).info("The monkeys have left given up on making loot (\u001b[31mPlugin Disabled\u001b[0m)");
+        Logger.log(this, "The monkeys have left given up on making loot (\u001b[31mPlugin Disabled\u001b[0m)");
     }
 
     private VersionedSmartYamlConfiguration defaultSettingsLoad(String name) {
