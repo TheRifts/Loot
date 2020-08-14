@@ -74,6 +74,7 @@
             <groupId>me.Lozke</groupId>
             <artifactId>AgorianRifts</artifactId>
             <version>1.0.0-alpha</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
