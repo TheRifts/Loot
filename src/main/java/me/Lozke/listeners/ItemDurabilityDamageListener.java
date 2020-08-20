@@ -11,11 +11,11 @@ public class ItemDurabilityDamageListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOW)
     private void onItemUsage(PlayerItemDamageEvent event) {
+        if (event.isCancelled()) return;
+
         ItemWrapper wrapper = new ItemWrapper(event.getItem());
-
-        if (!wrapper.hasKey(ARNamespacedKey.REAL_ITEM) || event.isCancelled()) return;
+        if (!wrapper.hasKey(ARNamespacedKey.REAL_ITEM)) return;
         else event.setDamage(0);
-
         wrapper.addDurability(-1);
     }
 }
