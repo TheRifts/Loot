@@ -1,6 +1,5 @@
 package me.Lozke.managers;
 
-import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
 import me.Lozke.data.Scroll.Modifier;
 import me.Lozke.data.Scroll.ScrollData;
@@ -31,7 +30,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     @Nonnull
     public ItemWrapper(ItemStack item) {
         super(item);
-
         this.item = item;
         this.itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
     }
@@ -79,127 +77,108 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemStack format() {
-        this.needsFormatting = false;
-
-        List<String> list = new ArrayList<>();
-        if (hasKey(ARNamespacedKey.REAL_ITEM)) {
-            String[] itemType = item.getType().toString().split("_");
-
-            List<ScrollData> usedScrolls = (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS);
-            Map<Modifier, Object> modifiers = new HashMap<>();
-
-            //Carefully stitch all the scrollModifiers together
-            for (ScrollData scroll : usedScrolls) {
-                Map<Modifier, Object> scrollModifierMap = scroll.getScrollData();
-                for (Modifier modifier : scrollModifierMap.keySet()) {
-                    double val = (double) scrollModifierMap.get(modifier);
-                    if (modifiers.containsKey(modifier)) {
-                        val += (double) modifiers.get(modifier);
-                    }
-                    modifiers.put(modifier, val);
-                }
-            }
-
-            if (hasKey(ARNamespacedKey.HEALTH_POINTS)) {
-                int val = AgorianRifts.getGearData().getInt(getTier().name() + "." + itemType[1] + ".HI");
-                double rarityMultiplier = AgorianRifts.getGearData().getInt("MULTIPLIER.ARMOR." + getRarity().name()),
-                        tierMultiplier = AgorianRifts.getGearData().getInt("MULTIPLIER.ARMOR." + getTier().name());
-                int hiRange = (int) Math.ceil(val * rarityMultiplier);
-
-                ChatColor statColor = percentageToColor((double) getInt(ARNamespacedKey.HEALTH_POINTS) / hiRange);
-                if (modifiers.containsKey(Modifier.HP)) {
-                    list.add(Text.colorize("&7HP: " + statColor + "+" + get(ARNamespacedKey.HEALTH_POINTS)) + " &7(+" + modifiers.get(Modifier.HP) + "%)");
-                }
-                else {
-                    list.add(Text.colorize("&7HP: " + statColor + "+" + get(ARNamespacedKey.HEALTH_POINTS)));
-                }
-
-                if (hasKey(ARNamespacedKey.HP_REGEN)) {
-                    if (modifiers.containsKey(Modifier.HP_REGEN)) {
-                        list.add(Text.colorize("&7HP/s: &c+" + get(ARNamespacedKey.HP_REGEN) + " &7(+" + modifiers.get(Modifier.HP_REGEN) + "%)"));
-                    }
-                    else {
-                        list.add(Text.colorize("&7HP/s: &c+" + get(ARNamespacedKey.HP_REGEN)));
-                    }
-                }
-                if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
-                    if (modifiers.containsKey(Modifier.ENERGY)) {
-                        list.add(Text.colorize("&7ENERGY: &c+" + get(ARNamespacedKey.ENERGY_REGEN) + "% " + "&7(+" + modifiers.get(Modifier.ENERGY) + "%)"));
-                    }
-                    else {
-                        list.add(Text.colorize("&7ENERGY: &c+" + get(ARNamespacedKey.ENERGY_REGEN) + "%"));
-                    }
-                }
-            }
-
-            if (hasKey(ARNamespacedKey.DMG_LO) && hasKey(ARNamespacedKey.DMG_HI)) {
-                int loDMG = getInt(ARNamespacedKey.DMG_LO);
-                int hiDMG = getInt(ARNamespacedKey.DMG_HI);
-                int dmgHI = AgorianRifts.getGearData().getInt(getTier().name() + "." + itemType[1] + ".HI");
-
-                ChatColor loStatColor = percentageToColor(loDMG/dmgHI);
-                ChatColor hiStatColor = percentageToColor(hiDMG/dmgHI);
-
-                if (modifiers.containsKey(Modifier.DMG)) {
-                    list.add(Text.colorize("&7DMG: " + loStatColor + loDMG + "&7 - " + hiStatColor + hiDMG) + "&7(" + modifiers.get(Modifier.DMG) + ")");
-                }
-                else {
-                    list.add(Text.colorize("&7DMG: " + loStatColor + loDMG + "&7 - " + hiStatColor + hiDMG));
-                }
-            }
-
-            if (hasKey(ARNamespacedKey.ATTRIBUTES)) {
-                Map valueMap = getMap(ARNamespacedKey.ATTRIBUTES);
-                Map percentageMap = new HashMap();
-                for (Object key : valueMap.keySet()) {
-                    percentageMap.put(key, (double)(int)valueMap.get(key) / Attribute.valueOf(String.valueOf(key)).getMaxValue());
-                }
-                percentageMap = sortByValue(percentageMap);
-
-                StringBuilder sb = new StringBuilder();
-                for (Object key : valueMap.keySet()) {
-                    Attribute attribute = Attribute.valueOf(String.valueOf(key));
-                    String loreDisplay = attribute.getLoreDisplayName();
-                    String affix = attribute.getItemDisplayName();
-                    int value = (int) valueMap.get(key);
-                    ChatColor statColor = percentageToColor((double)percentageMap.get(key));
-                    String[] split = loreDisplay.split(": ");
-                    String lore = "";
-                    if (modifiers.containsKey(Modifier.ALL_STAT)) {
-                        lore = "&7" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + " &7(+" + modifiers.get(Modifier.ALL_STAT) + ")";
-                    }
-                    else {
-                        lore = "&7" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value));
-                    }
-                    list.add(Text.colorize(lore));
-                    if (!affix.equalsIgnoreCase("")) {
-                        sb.append(affix).append(" ");
-                    }
-                }
-
-                String itemName = item.getType().toString().toLowerCase();
-                if(itemName.contains("_")) {
-                    itemName = itemName.substring(itemName.lastIndexOf("_"));
-                    itemName = itemName.replace("_", " ");
-                }
-                else {
-                    itemName = " " + itemName;
-                }
-                itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
-
-                Tier tier = getTier();
-                itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
-            }
-            int usedAmount = getList(ARNamespacedKey.USED_SCROLLS).size();
-            int maxAmount = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
-            list.add(Text.colorize("&7Scroll Slots: " + (maxAmount - usedAmount) + "/" + maxAmount));
-
-            //list.add(Text.colorize("&7Durability: " + getInt(ARNamespacedKey.DURABILITY) + " / " + getInt(ARNamespacedKey.MAX_DURABILITY)));
-
-            Rarity rarity = getRarity();
-            list.add(Text.colorize(rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
+        if (!hasKey(ARNamespacedKey.REAL_ITEM)) {
+            return item;
         }
-        itemMeta.setLore(list);
+
+        needsFormatting = false;
+        String multiplierFormat = "";
+
+        List<String> lore = new ArrayList<>();
+        String div = Text.colorize("&8&m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯");
+        Map<Modifier, Object> modifiers = getModifiers();
+
+        lore.add(div);
+
+        Rarity rarity = getRarity();
+        lore.add(Text.colorize("&fRarity: " + rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
+
+        switch (getItemType()) {
+            case ARMOR:
+                int hp = getInt(ARNamespacedKey.HEALTH_POINTS);
+                lore.add(Text.colorize("&fMax Health: &7+" + hp));
+                break;
+            case WEAPON:
+                double multiplier = (double) modifiers.get(Modifier.DMG);
+                if (multiplier > 0) {
+                    multiplierFormat = " &7(&b+"  + ((int)(multiplier * 100)) + "%&7)";
+                }
+                int dmgLow = getInt(ARNamespacedKey.DMG_LO);
+                int dmgHigh = getInt(ARNamespacedKey.DMG_HI);
+                lore.add(Text.colorize("&fAttack Damage: &7" + dmgLow + "&f - &7" + dmgHigh + multiplierFormat));
+                break;
+        }
+
+        lore.add(div);
+
+        if (hasKey(ARNamespacedKey.ATTRIBUTES)) {
+            Map valueMap = getMap(ARNamespacedKey.ATTRIBUTES);
+            Map percentageMap = new HashMap();
+            for (Object key : valueMap.keySet()) {
+                percentageMap.put(key, (double)(int)valueMap.get(key) / Attribute.valueOf(String.valueOf(key)).getMaxValue());
+            }
+            percentageMap = sortByValue(percentageMap);
+
+            StringBuilder sb = new StringBuilder();
+            for (Object key : valueMap.keySet()) {
+                Attribute attribute = Attribute.valueOf(String.valueOf(key));
+                String loreDisplay = attribute.getLoreDisplayName();
+                String affix = attribute.getItemDisplayName();
+                int value = (int) valueMap.get(key);
+                ChatColor statColor = colorizeStat((double)percentageMap.get(key));
+                String[] split = loreDisplay.split(": ");
+                String line = "";
+                if (modifiers.containsKey(Modifier.ALL_STAT)) {
+                    line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + " &7(&b+" + modifiers.get(Modifier.ALL_STAT) + "&7)";
+                }
+                else {
+                    line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value));
+                }
+                lore.add(Text.colorize(line));
+                if (!affix.equalsIgnoreCase("")) {
+                    sb.append(affix).append(" ");
+                }
+            }
+
+            String itemName = item.getType().toString().toLowerCase();
+            if(itemName.contains("_")) {
+                itemName = itemName.substring(itemName.lastIndexOf("_"));
+                itemName = itemName.replace("_", " ");
+            }
+            else {
+                itemName = " " + itemName;
+            }
+            itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
+
+            Tier tier = getTier();
+            itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
+        }
+
+        lore.add(div);
+
+        StringBuilder slotsLine = new StringBuilder();
+        char scroll = '۞';
+        int usedSlots = getList(ARNamespacedKey.USED_SCROLLS).size();
+        int totalSlots = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
+
+        slotsLine.append("&fScroll Slots: &b");
+        for (int i = 0; i < totalSlots; i++) {
+            if (i == usedSlots) {
+                slotsLine.append("&7");
+            }
+            slotsLine.append(scroll);
+        }
+        lore.add(Text.colorize(slotsLine.toString()));
+
+        int durability = getInt(ARNamespacedKey.DURABILITY);
+        int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
+        double roll = durability / (maxDurability * 1.0);
+        ChatColor color = getRollColor(roll, 0F, 0.222F, 1F, 1F, 1F, 1F);
+        String bar = "▌▌▌▌▌▌▌▌▌▌";
+        bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
+        lore.add(Text.colorize("&7Durability: &8" + durability + bar + maxDurability));
+
+        itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         return item;
     }
@@ -343,7 +322,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         return result;
     }
 
-    public net.md_5.bungee.api.ChatColor percentageToColor(double percentage) {
+    public net.md_5.bungee.api.ChatColor colorizeStat(double percentage) {
         if (percentage >= 0.25) {
             return getRollColor((percentage - 0.25) / 0.75, 0.166666666666667F, 0.0F, 1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -446,7 +425,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemWrapper setDurabilityAsPercentage(double durability) {
-        int newDura = (int) (Math.round(getInt(ARNamespacedKey.MAX_DURABILITY) * durability));
+        int newDura = (int) (getInt(ARNamespacedKey.MAX_DURABILITY) * durability);
         newDura = Math.min(newDura, getInt(ARNamespacedKey.MAX_DURABILITY));
         addKey(ARNamespacedKey.DURABILITY, newDura);
         return updateDurability();
@@ -458,7 +437,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
     public ItemWrapper updateDurability() {
         List<String> lore = itemMeta.getLore();
-        lore.set(lore.size() - 1, Text.colorize("&8" + getDurabality() + "/" + getMaxDurability()));
+        int durability = getInt(ARNamespacedKey.DURABILITY);
+        int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
+        double roll = durability / (maxDurability * 1.0);
+        ChatColor color = getRollColor(roll, 0F, 0.222F, 1F, 1F, 1F, 1F);
+        String bar = "▌▌▌▌▌▌▌▌▌▌";
+        bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
+        lore.set(lore.size() - 1, Text.colorize("&7Durability: &8" + durability + bar + maxDurability));
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
@@ -466,6 +451,29 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabilityAsPercentage())));
         item.setItemMeta((ItemMeta) meta);
         return this;
+    }
+
+    public Map<Modifier, Object> getModifiers() {
+        Map<Modifier, Object> returnVal = new HashMap<>();
+        for (ScrollData scroll : (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS)) {
+            Map<Modifier, Object> modifiers = scroll.getScrollData();
+            for (Modifier key : modifiers.keySet()) {
+                if (returnVal.containsKey(key)) {
+                    Object keyValObj = modifiers.get(key);
+                    Object currentObj = returnVal.get(key);
+                    if (keyValObj instanceof Integer && currentObj instanceof Integer) {
+                        returnVal.put(key, ((int)currentObj + (int)keyValObj));
+                    }
+                    else if (keyValObj instanceof Double && currentObj instanceof Double) {
+                        returnVal.put(key, ((double)currentObj + (double)keyValObj));
+                    }
+                }
+                else {
+                    returnVal.put(key, modifiers.get(key));
+                }
+            }
+        }
+        return returnVal;
     }
 
     /*
