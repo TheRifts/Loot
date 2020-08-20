@@ -30,8 +30,7 @@ public enum Scrap {
             String[] split = materialString.split("/");
             name = split[1];
         }
-        return new ItemWrapper()
-                .setMaterial(material)
+        return new ItemWrapper(material)
                 .setName(Text.colorize(tier.getColorCode() + name + " Scrap"))
                 .setLore(Text.colorize("&7Recovers 3% Durability of " + tier.getColorCode() + materialString + " &7Gear"))
                 .setAmount(amount)

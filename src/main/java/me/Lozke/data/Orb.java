@@ -17,8 +17,7 @@ public enum Orb {
 
     public ItemStack getItem(int amount) {
         Tier tier = Tier.valueOf(this.name());
-        return new ItemWrapper()
-                .setMaterial(Material.MAGMA_CREAM)
+        return new ItemWrapper(Material.MAGMA_CREAM)
                 .setAmount(amount)
                 .setName(tier.getColorCode() + tier.name() + " Orb of Alteration")
                 .setLore(Text.colorize("&7Place on equipment to " + tier.getColorCode() + "&nrandomize&7 all bonus attributes"))

@@ -8,8 +8,7 @@ import org.bukkit.inventory.ItemStack;
 public class Gem {
 
     public static ItemStack getItem(int amount) {
-        return new ItemWrapper()
-                .setMaterial(Material.EMERALD)
+        return new ItemWrapper(Material.EMERALD)
                 .setAmount(amount)
                 .setName("&aAgorian Gem")
                 .setLore(Text.colorize("&7The premier currency of the Agorian Rifts"))

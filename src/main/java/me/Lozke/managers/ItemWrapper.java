@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     private static final int weaponEnergy = 8;
     private static final int maxAttributes = 7;
 
+    @Nonnull
     public ItemWrapper(ItemStack item) {
         super(item);
 
@@ -34,8 +36,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         this.itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
     }
 
-    public ItemWrapper() {
-        this(new ItemStack(Material.AIR));
+    @Nonnull
+    public ItemWrapper(Material material) {
+        this(new ItemStack(material));
     }
 
     public ItemStack getItem() {

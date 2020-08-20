@@ -23,8 +23,7 @@ public enum Pouch {
 
     public ItemStack getItem(int amount) {
         Tier tier = Tier.valueOf(this.name());
-        return new ItemWrapper()
-                .setMaterial(Material.INK_SAC)
+        return new ItemWrapper(Material.INK_SAC)
                 .setAmount(amount)
                 .setName(tier.getColorCode() + tier.name() + " Pouch")
                 .setLore(Text.colorize("&fhold gems and your gear i guess"))

@@ -71,8 +71,7 @@ public class ItemFactory {
     }
 
     public static ItemStack newGemNote(int value) {
-        return new ItemWrapper()
-                .setMaterial(Material.PAPER)
+        return new ItemWrapper(Material.PAPER)
                 .setAmount(1)
                 .setName(Text.colorize("&aAgorian Gem Note"))
                 .setLore(Text.colorize("&fValue: &a" + value))

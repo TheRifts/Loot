@@ -17,8 +17,7 @@ public enum Shard {
 
     public ItemStack getItem(int amount) {
         Tier tier = Tier.valueOf(this.name());
-        return new ItemWrapper()
-                .setMaterial(Material.BLAZE_POWDER)
+        return new ItemWrapper(Material.BLAZE_POWDER)
                 .setAmount(amount)
                 .setName(tier.getColorCode() + tier.name() + " Shard of Alteration")
                 .setLore(Text.colorize("&7Place on equipment to " + tier.getColorCode() + "&nrandomize&7 all bonus stats"))
