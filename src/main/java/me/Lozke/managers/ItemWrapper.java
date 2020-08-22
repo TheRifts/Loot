@@ -99,7 +99,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 lore.add(Text.colorize("&fMax Health: &7+" + hp));
                 break;
             case WEAPON:
-                double multiplier = (double) modifiers.get(Modifier.DMG);
+                double multiplier = modifiers.get(Modifier.DMG) == null ? 0 : (double) modifiers.get(Modifier.DMG);
                 if (multiplier > 0) {
                     multiplierFormat = " &7(&b+"  + ((int)(multiplier * 100)) + "%&7)";
                 }
@@ -128,12 +128,12 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 ChatColor statColor = colorizeStat((double)percentageMap.get(key));
                 String[] split = loreDisplay.split(": ");
                 String line = "";
-                if (modifiers.containsKey(Modifier.ALL_STAT)) {
-                    line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + " &7(&b+" + modifiers.get(Modifier.ALL_STAT) + "&7)";
+                multiplierFormat = "";
+                int modifier = modifiers.get(Modifier.DMG) == null ? 0 : (int) modifiers.get(Modifier.DMG);
+                if (modifier > 0) {
+                    multiplierFormat = " &7(&b+" + modifier + "&7)";
                 }
-                else {
-                    line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value));
-                }
+                line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + multiplierFormat;
                 lore.add(Text.colorize(line));
                 if (!affix.equalsIgnoreCase("")) {
                     sb.append(affix).append(" ");
