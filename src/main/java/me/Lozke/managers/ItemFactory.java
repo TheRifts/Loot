@@ -140,8 +140,9 @@ public class ItemFactory {
                 lo = (int) ((Math.ceil(Math.ceil(NumGenerator.rollInclusive(lo, mid) * rarityMulti) * tierMulti)) - Math.ceil(hi * 0.5));
                 hi = (int) (Math.ceil(Math.ceil(NumGenerator.rollInclusive(mid, hi) * rarityMulti) * tierMulti));
 
-                itemWrapper.addKey(ARNamespacedKey.DMG_LO, lo);
-                itemWrapper.addKey(ARNamespacedKey.DMG_HI, hi);
+                //Hardcoding to 1k dmg till fallen blesses the code with a better algorithm
+                itemWrapper.addKey(ARNamespacedKey.DMG_LO, 1000);
+                itemWrapper.addKey(ARNamespacedKey.DMG_HI, 1000);
                 break;
         }
         if (item == null) {
