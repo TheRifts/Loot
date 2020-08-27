@@ -2,19 +2,22 @@ package me.Lozke.data;
 
 import me.Lozke.utils.Logger;
 import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public enum ArmourType {
-    HELMET("HELMET", true),
-    CHESTPLATE("CHESTPLATE", true),
-    LEGGINGS("LEGGINGS", true),
-    BOOTS("BOOTS", true);
+    HELMET("HELMET", EquipmentSlot.HEAD, true),
+    CHESTPLATE("CHESTPLATE", EquipmentSlot.CHEST, true),
+    LEGGINGS("LEGGINGS", EquipmentSlot.LEGS,true),
+    BOOTS("BOOTS", EquipmentSlot.FEET, true);
 
     private String itemType;
+    private EquipmentSlot equipmentSlot;
     private boolean tiered;
 
-    ArmourType(String itemType, boolean tiered) {
+    ArmourType(String itemType, EquipmentSlot equipmentSlot, boolean tiered) {
         this.itemType = itemType;
+        this.equipmentSlot = equipmentSlot;
         this.tiered = tiered;
     }
 
@@ -22,6 +25,9 @@ public enum ArmourType {
 
     public String getItemType() {
         return itemType;
+    }
+    public EquipmentSlot getEquipmentSlot() {
+        return equipmentSlot;
     }
 
     public ItemStack getItem() {
