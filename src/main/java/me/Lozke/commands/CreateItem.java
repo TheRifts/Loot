@@ -6,6 +6,7 @@ import me.Lozke.data.ItemType;
 import me.Lozke.data.Rarity;
 import me.Lozke.data.Scroll.ScrollType;
 import me.Lozke.data.Tier;
+import me.Lozke.data.WeaponType;
 import me.Lozke.managers.ItemFactory;
 import me.Lozke.utils.Text;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ public class CreateItem extends BaseCommand {
 
     @Subcommand("set")
     @Syntax("tier rarity")
+    @CommandCompletion("@tier @rarity")
     public static void createSet(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         for (ItemStack item : ItemFactory.newSet(tier, rarity)) {
             player.getInventory().addItem(item);
@@ -24,55 +26,63 @@ public class CreateItem extends BaseCommand {
 
     @Subcommand("helmet|helm")
     @Syntax("tier rarity")
+    @CommandCompletion("@tier @rarity")
     public static void createHelmet(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         player.getInventory().addItem(ItemFactory.newHelmet(tier, rarity));
     }
 
     @Subcommand("chestplate|chest")
     @Syntax("tier rarity")
+    @CommandCompletion("@tier @rarity")
     public static void createChestplate(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         player.getInventory().addItem(ItemFactory.newChestplate(tier, rarity));
     }
 
     @Subcommand("leggings|leg")
     @Syntax("tier rarity")
+    @CommandCompletion("@tier @rarity")
     public static void createLeggings(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         player.getInventory().addItem(ItemFactory.newLeggings(tier, rarity));
     }
 
     @Subcommand("boots")
     @Syntax("tier rarity")
+    @CommandCompletion("@tier @rarity")
     public static void createBoots(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         player.getInventory().addItem(ItemFactory.newBoots(tier, rarity));
     }
 
     @Subcommand("weapon")
     @Syntax("type tier rarity")
-    @CommandCompletion("sword|axe|shovel|hoe")
-    public static void createWeapon(Player player, String wepType, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
+    @CommandCompletion("@weapon-type @tier @rarity")
+    public static void createWeapon(Player player, @Default("SWORD") WeaponType wepType, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
         player.getInventory().addItem(ItemFactory.newWeapon(tier, rarity, wepType));
     }
 
     @Subcommand("scrap")
     @Syntax("tier amount")
+    @CommandCompletion("@tier")
     public static void createScrap(Player player, @Default("T1") Tier tier, @Default("1") Integer amount) {
         player.getInventory().addItem(ItemFactory.newScrap(tier, amount));
     }
 
     @Subcommand("shard")
     @Syntax("tier amount")
+    @CommandCompletion("@tier")
     public static void createShard(Player player, @Default("T1") Tier tier, @Default("1") Integer amount) {
         player.getInventory().addItem(ItemFactory.newShard(tier, amount));
     }
 
     @Subcommand("orb")
     @Syntax("tier amount")
+    @CommandCompletion("@tier")
     public static void createOrb(Player player, @Default("T1") Tier tier, @Default("1") Integer amount) {
         player.getInventory().addItem(ItemFactory.newOrb(tier, amount));
     }
 
     @Subcommand("pouch")
     @Syntax("tier amount")
+    @CommandCompletion("@tier")
     public static void createPouch(Player player, @Default("T1") Tier tier, @Default("1") Integer amount) {
         player.getInventory().addItem(ItemFactory.newPouch(tier, amount));
     }
