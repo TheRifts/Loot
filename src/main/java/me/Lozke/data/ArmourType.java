@@ -29,7 +29,7 @@ public enum ArmourType {
     }
     public ItemStack getItem(Tier tier) {
         Material material;
-        if (tiered) material = Material.getMaterial(tier.getWeaponMaterial() + "_" + itemType);
+        if (tiered) material = Material.getMaterial(tier.getArmorMaterial() + "_" + itemType);
         else material = Material.getMaterial(itemType);
         if (material == null) {
             material = Material.AIR;
