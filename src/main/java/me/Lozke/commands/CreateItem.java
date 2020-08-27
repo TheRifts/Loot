@@ -2,11 +2,8 @@ package me.Lozke.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import me.Lozke.data.ItemType;
-import me.Lozke.data.Rarity;
+import me.Lozke.data.*;
 import me.Lozke.data.Scroll.ScrollType;
-import me.Lozke.data.Tier;
-import me.Lozke.data.WeaponType;
 import me.Lozke.managers.ItemFactory;
 import me.Lozke.utils.Text;
 import org.bukkit.entity.Player;
@@ -24,32 +21,11 @@ public class CreateItem extends BaseCommand {
         }
     }
 
-    @Subcommand("helmet|helm")
-    @Syntax("tier rarity")
-    @CommandCompletion("@tier @rarity")
-    public static void createHelmet(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
-        player.getInventory().addItem(ItemFactory.newHelmet(tier, rarity));
-    }
-
-    @Subcommand("chestplate|chest")
-    @Syntax("tier rarity")
-    @CommandCompletion("@tier @rarity")
-    public static void createChestplate(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
-        player.getInventory().addItem(ItemFactory.newChestplate(tier, rarity));
-    }
-
-    @Subcommand("leggings|leg")
-    @Syntax("tier rarity")
-    @CommandCompletion("@tier @rarity")
-    public static void createLeggings(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
-        player.getInventory().addItem(ItemFactory.newLeggings(tier, rarity));
-    }
-
-    @Subcommand("boots")
-    @Syntax("tier rarity")
-    @CommandCompletion("@tier @rarity")
-    public static void createBoots(Player player, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
-        player.getInventory().addItem(ItemFactory.newBoots(tier, rarity));
+    @Subcommand("armour")
+    @Syntax("type tier rarity")
+    @CommandCompletion("@armour-type @tier @rarity")
+    public static void createArmour(Player player, ArmourType armourType, @Default("T1") Tier tier, @Default("COMMON") Rarity rarity) {
+        player.getInventory().addItem(ItemFactory.newArmour(tier, rarity, armourType));
     }
 
     @Subcommand("weapon")

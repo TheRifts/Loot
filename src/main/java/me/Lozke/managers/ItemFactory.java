@@ -1,6 +1,5 @@
 package me.Lozke.managers;
 
-import me.Lozke.AgorianRifts;
 import me.Lozke.data.*;
 import me.Lozke.data.Scroll.Modifier;
 import me.Lozke.data.Scroll.ScrollData;
@@ -11,28 +10,23 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ItemFactory {
 
-    private static ItemStack createItemStackFromTier(Tier tier, String gearType) {
-        return new ItemStack(Material.valueOf(tier.getArmorMaterial() + "_" + gearType));
-    }
-
-    public static ItemStack newHelmet(Tier tier, Rarity rarity) {
-        return createItem(tier, rarity, createItemStackFromTier(tier, "HELMET"), ItemType.ARMOR);
-    }
-    public static ItemStack newChestplate(Tier tier, Rarity rarity) {
-        return createItem(tier, rarity, createItemStackFromTier(tier, "CHESTPLATE"), ItemType.ARMOR);
-    }
-    public static ItemStack newLeggings(Tier tier, Rarity rarity) {
-        return createItem(tier, rarity, createItemStackFromTier(tier, "LEGGINGS"), ItemType.ARMOR);
-    }
-    public static ItemStack newBoots(Tier tier, Rarity rarity) {
-        return createItem(tier, rarity, createItemStackFromTier(tier, "BOOTS"), ItemType.ARMOR);
-    }
-
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
-    public static ItemStack[] newSet(Tier tier, Rarity rarity) {
-        return new ItemStack[]{newBoots(tier, rarity), newLeggings(tier, rarity), newChestplate(tier, rarity), newHelmet(tier, rarity)};
+    //the prophecy has come true
+    public static Set<ItemStack> newSet(Tier tier, Rarity rarity) {
+        Set<ItemStack> stackSet = new HashSet<>();
+        for (ArmourType type : ArmourType.types) {
+            stackSet.add(type.getItem(tier));
+        }
+        return stackSet;
+    }
+
+    public static ItemStack newArmour(Tier tier, Rarity rarity, ArmourType gearType) {
+        return createItem(tier, rarity, gearType.getItem(tier), ItemType.ARMOR);
     }
 
     public static ItemStack newWeapon(Tier tier, Rarity rarity, WeaponType weaponType) {
