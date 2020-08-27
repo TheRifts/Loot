@@ -2,10 +2,7 @@ package me.Lozke;
 
 import co.aikar.commands.BukkitCommandManager;
 import me.Lozke.commands.*;
-import me.Lozke.data.ItemType;
-import me.Lozke.data.Rarity;
-import me.Lozke.data.Tier;
-import me.Lozke.data.WeaponType;
+import me.Lozke.data.*;
 import me.Lozke.listeners.*;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
@@ -35,6 +32,7 @@ public class LootPlugin extends JavaPlugin {
         registerCommandCompletion("tier", Stream.of(Tier.types).map(Enum::name).collect(Collectors.toList()));
         registerCommandCompletion("rarity", Stream.of(Rarity.types).map(Enum::name).collect(Collectors.toList()));
         registerCommandCompletion("item-type", Stream.of(ItemType.types).map(Enum::name).collect(Collectors.toList()));
+        registerCommandCompletion("armour-type", Stream.of(ArmourType.types).map(Enum::name).collect(Collectors.toList()));
         registerCommandCompletion("weapon-type", Stream.of(WeaponType.types).map(Enum::name).collect(Collectors.toList()));
 
         gearData = defaultSettingsLoad("geardata.yml");
