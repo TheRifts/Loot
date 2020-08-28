@@ -1,8 +1,12 @@
 package me.Lozke.data;
 
 import me.Lozke.utils.Logger;
+import me.Lozke.utils.NumGenerator;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.List;
 
 public enum WeaponType {
     SWORD("SWORD", true),
@@ -38,5 +42,13 @@ public enum WeaponType {
             Logger.error("Invalid weapon material. Item Type: " + itemType + " Tier: " + tier);
         }
         return new ItemStack(material);
+    }
+
+    public static ItemStack getRandomItem() {
+        return getRandomItem(Tier.T1);
+    }
+    public static ItemStack getRandomItem(Tier tier) {
+        List<WeaponType> weaponsList = Arrays.asList(types);
+        return weaponsList.get(NumGenerator.index(weaponsList.size())).getItem(tier);
     }
 }
