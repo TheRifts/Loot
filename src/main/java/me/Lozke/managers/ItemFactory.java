@@ -6,6 +6,7 @@ import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.data.Scroll.ScrollType;
 import me.Lozke.utils.*;
 import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -25,6 +26,11 @@ public class ItemFactory {
         return stackSet;
     }
 
+    public static ItemStack newArmour(Tier tier, Rarity rarity, EquipmentSlot slot) {
+        ArmourType armourType = ArmourType.fromEquipmentSlot(slot);
+        if (armourType == null) return null;
+        return newArmour(tier, rarity, armourType);
+    }
     public static ItemStack newArmour(Tier tier, Rarity rarity, ArmourType gearType) {
         return createItem(tier, rarity, gearType.getItem(tier), ItemType.ARMOR);
     }
