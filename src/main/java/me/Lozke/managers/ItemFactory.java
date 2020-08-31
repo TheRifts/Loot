@@ -24,10 +24,10 @@ public class ItemFactory {
     private static final   int hitsToKill = 75;
     private static final   int defenseScale = 100;
     private static final   double[][] mobDropScaling = {
-            {0.0, 0.4},
-            {0.25, 0.6},
-            {0.5, 0.8},
-            {0.75, 1}
+            {0.0, 0.25},
+            {0.2, 0.5},
+            {0.42, 0.82},
+            {0.69, 1}
     };
     private static final   int healTime = 13;
 
