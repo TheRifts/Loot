@@ -4,6 +4,7 @@ import co.aikar.commands.BukkitCommandManager;
 import me.Lozke.commands.*;
 import me.Lozke.data.*;
 import me.Lozke.listeners.*;
+import me.Lozke.managers.ItemFactory;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
@@ -22,6 +23,7 @@ public class LootPlugin extends JavaPlugin {
 
     private static LootPlugin plugin;
     private BukkitCommandManager commandManager;
+    private ItemFactory itemFactory;
 
     private static SmartYamlConfiguration gearData;
 
@@ -51,6 +53,9 @@ public class LootPlugin extends JavaPlugin {
         commandManager.registerCommand(new Reload());
         commandManager.registerCommand(new SetDurabalityPercent());
         commandManager.registerCommand(new ValueCommand());
+
+        itemFactory = new ItemFactory();
+        itemFactory.showValues();
 
         Logger.log(this, "The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
     }
