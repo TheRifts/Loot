@@ -31,10 +31,10 @@ public class ItemFactory {
     };
     private static final   int healTime = 13;
 
-    private         int[][][] weaponDamage;
-    private         int[][][] armorDefense;
-    private         int[][][] armorHP;
-    private         int[][][] armorHPRegen;
+    private static        int[][][] weaponDamage;
+    private static        int[][][] armorDefense;
+    private static        int[][][] armorHP;
+    private static        int[][][] armorHPRegen;
 
 
     public ItemFactory() {
@@ -222,8 +222,9 @@ public class ItemFactory {
     public static Set<ItemStack> newSet(Tier tier, Rarity rarity) {
         Set<ItemStack> stackSet = new HashSet<>();
         for (ArmourType type : ArmourType.types) {
-            stackSet.add(type.getItem(tier));
+            stackSet.add(newArmour(tier, rarity, type));
         }
+        stackSet.add(newWeapon(tier, rarity, WeaponType.SWORD));
         return stackSet;
     }
 
@@ -307,21 +308,40 @@ public class ItemFactory {
 
     private static ItemStack createItem(Tier tier, Rarity rarity, ItemStack stack, ItemType itemType) {
         ItemWrapper itemWrapper = new ItemWrapper(stack);
+        int tierIndex = tier.ordinal();
+        int rarityIndex = rarity.ordinal();
         switch (itemType) {
             case ARMOR:
                 if (NumGenerator.roll(2) == 1) {
-                    itemWrapper.addKey(ARNamespacedKey.HP_REGEN, 50);
+                    if (tierIndex < 5 && rarityIndex < 4) {
+                        itemWrapper.addKey(ARNamespacedKey.HP_REGEN, NumGenerator.rollInclusive(armorHPRegen[tierIndex][rarityIndex][0], armorHPRegen[tierIndex][rarityIndex][1]));
+                    }
+                    else {
+                        itemWrapper.addKey(ARNamespacedKey.HP_REGEN, 50);
+                    }
                 }
                 else {
                     itemWrapper.addKey(ARNamespacedKey.ENERGY_REGEN, 3);
                 }
-                //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
-                itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, 0);
+                if (tierIndex < 5 && rarityIndex < 4) {
+                    itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, NumGenerator.rollInclusive(armorHP[tierIndex][rarityIndex][0], armorHP[tierIndex][rarityIndex][1]));
+                }
+                else {
+                    //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
+                    itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, 0);
+                }
                 break;
             case WEAPON:
-                //Hardcoding to 1k dmg till fallen blesses the code with a better algorithm
-                itemWrapper.addKey(ARNamespacedKey.DMG_LO, 1000);
-                itemWrapper.addKey(ARNamespacedKey.DMG_HI, 1000);
+                if (tierIndex < 5 && rarityIndex < 4) {
+                    int DMG_LO = NumGenerator.rollInclusive(weaponDamage[tierIndex][rarityIndex][0], weaponDamage[tierIndex][rarityIndex][1]);
+                    itemWrapper.addKey(ARNamespacedKey.DMG_LO, DMG_LO);
+                    itemWrapper.addKey(ARNamespacedKey.DMG_HI, NumGenerator.rollInclusive(DMG_LO, weaponDamage[tierIndex][rarityIndex][1]));
+                }
+                else {
+                    //Hardcoding to 1k dmg till fallen blesses the code with a better algorithm
+                    itemWrapper.addKey(ARNamespacedKey.DMG_LO, 1000);
+                    itemWrapper.addKey(ARNamespacedKey.DMG_HI, 1000);
+                }
                 break;
         }
 

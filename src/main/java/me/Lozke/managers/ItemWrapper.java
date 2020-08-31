@@ -97,6 +97,14 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             case ARMOR:
                 int hp = getInt(ARNamespacedKey.HEALTH_POINTS);
                 lore.add(Text.colorize("&fMax Health: &7+" + hp));
+                if (hasKey(ARNamespacedKey.HP_REGEN)) {
+                    int HP_REGEN = getInt(ARNamespacedKey.HP_REGEN);
+                    lore.add(Text.colorize("&fHP Regen: &7+" + HP_REGEN));
+                }
+                else if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
+                    int ENERGY_REGEN = getInt((ARNamespacedKey.ENERGY_REGEN));
+                    lore.add(Text.colorize("&fEnergy Regen: &7+" + ENERGY_REGEN + "%"));
+                }
                 break;
             case WEAPON:
                 double multiplier = modifiers.get(Modifier.DMG) == null ? 0 : (double) modifiers.get(Modifier.DMG);

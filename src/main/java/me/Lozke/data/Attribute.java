@@ -9,7 +9,7 @@ public enum Attribute {
     INT(ItemType.ARMOR, "INT: +{value}", "", 1, 1, 100),
     BLOCK(ItemType.ARMOR, "Block Chance: +{value}%", "Protective", 1, 1, 100),
     DODGE(ItemType.ARMOR, "Dodge Chance: +{value}%", "Agile", 1, 1, 100),
-    REFLECTION(ItemType.ARMOR, "Reflection Change: +{value}%", "Reflective", 1, 1, 100),
+    REFLECTION(ItemType.ARMOR, "Reflection Chance: +{value}%", "Reflective", 1, 1, 100),
     THORNS(ItemType.ARMOR, "Thorns Chance: +{value}%", "Spiked", 1, 1, 100),
     ELEMENTAL_RESISTANCE(ItemType.ARMOR, "ELEMENTAL RESISTANCE: +{value}%", "Elemental Resistant", 1, 1, 100),
     GEM_FIND(ItemType.ARMOR, "Gem Find: +{value}%", "", 1, 1, 100),
