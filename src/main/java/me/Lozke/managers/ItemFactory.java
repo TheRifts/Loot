@@ -16,25 +16,25 @@ import java.util.Set;
 
 public class ItemFactory {
 
-    private static  ItemFactory instance;
+    private static       ItemFactory instance;
 
-    private static final   int seed = 200;
-    private static final   double tierIncrease = 2.0;
-    private static final   double tierGapScale= 1.2;
-    private static final   int hitsToKill = 75;
-    private static final   int defenseScale = 1000;
-    private static final   double[][] mobDropScaling = {
+    private static final int seed = 200;
+    private static final double tierIncrease = 2.0;
+    private static final double tierGapScale= 1.2;
+    private static final int hitsToKill = 75;
+    private static final int defenseScale = 1000;
+    private static final double[][] mobDropScaling = {
             {0.0, 0.25},
             {0.2, 0.5},
             {0.42, 0.82},
             {0.69, 1}
     };
-    private static final   int healTime = 25;
+    private static final int healTime = 25;
 
-    private static        int[][][] weaponDamage;
-    private static        int[][][] armorDefense;
-    private static        int[][][] armorHP;
-    private static        int[][][] armorHPRegen;
+    private static       int[][][] weaponDamage;
+    private static       int[][][] armorDefense;
+    private static       int[][][] armorHP;
+    private static       int[][][] armorHPRegen;
 
 
     public ItemFactory() {
