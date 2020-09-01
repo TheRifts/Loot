@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
+import me.Lozke.LootPlugin;
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.Scroll.Modifier;
 import me.Lozke.data.Scroll.ScrollData;
@@ -69,5 +70,10 @@ public class CheckCommand extends BaseCommand {
         ItemStack stack = player.getInventory().getItemInMainHand();
         if (stack == null || stack.getType() == Material.AIR) return;
         new ItemWrapper(stack).format();
+    }
+
+    @Subcommand("values")
+    public static void onValueCheck() {
+        LootPlugin.getPluginInstance().getItemFactoryInstance().showValues();
     }
 }
