@@ -45,7 +45,7 @@ public class ItemFactory {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
 
-            if (tier.ordinal() == 0) {
+            if (tierIndex == 0) {
                 damageRanges[tierIndex][0] = seed;
             }
             else {
@@ -219,6 +219,26 @@ public class ItemFactory {
             }
             Logger.log("");
         }
+    }
+    public static enum RangeType {
+        LOW,
+        HIGH
+    }
+    public static int getDamage(Tier tier, Rarity rarity, RangeType type) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        return weaponDamage[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+    }
+    public static int getArmourDefense(Tier tier, Rarity rarity, RangeType type) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        return armorDefense[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+    }
+    public static int getArmourHP(Tier tier, Rarity rarity, RangeType type) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        return armorHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+    }
+    public static int getArmourHPRegen(Tier tier, Rarity rarity, RangeType type) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        return armorHPRegen[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
 
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
