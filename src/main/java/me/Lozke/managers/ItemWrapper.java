@@ -172,7 +172,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
             itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
 
-            lore.add(div);
+            if (!valueMap.isEmpty()) {
+                lore.add(div);
+            }
         }
 
         StringBuilder slotsLine = new StringBuilder();
