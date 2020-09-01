@@ -165,6 +165,7 @@ public class ItemFactory {
         return 1-defense/(double)(defense+defenseScale);
     }
     public void showValues() {
+        Logger.log("DAMAGE VALUES:");
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -178,6 +179,7 @@ public class ItemFactory {
         }
         Logger.log("");
         Logger.log("");
+        Logger.log("DEFENSE VALUES:");
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -191,6 +193,7 @@ public class ItemFactory {
         }
         Logger.log("");
         Logger.log("");
+        Logger.log("HP VALUES:");
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -204,6 +207,7 @@ public class ItemFactory {
         }
         Logger.log("");
         Logger.log("");
+        Logger.log("HP/S VALUES:");
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
