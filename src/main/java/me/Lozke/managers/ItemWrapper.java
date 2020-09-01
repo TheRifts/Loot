@@ -90,22 +90,30 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
         lore.add(div);
 
+        Tier tier = getTier();
         Rarity rarity = getRarity();
         lore.add(Text.colorize("&fRarity: " + rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
 
+        ChatColor colorizedStat;
         switch (getItemType()) {
             case ARMOR:
                 int HEALTH_POINTS = getInt(ARNamespacedKey.HEALTH_POINTS);
-                lore.add(Text.colorize("&fMax Health: &7+" + HEALTH_POINTS));
+                colorizedStat = colorizeStat(HEALTH_POINTS/(ItemFactory.getArmourHP(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
+                lore.add(Text.colorize("&fMax Health:" + colorizedStat + " +" + HEALTH_POINTS));
+
                 int DEFENSE = getInt(ARNamespacedKey.DEFENSE);
-                lore.add(Text.colorize("&fDefense: &7+" + DEFENSE));
+                colorizedStat = colorizeStat(DEFENSE/(ItemFactory.getArmourDefense(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
+                lore.add(Text.colorize("&fDefense:" + colorizedStat + " +" + DEFENSE));
+
                 if (hasKey(ARNamespacedKey.HP_REGEN)) {
                     int HP_REGEN = getInt(ARNamespacedKey.HP_REGEN);
-                    lore.add(Text.colorize("&fHealth Regen: &7+" + HP_REGEN));
+                    colorizedStat = colorizeStat(HP_REGEN/(ItemFactory.getArmourHPRegen(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
+                    lore.add(Text.colorize("&fHealth Regen:" + colorizedStat + " +" + HP_REGEN));
                 }
                 else if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
                     int ENERGY_REGEN = getInt((ARNamespacedKey.ENERGY_REGEN));
-                    lore.add(Text.colorize("&fEnergy Regen: &7+" + ENERGY_REGEN + "%"));
+                    colorizedStat = colorizeStat(ENERGY_REGEN/(10 * 1.0)); //HARDCODED VALUE AHHHHHHHH
+                    lore.add(Text.colorize("&fEnergy Regen:" + colorizedStat + " +" + ENERGY_REGEN + "%"));
                 }
                 break;
             case WEAPON:
@@ -114,8 +122,10 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                     multiplierFormat = " &7(&b+"  + ((int)(multiplier * 100)) + "%&7)";
                 }
                 int dmgLow = getInt(ARNamespacedKey.DMG_LO);
+                ChatColor colorizedLow = colorizeStat(dmgLow/(ItemFactory.getDamage(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                 int dmgHigh = getInt(ARNamespacedKey.DMG_HI);
-                lore.add(Text.colorize("&fAttack Damage: &7" + dmgLow + "&f - &7" + dmgHigh + multiplierFormat));
+                ChatColor colorizedHigh = colorizeStat(dmgHigh/(ItemFactory.getDamage(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
+                lore.add(Text.colorize("&fAttack Damage: " + colorizedLow + dmgLow + "&f - " + colorizedHigh + dmgHigh + multiplierFormat));
                 break;
         }
 
@@ -160,7 +170,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             }
             itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
 
-            Tier tier = getTier();
             itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
 
             lore.add(div);
