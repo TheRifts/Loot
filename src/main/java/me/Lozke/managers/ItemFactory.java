@@ -22,7 +22,7 @@ public class ItemFactory {
     private static final   double tierIncrease = 2.0;
     private static final   double tierGapScale= 1.2;
     private static final   int hitsToKill = 75;
-    private static final   int defenseScale = 100;
+    private static final   int defenseScale = 1000;
     private static final   double[][] mobDropScaling = {
             {0.0, 0.25},
             {0.2, 0.5},
@@ -329,6 +329,13 @@ public class ItemFactory {
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
                     itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, 0);
+                }
+                if (tierIndex < 5 && rarityIndex < 4) {
+                    itemWrapper.addKey(ARNamespacedKey.DEFENSE, NumGenerator.rollInclusive(armorDefense[tierIndex][rarityIndex][0], armorDefense[tierIndex][rarityIndex][1]));
+                }
+                else {
+                    //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
+                    itemWrapper.addKey(ARNamespacedKey.DEFENSE, 0);
                 }
                 break;
             case WEAPON:

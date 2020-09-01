@@ -95,11 +95,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
         switch (getItemType()) {
             case ARMOR:
-                int hp = getInt(ARNamespacedKey.HEALTH_POINTS);
-                lore.add(Text.colorize("&fMax Health: &7+" + hp));
+                int HEALTH_POINTS = getInt(ARNamespacedKey.HEALTH_POINTS);
+                lore.add(Text.colorize("&fMax Health: &7+" + HEALTH_POINTS));
+                int DEFENSE = getInt(ARNamespacedKey.DEFENSE);
+                lore.add(Text.colorize("&fDefense: &7+" + DEFENSE));
                 if (hasKey(ARNamespacedKey.HP_REGEN)) {
                     int HP_REGEN = getInt(ARNamespacedKey.HP_REGEN);
-                    lore.add(Text.colorize("&fHP Regen: &7+" + HP_REGEN));
+                    lore.add(Text.colorize("&fHealth Regen: &7+" + HP_REGEN));
                 }
                 else if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
                     int ENERGY_REGEN = getInt((ARNamespacedKey.ENERGY_REGEN));
