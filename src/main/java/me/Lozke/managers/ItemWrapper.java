@@ -162,9 +162,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
             Tier tier = getTier();
             itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
-        }
 
-        lore.add(div);
+            lore.add(div);
+        }
 
         StringBuilder slotsLine = new StringBuilder();
         char scroll = '۞';
