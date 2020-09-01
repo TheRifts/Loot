@@ -29,7 +29,7 @@ public class ItemFactory {
             {0.42, 0.82},
             {0.69, 1}
     };
-    private static final   int healTime = 13;
+    private static final   int healTime = 25;
 
     private static        int[][][] weaponDamage;
     private static        int[][][] armorDefense;
@@ -321,7 +321,7 @@ public class ItemFactory {
                     }
                 }
                 else {
-                    itemWrapper.addKey(ARNamespacedKey.ENERGY_REGEN, 3);
+                    itemWrapper.addKey(ARNamespacedKey.ENERGY_REGEN, 10);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
                     itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, NumGenerator.rollInclusive(armorHP[tierIndex][rarityIndex][0], armorHP[tierIndex][rarityIndex][1]));
