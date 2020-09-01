@@ -55,7 +55,6 @@ public class LootPlugin extends JavaPlugin {
         commandManager.registerCommand(new ValueCommand());
 
         itemFactory = new ItemFactory();
-        itemFactory.showValues();
 
         Logger.log(this, "The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
     }
@@ -80,6 +79,10 @@ public class LootPlugin extends JavaPlugin {
 
     public static FileConfiguration getGearData() {
         return gearData;
+    }
+
+    public ItemFactory getItemFactoryInstance() {
+        return itemFactory;
     }
 
 }
