@@ -9,13 +9,12 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 
 public class ItemDurabilityDamageListener implements Listener {
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.HIGHEST)
     private void onItemUsage(PlayerItemDamageEvent event) {
-        if (event.isCancelled()) return;
-
         ItemWrapper wrapper = new ItemWrapper(event.getItem());
         if (!wrapper.hasKey(ARNamespacedKey.REAL_ITEM)) return;
         else event.setDamage(0);
         wrapper.addDurability(-1);
+        wrapper.updateDurability();
     }
 }
