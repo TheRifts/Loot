@@ -94,6 +94,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         Rarity rarity = getRarity();
         lore.add(Text.colorize("&fRarity: " + rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
 
+        //Main Attribute Formatting
         ChatColor colorizedStat;
         switch (getItemType()) {
             case ARMOR:
@@ -128,9 +129,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 lore.add(Text.colorize("&fAttack Damage: " + colorizedLow + dmgLow + "&f - " + colorizedHigh + dmgHigh + multiplierFormat));
                 break;
         }
-
         lore.add(div);
 
+        //Attributes Formatting
         if (hasKey(ARNamespacedKey.ATTRIBUTES)) {
             Map valueMap = getMap(ARNamespacedKey.ATTRIBUTES);
             Map percentageMap = new HashMap();
@@ -160,6 +161,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 }
             }
 
+            //Item Name Formatting
             String itemName = item.getType().toString().toLowerCase();
             if(itemName.contains("_")) {
                 itemName = itemName.substring(itemName.lastIndexOf("_"));
@@ -169,7 +171,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 itemName = " " + itemName;
             }
             itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
-
             itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
 
             if (!valueMap.isEmpty()) {
@@ -177,28 +178,33 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             }
         }
 
+        //Scroll Formatting
+        char SCROLL = '۞';
+        String OPEN_SLOT = "&f";
+        String USED_SLOT = "&b";
+        String FAILED_SLOT = "&8";
         StringBuilder slotsLine = new StringBuilder();
-        char scroll = '۞';
         List<ScrollData> usedScrolls = (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS);
         int totalSlots = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
 
         slotsLine.append("&fScroll Slots: ");
         for (int i = 0; i < totalSlots; i++) {
             if (i == usedScrolls.size()) {
-                slotsLine.append("&7");
+                slotsLine.append(OPEN_SLOT);
             }
             if (i < usedScrolls.size()) {
                 if (usedScrolls.get(i) == null) {
-                    slotsLine.append("&c");
+                    slotsLine.append(USED_SLOT);
                 }
                 else {
-                    slotsLine.append("&b");
+                    slotsLine.append(FAILED_SLOT);
                 }
             }
-            slotsLine.append(scroll);
+            slotsLine.append(SCROLL);
         }
         lore.add(Text.colorize(slotsLine.toString()));
 
+        //Durability Formatting
         int durability = getInt(ARNamespacedKey.DURABILITY);
         int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
         double roll = durability / (maxDurability * 1.0);
