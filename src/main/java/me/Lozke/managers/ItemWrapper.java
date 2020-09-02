@@ -179,13 +179,21 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
         StringBuilder slotsLine = new StringBuilder();
         char scroll = '۞';
-        int usedSlots = getList(ARNamespacedKey.USED_SCROLLS).size();
+        List<ScrollData> usedScrolls = (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS);
         int totalSlots = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
 
-        slotsLine.append("&fScroll Slots: &b");
+        slotsLine.append("&fScroll Slots: ");
         for (int i = 0; i < totalSlots; i++) {
-            if (i == usedSlots) {
+            if (i == usedScrolls.size()) {
                 slotsLine.append("&7");
+            }
+            if (i < usedScrolls.size()) {
+                if (usedScrolls.get(i) == null) {
+                    slotsLine.append("&c");
+                }
+                else {
+                    slotsLine.append("&b");
+                }
             }
             slotsLine.append(scroll);
         }
@@ -477,6 +485,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public Map<Modifier, Object> getModifiers() {
         Map<Modifier, Object> returnVal = new HashMap<>();
         for (ScrollData scroll : (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS)) {
+            if (scroll == null) continue;
             Map<Modifier, Object> modifiers = scroll.getScrollData();
             for (Modifier key : modifiers.keySet()) {
                 if (returnVal.containsKey(key)) {
