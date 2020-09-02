@@ -150,7 +150,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 String[] split = loreDisplay.split(": ");
                 String line = "";
                 multiplierFormat = "";
-                int modifier = modifiers.get(Modifier.DMG) == null ? 0 : (int) modifiers.get(Modifier.DMG);
+                int modifier = modifiers.get(Modifier.ALL_STAT) == null ? 0 : (int) modifiers.get(Modifier.ALL_STAT);
                 if (modifier > 0) {
                     multiplierFormat = " &7(&b+" + modifier + "&7)";
                 }
@@ -180,28 +180,42 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
         //Scroll Formatting
         char SCROLL = '۞';
-        String OPEN_SLOT = "&f";
-        String USED_SLOT = "&b";
-        String FAILED_SLOT = "&8";
+        String OPEN_SLOT_COLOR = "&7";
+        String USED_SLOT_COLOR = "&b";
+        String FAILED_SLOT_COLOR = "&8";
         StringBuilder slotsLine = new StringBuilder();
         List<ScrollData> usedScrolls = (List<ScrollData>) getList(ARNamespacedKey.USED_SCROLLS);
         int totalSlots = getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT);
 
-        slotsLine.append("&fScroll Slots: ");
+        //Create scroll slot Line
         for (int i = 0; i < totalSlots; i++) {
-            if (i == usedScrolls.size()) {
-                slotsLine.append(OPEN_SLOT);
-            }
-            if (i < usedScrolls.size()) {
-                if (usedScrolls.get(i) == null) {
-                    slotsLine.append(USED_SLOT);
-                }
-                else {
-                    slotsLine.append(FAILED_SLOT);
-                }
-            }
             slotsLine.append(SCROLL);
         }
+
+        //Gather slot usage data
+        int openSlot = totalSlots;
+        int usedSlot = 0;
+        int failedSlot = 0;
+        for (ScrollData scrollData : usedScrolls) {
+            --openSlot;
+            if (scrollData != null) usedSlot++;
+            else failedSlot++;
+        }
+        //Colorize slot line based on usage data
+        int colorOffset = 0;
+        if (usedSlot > 0) {
+            slotsLine.insert(0, USED_SLOT_COLOR);
+            colorOffset += USED_SLOT_COLOR.length();
+        }
+        if (openSlot > 0) {
+            slotsLine.insert(usedSlot + colorOffset, OPEN_SLOT_COLOR);
+            colorOffset += OPEN_SLOT_COLOR.length();
+        }
+        if (failedSlot > 0) {
+            slotsLine.insert(usedSlot + openSlot + colorOffset, FAILED_SLOT_COLOR);
+        }
+
+        slotsLine.insert(0, "&fScroll Slots: ");
         lore.add(Text.colorize(slotsLine.toString()));
 
         //Durability Formatting
