@@ -421,15 +421,12 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemWrapper addDurability(int durability) {
-        int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
         int currentDurability = getInt(ARNamespacedKey.DURABILITY);
-        addKey(ARNamespacedKey.DURABILITY, Math.min(maxDurability, currentDurability + durability));
-        return this;
+        return updateDurability(currentDurability + durability);
     }
 
     public ItemWrapper setDurability(int durability) {
-        addKey(ARNamespacedKey.DURABILITY, durability);
-        return updateDurability();
+        return updateDurability(durability);
     }
 
     public int getDurabality() {
@@ -447,7 +444,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
     public ItemWrapper setDurabilityAsPercentage(double durability) {
         int newDura = (int) (getInt(ARNamespacedKey.MAX_DURABILITY) * durability);
-        newDura = Math.min(newDura, getInt(ARNamespacedKey.MAX_DURABILITY));
         addKey(ARNamespacedKey.DURABILITY, newDura);
         return updateDurability();
     }
@@ -456,15 +452,31 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         return (double) getDurabality() / getMaxDurability();
     }
 
-    public ItemWrapper updateDurability() {
+    public boolean isBroken() {
+        return hasKey(ARNamespacedKey.BROKEN);
+    }
+
+    public ItemWrapper updateDurability(int newDurability) {
+        int maxDurability = getMaxDurability();
+        newDurability = Math.max(0, Math.min(maxDurability, newDurability));
+        addKey(ARNamespacedKey.DURABILITY, newDurability);
+
         List<String> lore = itemMeta.getLore();
-        int durability = getInt(ARNamespacedKey.DURABILITY);
-        int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
-        double roll = durability / (maxDurability * 1.0);
-        ChatColor color = getRollColor(roll, 0F, 0.222F, 1F, 1F, 1F, 1F);
-        String bar = "▌▌▌▌▌▌▌▌▌▌";
-        bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
-        lore.set(lore.size() - 1, Text.colorize("&7Durability: &8" + durability + bar + maxDurability));
+        if (lore == null) lore = new ArrayList<>();
+        if (newDurability > 0 && hasKey(ARNamespacedKey.BROKEN)){
+            removeKey(ARNamespacedKey.BROKEN);
+        }
+        else if (newDurability == 0) {
+            addKey(ARNamespacedKey.BROKEN, true);
+            lore.set(lore.size() - 1, Text.colorize("&7Durability: &8&lBROKEN"));
+        }
+        else {
+            double roll = newDurability / (maxDurability * 1.0);
+            ChatColor color = getRollColor(roll, 0F, 0.222F, 1F, 1F, 1F, 1F);
+            String bar = "▌▌▌▌▌▌▌▌▌▌";
+            bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
+            lore.set(lore.size() - 1, Text.colorize("&7Durability: &8" + newDurability + bar + maxDurability));
+        }
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
@@ -472,6 +484,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabilityAsPercentage())));
         item.setItemMeta((ItemMeta) meta);
         return this;
+    }
+    public ItemWrapper updateDurability() {
+        return updateDurability(getInt(ARNamespacedKey.DURABILITY));
     }
 
     public Map<Modifier, Object> getModifiers() {
