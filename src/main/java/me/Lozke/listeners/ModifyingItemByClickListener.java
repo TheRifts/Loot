@@ -88,8 +88,14 @@ public class ModifyingItemByClickListener implements Listener {
                 else {
                     Double destroyChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_DESTROY_CHANCE);
                     roll = NumGenerator.fraction();
-                    if (roll < destroyChance) {
+                    if (roll < destroyChance) { //Destroy
                         inventory.remove(currentItem.getItem());
+                    }
+                    else { //Add null to used scrolls list if item does not get destroyed
+                        List<ScrollData> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
+                        scrolls.add(null);
+                        currentItem.addKey(ARNamespacedKey.USED_SCROLLS, scrolls);
+                        currentItem.format();
                     }
                 }
                 break;
