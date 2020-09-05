@@ -36,7 +36,7 @@ public class ItemFactory {
     private static       int[][][] armorHP;
     private static       int[][][] armorHPRegen;
 
-    private static final int[] maximumKillsToDrop = {30, 45, 60, 75, 90};
+    private static final int[] dropRate = {20, 30, 40, 50, 60};
 
 
     public ItemFactory() {
@@ -397,9 +397,10 @@ public class ItemFactory {
 
     public static int getKillsToDrop(Tier tier) {
         double value = NumGenerator.fraction();
-        int maximumForTier = maximumKillsToDrop[tier.ordinal()];
-        int thresholdLow = maximumForTier/4;
-        int thresholdMid = maximumForTier*5/8;
+        int tierDropRate = dropRate[tier.ordinal()];
+        int thresholdLow = tierDropRate/2;
+        int thresholdMid = tierDropRate*5/4;
+        int thresholdHigh = tierDropRate*8/3;
         if (value < 0.25) {
             return Math.max(1, NumGenerator.roll(thresholdLow));
         }
@@ -407,7 +408,7 @@ public class ItemFactory {
             return Math.max(1, NumGenerator.rollInclusive(thresholdLow+1, thresholdMid));
         }
         else {
-            return Math.max(1, NumGenerator.rollInclusive(thresholdMid+1, maximumForTier));
+            return Math.max(1, NumGenerator.rollInclusive(thresholdMid+1, thresholdHigh));
         }
     }
 }
