@@ -51,4 +51,27 @@ public enum WeaponType {
         List<WeaponType> weaponsList = Arrays.asList(types);
         return weaponsList.get(NumGenerator.index(weaponsList.size())).getItem(tier);
     }
+
+    public static WeaponType getWeaponType(ItemStack itemStack) {
+        String materialName = itemStack.getType().toString();
+        if (materialName.endsWith(WeaponType.SWORD.toString())) {
+            return WeaponType.SWORD;
+        }
+        if (materialName.endsWith(WeaponType.AXE.toString())) {
+            return WeaponType.AXE;
+        }
+        if (materialName.endsWith(WeaponType.POLEARM.toString())) {
+            return WeaponType.POLEARM;
+        }
+        if (materialName.endsWith(WeaponType.STAVE.toString())) {
+            return WeaponType.STAVE;
+        }
+        if (materialName.endsWith(WeaponType.BOW.toString())) {
+            return WeaponType.BOW;
+        }
+        if (materialName.endsWith(WeaponType.CROSSBOW.toString())) {
+            return WeaponType.CROSSBOW;
+        }
+        return null;
+    }
 }
