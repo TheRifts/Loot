@@ -18,7 +18,7 @@ public class ItemFactory {
 
     private static       ItemFactory instance;
 
-    private static final int seed = 200;
+    private static final int damageSeed = 200;
     private static final double tierIncrease = 2.0;
     private static final double tierGapScale= 1.2;
     private static final int hitsToKill = 75;
@@ -36,7 +36,8 @@ public class ItemFactory {
     private static       int[][][] armorHP;
     private static       int[][][] armorHPRegen;
 
-    private static final int[] dropRate = {20, 30, 40, 50, 60};
+    private static final int dropRateSeed = 10;
+    private static      int[][] dropRate;
 
 
     public ItemFactory() {
@@ -48,7 +49,7 @@ public class ItemFactory {
             if (tierIndex>4) continue;
 
             if (tierIndex == 0) {
-                damageRanges[tierIndex][0] = seed;
+                damageRanges[tierIndex][0] = damageSeed;
             }
             else {
                 damageRanges[tierIndex][0] = intCeiling(damageRanges[tierIndex-1][1]*tierGapScale);
@@ -159,6 +160,28 @@ public class ItemFactory {
                 armorHPRegen[tierIndex][rarityIndex][1] = intCeiling(armorHP[tierIndex][rarityIndex][1]/(healTime/4.0));
             }
         }
+
+        dropRate = new int[5][4];
+        for (Tier tier : Tier.values()) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+            for (Rarity rarity : Rarity.values()) {
+                int rarityIndex = rarity.ordinal();
+                if (rarityIndex > 3) continue;
+
+                if (tierIndex != 0 || rarityIndex != 0) {
+                    if (rarityIndex != 0) {
+                        dropRate[tierIndex][rarityIndex] = dropRate[tierIndex][rarityIndex - 1] + tierIndex + 2;
+                    }
+                    else {
+                        dropRate[tierIndex][rarityIndex] = dropRate[tierIndex - 1][rarityIndex + 3] + (tierIndex + 2)*2;
+                    }
+                }
+                else {
+                    dropRate[tierIndex][rarityIndex] = dropRateSeed;
+                }
+            }
+        }
     }
     private static int intCeiling(double value) {
         return (int)Math.ceil(value);
@@ -221,7 +244,22 @@ public class ItemFactory {
             }
             Logger.log("");
         }
+        Logger.log("");
+        Logger.log("");
+        Logger.log("Drop rate VALUES:");
+        for (Tier tier : Tier.values()) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+            for (Rarity rarity : Rarity.values()) {
+                int rarityIndex = rarity.ordinal();
+                if (rarityIndex>3) continue;
+
+                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " drop rate: " + dropRate[tierIndex][rarityIndex]);
+            }
+            Logger.log("");
+        }
     }
+
     public static enum RangeType {
         LOW,
         HIGH
@@ -395,9 +433,12 @@ public class ItemFactory {
         return stack;
     }
 
-    public static int getKillsToDrop(Tier tier) {
+    public static int getKillsToDrop(Tier tier, Rarity rarity) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) {
+            return 1;
+        }
         double value = NumGenerator.fraction();
-        int tierDropRate = dropRate[tier.ordinal()];
+        int tierDropRate = dropRate[tier.ordinal()][rarity.ordinal()];
         int thresholdLow = tierDropRate/2;
         int thresholdMid = tierDropRate*5/4;
         int thresholdHigh = tierDropRate*8/3;
