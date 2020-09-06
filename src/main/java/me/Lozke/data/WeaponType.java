@@ -14,7 +14,8 @@ public enum WeaponType {
     POLEARM("SHOVEL", true),
     STAVE("HOE", true),
     BOW("BOW", false),
-    CROSSBOW("CROSSBOW", false);
+    CROSSBOW("CROSSBOW", false),
+    TRIDENT("TRIDENT", false);
 
     private String itemType;
     private boolean tiered;
@@ -53,7 +54,6 @@ public enum WeaponType {
     }
 
     public static WeaponType getWeaponType(ItemStack itemStack) {
-
         String materialName = itemStack.getType().toString();
         for (WeaponType weaponType : types) {
             if (materialName.endsWith(weaponType.getItemType())) {
