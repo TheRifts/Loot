@@ -53,24 +53,12 @@ public enum WeaponType {
     }
 
     public static WeaponType getWeaponType(ItemStack itemStack) {
+
         String materialName = itemStack.getType().toString();
-        if (materialName.endsWith(WeaponType.SWORD.toString())) {
-            return WeaponType.SWORD;
-        }
-        if (materialName.endsWith(WeaponType.AXE.toString())) {
-            return WeaponType.AXE;
-        }
-        if (materialName.endsWith(WeaponType.POLEARM.toString())) {
-            return WeaponType.POLEARM;
-        }
-        if (materialName.endsWith(WeaponType.STAVE.toString())) {
-            return WeaponType.STAVE;
-        }
-        if (materialName.endsWith(WeaponType.BOW.toString())) {
-            return WeaponType.BOW;
-        }
-        if (materialName.endsWith(WeaponType.CROSSBOW.toString())) {
-            return WeaponType.CROSSBOW;
+        for (WeaponType weaponType : types) {
+            if (materialName.endsWith(weaponType.toString())) {
+                return weaponType;
+            }
         }
         return null;
     }
