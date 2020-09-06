@@ -56,7 +56,7 @@ public enum WeaponType {
 
         String materialName = itemStack.getType().toString();
         for (WeaponType weaponType : types) {
-            if (materialName.endsWith(weaponType.toString())) {
+            if (materialName.endsWith(weaponType.getItemType())) {
                 return weaponType;
             }
         }
