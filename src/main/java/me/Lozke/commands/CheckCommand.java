@@ -23,9 +23,17 @@ public class CheckCommand extends BaseCommand {
     public static void onCheck(Player player) {
         ItemWrapper itemWrapper = new ItemWrapper(player.getInventory().getItemInMainHand());
         if (itemWrapper.isRealItem()) {
-            player.sendMessage(itemWrapper.getBoolean(ARNamespacedKey.REAL_ITEM) + " ");
-            if (itemWrapper.hasKey(ARNamespacedKey.ATTRIBUTES)) {
-                Map map = itemWrapper.getMap(ARNamespacedKey.ATTRIBUTES);
+            player.sendMessage("This is a Rifts™ Item!");
+            if (itemWrapper.hasKey(ARNamespacedKey.MAJOR_STATS)) {
+                player.sendMessage("Major Stats:");
+                Map map = itemWrapper.getMap(ARNamespacedKey.MAJOR_STATS);
+                for (Object key : map.keySet()) {
+                    player.sendMessage(key + ": " + map.get(key));
+                }
+            }
+            if (itemWrapper.hasKey(ARNamespacedKey.MINOR_STATS)) {
+                player.sendMessage("Minor Stats:");
+                Map map = itemWrapper.getMap(ARNamespacedKey.MINOR_STATS);
                 for (Object key : map.keySet()) {
                     player.sendMessage(key + ": " + map.get(key));
                 }
@@ -41,6 +49,9 @@ public class CheckCommand extends BaseCommand {
                         player.sendMessage(heldItem.toString());
                     }
                 }
+            }
+            if (itemWrapper.hasKey(ARNamespacedKey.UUID)) {
+                player.sendMessage("Item UUID: " + itemWrapper.get(ARNamespacedKey.UUID));
             }
             if (itemWrapper.hasKey(ARNamespacedKey.USED_SCROLLS)) {
                 player.sendMessage("Max Amount of Scrolls: " + itemWrapper.getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT));
@@ -61,7 +72,7 @@ public class CheckCommand extends BaseCommand {
             }
         }
         else {
-            player.sendMessage("This is NOT a Agorian Rifts™ Item!");
+            player.sendMessage("This is NOT a Rifts™ Item!");
         }
     }
 

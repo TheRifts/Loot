@@ -5,7 +5,6 @@ import me.Lozke.data.Scroll.Modifier;
 import me.Lozke.data.Scroll.ScrollData;
 import me.Lozke.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +18,8 @@ import java.util.*;
 import java.util.List;
 
 public class ItemWrapper extends NamespacedKeyWrapper {
+
     private ItemStack item;
-    private ItemMeta itemMeta;
     private boolean needsFormatting;
 
     private static final int noWeaponEnergy = 5;
@@ -31,7 +30,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemWrapper(ItemStack item) {
         super(item);
         this.item = item;
-        this.itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
     }
 
     @Nonnull
@@ -40,7 +38,6 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemStack getItem() {
-        item.setItemMeta(itemMeta);
         if (needsFormatting) {
             return format();
         }
@@ -48,14 +45,14 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemWrapper setName(String name) {
-        itemMeta.setDisplayName(Text.colorize(name));
-        item.setItemMeta(itemMeta);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(Text.colorize(name));
+        item.setItemMeta(meta);
         return this;
     }
 
     public ItemWrapper setLore(String... strings) {
-        itemMeta.setLore(Arrays.asList(strings));
-        item.setItemMeta(itemMeta);
+        item.setLore(Arrays.asList(strings));
         return this;
     }
 
@@ -66,13 +63,13 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
     public ItemWrapper setMaterial(Material material) {
         item.setType(material);
-        itemMeta = (item.getItemMeta() == null) ? Bukkit.getServer().getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
         return this;
     }
 
     public ItemWrapper setModelData(int val) {
-        itemMeta.setCustomModelData(val);
-        item.setItemMeta(itemMeta);
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(val);
+        item.setItemMeta(meta);
         return this;
     }
 
@@ -82,6 +79,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         }
 
         needsFormatting = false;
+        ItemMeta meta = item.getItemMeta();
         String multiplierFormat = "";
 
         List<String> lore = new ArrayList<>();
@@ -95,24 +93,25 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         lore.add(Text.colorize("&fRarity: " + rarity.getColorCode() + rarity.name().substring(0, 1) + rarity.name().substring(1).toLowerCase()));
 
         //Main Attribute Formatting
+        Map majorStatsMap = getMap(ARNamespacedKey.MAJOR_STATS);
         ChatColor colorizedStat;
         switch (getItemType()) {
             case ARMOR:
-                int HEALTH_POINTS = getInt(ARNamespacedKey.HEALTH_POINTS);
+                int HEALTH_POINTS = (int) majorStatsMap.get(RiftsStat.HP);
                 colorizedStat = colorizeStat(HEALTH_POINTS/(ItemFactory.getArmourHP(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                 lore.add(Text.colorize("&fMax Health:" + colorizedStat + " +" + HEALTH_POINTS));
 
-                int DEFENSE = getInt(ARNamespacedKey.DEFENSE);
+                int DEFENSE = (int) majorStatsMap.get(RiftsStat.DEFENSE);
                 colorizedStat = colorizeStat(DEFENSE/(ItemFactory.getArmourDefense(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                 lore.add(Text.colorize("&fDefense:" + colorizedStat + " +" + DEFENSE));
 
-                if (hasKey(ARNamespacedKey.HP_REGEN)) {
-                    int HP_REGEN = getInt(ARNamespacedKey.HP_REGEN);
+                if (majorStatsMap.containsKey(RiftsStat.HP_REGEN)) {
+                    int HP_REGEN = (int) majorStatsMap.get(RiftsStat.HP_REGEN);
                     colorizedStat = colorizeStat(HP_REGEN/(ItemFactory.getArmourHPRegen(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                     lore.add(Text.colorize("&fHealth Regen:" + colorizedStat + " +" + HP_REGEN));
                 }
-                else if (hasKey(ARNamespacedKey.ENERGY_REGEN)) {
-                    int ENERGY_REGEN = getInt((ARNamespacedKey.ENERGY_REGEN));
+                else if (majorStatsMap.containsKey(RiftsStat.ENERGY_REGEN)) {
+                    int ENERGY_REGEN = (int) majorStatsMap.get(RiftsStat.ENERGY_REGEN);
                     colorizedStat = colorizeStat(ENERGY_REGEN/(10 * 1.0)); //HARDCODED VALUE AHHHHHHHH
                     lore.add(Text.colorize("&fEnergy Regen:" + colorizedStat + " +" + ENERGY_REGEN + "%"));
                 }
@@ -122,9 +121,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 if (multiplier > 0) {
                     multiplierFormat = " &7(&b+"  + ((int)(multiplier * 100)) + "%&7)";
                 }
-                int dmgLow = getInt(ARNamespacedKey.DMG_LO);
+                int dmgLow = (int) majorStatsMap.get(RiftsStat.DMG_LO);
                 ChatColor colorizedLow = colorizeStat(dmgLow/(ItemFactory.getDamage(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
-                int dmgHigh = getInt(ARNamespacedKey.DMG_HI);
+                int dmgHigh = (int) majorStatsMap.get(RiftsStat.DMG_HI);
                 ChatColor colorizedHigh = colorizeStat(dmgHigh/(ItemFactory.getDamage(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                 lore.add(Text.colorize("&fAttack Damage: " + colorizedLow + dmgLow + "&f - " + colorizedHigh + dmgHigh + multiplierFormat));
                 break;
@@ -132,50 +131,50 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         lore.add(div);
 
         //Attributes Formatting
-        if (hasKey(ARNamespacedKey.ATTRIBUTES)) {
-            Map valueMap = getMap(ARNamespacedKey.ATTRIBUTES);
-            Map percentageMap = new HashMap();
-            for (Object key : valueMap.keySet()) {
-                percentageMap.put(key, (double)(int)valueMap.get(key) / Attribute.valueOf(String.valueOf(key)).getMaxValue());
-            }
-            percentageMap = sortByValue(percentageMap);
+        Map valueMap = getMap(ARNamespacedKey.MINOR_STATS);
+        Map percentageMap = new HashMap();
+        for (Object key : valueMap.keySet()) {
+            RiftsStat stat = RiftsStat.valueOf(String.valueOf(key));
+            if (stat.getMin() == -1 && stat.getMax() == -1) continue;
+            percentageMap.put(key, (double)(int)valueMap.get(key) / stat.getMax());
+        }
+        percentageMap = sortByValue(percentageMap);
 
-            StringBuilder sb = new StringBuilder();
-            for (Object key : valueMap.keySet()) {
-                Attribute attribute = Attribute.valueOf(String.valueOf(key));
-                String loreDisplay = attribute.getLoreDisplayName();
-                String affix = attribute.getItemDisplayName();
-                int value = (int) valueMap.get(key);
-                ChatColor statColor = colorizeStat((double)percentageMap.get(key));
-                String[] split = loreDisplay.split(": ");
-                String line = "";
-                multiplierFormat = "";
-                int modifier = modifiers.get(Modifier.ALL_STAT) == null ? 0 : (int) modifiers.get(Modifier.ALL_STAT);
-                if (modifier > 0) {
-                    multiplierFormat = " &7(&b+" + modifier + "&7)";
-                }
-                line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + multiplierFormat;
-                lore.add(Text.colorize(line));
-                if (!affix.equalsIgnoreCase("")) {
-                    sb.append(affix).append(" ");
-                }
+        StringBuilder sb = new StringBuilder();
+        for (Object key : valueMap.keySet()) {
+            RiftsStat stat = RiftsStat.valueOf(String.valueOf(key));
+            String loreDisplay = stat.getLoreDisplay();
+            String affix = stat.getItemDisplay();
+            int value = (int) valueMap.get(key);
+            ChatColor statColor = colorizeStat((double)percentageMap.get(key));
+            String[] split = loreDisplay.split(": ");
+            String line = "";
+            multiplierFormat = "";
+            int modifier = modifiers.get(Modifier.ALL_STAT) == null ? 0 : (int) modifiers.get(Modifier.ALL_STAT);
+            if (modifier > 0) {
+                multiplierFormat = " &7(&b+" + modifier + "&7)";
             }
+            line = "&f" + split[0] + ": " + statColor + split[1].replace("{value}", String.valueOf(value)) + multiplierFormat;
+            lore.add(Text.colorize(line));
+            if (!affix.equalsIgnoreCase("")) {
+                sb.append(affix).append(" ");
+            }
+        }
 
-            //Item Name Formatting
-            String itemName = item.getType().toString().toLowerCase();
-            if(itemName.contains("_")) {
-                itemName = itemName.substring(itemName.lastIndexOf("_"));
-                itemName = itemName.replace("_", " ");
-            }
-            else {
-                itemName = " " + itemName;
-            }
-            itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
-            itemMeta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
+        //Item Name Formatting
+        String itemName = item.getType().toString().toLowerCase();
+        if(itemName.contains("_")) {
+            itemName = itemName.substring(itemName.lastIndexOf("_"));
+            itemName = itemName.replace("_", " ");
+        }
+        else {
+            itemName = " " + itemName;
+        }
+        itemName = itemName.substring(0,2).toUpperCase() + itemName.substring(2);
+        meta.setDisplayName(Text.colorize(tier.getColorCode() + sb.toString() + tier.getItemDisplayName() + itemName));
 
-            if (!valueMap.isEmpty()) {
-                lore.add(div);
-            }
+        if (!valueMap.isEmpty()) {
+            lore.add(div);
         }
 
         //Scroll Formatting
@@ -227,8 +226,8 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
         lore.add(Text.colorize("&7Durability: &8" + durability + bar + maxDurability));
 
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
         return item;
     }
 
@@ -293,7 +292,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     6: 6.80%
     7: 3.49%
      */
-    private Attribute[] getRandomAttributes(ItemType itemType) {
+    private RiftsStat[] getRandomStats(ItemType itemType) {
         //First a uniform chance of 0 to 3.
         int amount = NumGenerator.rollInclusive(0, 3);
         //Next a repeated 65% chance to continue adding more up to maxAttributes.
@@ -307,54 +306,65 @@ public class ItemWrapper extends NamespacedKeyWrapper {
             }
         }
 
-        ArrayList<Attribute> randomAttributes = new ArrayList<>();
-        ArrayList<Attribute> attributes = new ArrayList<>();
+        ArrayList<RiftsStat> randomStats = new ArrayList<>();
+        ArrayList<RiftsStat> stats = new ArrayList<>();
         if (itemType.equals(ItemType.ARMOR)) {
-            Collections.addAll(attributes, Attribute.armourValues);
+            Collections.addAll(stats, RiftsStat.armourValues);
         }
         if (itemType.equals(ItemType.WEAPON)) {
-            Collections.addAll(attributes, Attribute.weaponValues);
+            Collections.addAll(stats, RiftsStat.weaponValues);
         }
-        while (randomAttributes.size() < amount && attributes.size() > 0) {
-            int index = NumGenerator.index(attributes.size());
-            Attribute attribute = attributes.get(index);
-            attributes.remove(index);
-
-            randomAttributes.add(attribute);
+        while (randomStats.size() < amount && stats.size() > 0) {
+            int index = NumGenerator.index(stats.size());
+            RiftsStat attribute = stats.get(index);
+            stats.remove(index);
+            randomStats.add(attribute);
         }
-        randomAttributes.toArray();
-        return randomAttributes.toArray(new Attribute[randomAttributes.size()]);
-    }
-
-    public ItemWrapper randomizeAttributes() {
-        ItemType type = getItemType();
-
-        if(type == null) {
-            Logger.log("Orb failed due to null item type");
-            return this;
-        }
-
-        removeKey(ARNamespacedKey.ATTRIBUTES);
-
-        addAttributes(getRandomAttributes(type));
-        return this;
+        return randomStats.toArray(new RiftsStat[0]);
     }
 
     public ItemWrapper randomizeStats() {
-        HashMap<String, Integer> map = (HashMap<String, Integer>) getMap(ARNamespacedKey.ATTRIBUTES);
-        map.replaceAll((k, v) -> NumGenerator.rollInclusive(Attribute.valueOf(String.valueOf(k)).getMinValue(), Attribute.valueOf(String.valueOf(k)).getMaxValue()));
-        addKey(ARNamespacedKey.ATTRIBUTES, map);
+        ItemType type = getItemType();
+
+        if(type == null) {
+            Logger.log("Randomizing minor stats failed due to null item type");
+            return this;
+        }
+
+        removeKey(ARNamespacedKey.MINOR_STATS);
+        addKey(ARNamespacedKey.MINOR_STATS);
+
+        addStats(getRandomStats(type));
+        return this;
+    }
+
+    /*
+     * NOTE: ALL THESE STAT METHODS ARE ONLY FOR MINOR STATS.
+     */
+
+    public ItemWrapper randomizeStatValues() {
+        HashMap<String, Integer> map = (HashMap<String, Integer>) getMap(ARNamespacedKey.MINOR_STATS);
+        map.replaceAll((k, v) -> NumGenerator.rollInclusive(RiftsStat.valueOf(String.valueOf(k)).getMin(), RiftsStat.valueOf(String.valueOf(k)).getMax()));
+        addKey(ARNamespacedKey.MINOR_STATS, map);
 
         this.needsFormatting = true;
         return this;
     }
 
-    public ItemWrapper addAttributes(Attribute... attributes) {
-        HashMap<String, Integer> map = new HashMap<>();
-        for (Attribute attribute : attributes) {
-            map.put(attribute.name(), NumGenerator.rollInclusive(attribute.getMinValue(), attribute.getMaxValue()));
+    public ItemWrapper addStats(RiftsStat... stats) {
+        HashMap<RiftsStat, Integer> statsMap = (HashMap<RiftsStat, Integer>) getMap(ARNamespacedKey.MINOR_STATS);
+        for (RiftsStat stat : stats) {
+            statsMap.put(stat, NumGenerator.rollInclusive(stat.getMin(), stat.getMax()));
         }
-        addKey(ARNamespacedKey.ATTRIBUTES, map);
+        addKey(ARNamespacedKey.MINOR_STATS, statsMap);
+        this.needsFormatting = true;
+        return this;
+    }
+
+    public ItemWrapper addStat(RiftsStat stat, Integer value) {
+        HashMap<RiftsStat, Integer> statsMap = (HashMap<RiftsStat, Integer>) getMap(ARNamespacedKey.MINOR_STATS);
+        statsMap.put(stat, value);
+        addKey(ARNamespacedKey.MINOR_STATS, statsMap);
         this.needsFormatting = true;
         return this;
     }
@@ -431,19 +441,17 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
     public int getDamage() {
         if (isRealItem() && getItemType() == ItemType.WEAPON) {
-            return NumGenerator.rollInclusive(getInt(ARNamespacedKey.DMG_LO), getInt(ARNamespacedKey.DMG_HI));
+            HashMap<RiftsStat, Integer> stats = (HashMap<RiftsStat, Integer>) getMap(ARNamespacedKey.MAJOR_STATS);
+            return NumGenerator.rollInclusive(stats.get(RiftsStat.DMG_LO), stats.get(RiftsStat.DMG_LO));
         }
         return 1;
     }
 
     public ItemType getItemType() {
         if (isRealItem()) {
-            if (hasKey(ARNamespacedKey.DMG_LO) && hasKey(ARNamespacedKey.DMG_HI)) {
-                return ItemType.WEAPON;
-            }
-            else if (hasKey(ARNamespacedKey.HEALTH_POINTS) || hasKey(ARNamespacedKey.ENERGY_REGEN)) {
-                return ItemType.ARMOR;
-            }
+            HashMap<RiftsStat, Integer> stats = (HashMap<RiftsStat, Integer>) getMap(ARNamespacedKey.MAJOR_STATS);
+            if (stats.containsKey(RiftsStat.HP)) return ItemType.ARMOR;
+            if (stats.containsKey(RiftsStat.DMG_LO) && stats.containsKey(RiftsStat.DMG_HI)) return ItemType.WEAPON;
         }
         return null;
     }
@@ -485,7 +493,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemWrapper updateDurability() {
-        List<String> lore = itemMeta.getLore();
+        List<String> lore = item.getLore();
         int durability = getInt(ARNamespacedKey.DURABILITY);
         int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
         double roll = durability / (maxDurability * 1.0);
@@ -493,10 +501,9 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         String bar = "▌▌▌▌▌▌▌▌▌▌";
         bar = " " + color + bar.substring(0, (int) (roll * 10)) + "&8" + bar.substring((int) (roll * 10)) + " ";
         lore.set(lore.size() - 1, Text.colorize("&7Durability: &8" + durability + bar + maxDurability));
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
+        item.setLore(lore);
 
-        Damageable meta = (Damageable) itemMeta;
+        Damageable meta = (Damageable) item.getItemMeta();
         meta.setDamage(item.getType().getMaxDurability() - (int)((item.getType().getMaxDurability() * getDurabilityAsPercentage())));
         item.setItemMeta((ItemMeta) meta);
         return this;
@@ -533,32 +540,27 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     @Override
     public ItemWrapper addKey(NamespacedKey namespacedKey, PersistentDataType dataType, Object key) {
         super.addKey(namespacedKey, dataType, key);
-        itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey, Object key) {
         super.addKey(namespacedKey, key);
-        itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper addKey(ARNamespacedKey namespacedKey) {
         super.addKey(namespacedKey);
-        itemMeta = item.getItemMeta();
         return this;
     }
 
     @Override
     public ItemWrapper removeKey(NamespacedKey namespacedKey) {
         super.removeKey(namespacedKey);
-        this.itemMeta = item.getItemMeta();
         return this;
     }
     @Override
     public ItemWrapper removeKey(ARNamespacedKey namespacedKey) {
         super.removeKey(namespacedKey);
-        itemMeta = item.getItemMeta();
         return this;
     }
 }

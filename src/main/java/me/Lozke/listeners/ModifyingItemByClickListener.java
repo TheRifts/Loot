@@ -34,11 +34,11 @@ public class ModifyingItemByClickListener implements Listener {
             case MAGMA_CREAM: //Orb
                 event.setCancelled(true);
                 if (!currentItem.getBoolean(ARNamespacedKey.CAN_ORB)) return;
-                currentItem.randomizeAttributes().format();
+                currentItem.randomizeStats().format();
                 break;
             case BLAZE_POWDER: //Shard
                 event.setCancelled(true);
-                currentItem.randomizeStats().format();
+                currentItem.randomizeStatValues().format();
                 break;
             case LEATHER:
                 if (currentItem.getTier() == Tier.T1) {

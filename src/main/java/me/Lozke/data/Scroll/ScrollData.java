@@ -27,7 +27,7 @@ public class ScrollData implements Serializable {
         this.stack = stack;
         this.wrapper = new NamespacedKeyWrapper(stack);
 
-        this.scrollDataMap = wrapper.getMap(ARNamespacedKey.ATTRIBUTES);
+        this.scrollDataMap = wrapper.getMap(ARNamespacedKey.SCROLL_DATA);
         this.successPercent = wrapper.getDouble(ARNamespacedKey.SCROLL_SUCCESS_CHANCE);
         this.destroyPercent = wrapper.getDouble(ARNamespacedKey.SCROLL_DESTROY_CHANCE);
         this.scrollType = ScrollType.valueOf(wrapper.getString(ARNamespacedKey.SCROLL_SKIN));
@@ -42,7 +42,7 @@ public class ScrollData implements Serializable {
 
     public void setScrollData(Map<Modifier, Object> scrollData) {
         this.scrollDataMap = scrollData;
-        wrapper.addKey(ARNamespacedKey.ATTRIBUTES, scrollDataMap);
+        wrapper.addKey(ARNamespacedKey.SCROLL_DATA, scrollDataMap);
     }
 
     public Map getScrollData() {

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class ItemFactory {
     private static       int[][][] armorHPRegen;
 
     private static final int dropRateSeed = 10;
-    private static      int[][] dropRate;
+    private static       int[][] dropRate;
 
 
     public ItemFactory() {
@@ -374,48 +375,50 @@ public class ItemFactory {
         ItemWrapper itemWrapper = new ItemWrapper(stack);
         int tierIndex = tier.ordinal();
         int rarityIndex = rarity.ordinal();
+        HashMap<RiftsStat, Integer> majorStats = new HashMap<>();
         switch (itemType) {
             case ARMOR:
                 if (NumGenerator.roll(2) == 1) {
                     if (tierIndex < 5 && rarityIndex < 4) {
-                        itemWrapper.addKey(ARNamespacedKey.HP_REGEN, NumGenerator.rollInclusive(armorHPRegen[tierIndex][rarityIndex][0], armorHPRegen[tierIndex][rarityIndex][1]));
+                        majorStats.put(RiftsStat.HP_REGEN, NumGenerator.rollInclusive(armorHPRegen[tierIndex][rarityIndex][0], armorHPRegen[tierIndex][rarityIndex][1]));
                     }
                     else {
-                        itemWrapper.addKey(ARNamespacedKey.HP_REGEN, 50);
+                        majorStats.put(RiftsStat.HP_REGEN, 50);
                     }
                 }
                 else {
-                    itemWrapper.addKey(ARNamespacedKey.ENERGY_REGEN, 10);
+                    majorStats.put(RiftsStat.ENERGY, 10);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
-                    itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, NumGenerator.rollInclusive(armorHP[tierIndex][rarityIndex][0], armorHP[tierIndex][rarityIndex][1]));
+                    majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armorHP[tierIndex][rarityIndex][0], armorHP[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
-                    itemWrapper.addKey(ARNamespacedKey.HEALTH_POINTS, 0);
+                    majorStats.put(RiftsStat.HP, 0);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
-                    itemWrapper.addKey(ARNamespacedKey.DEFENSE, NumGenerator.rollInclusive(armorDefense[tierIndex][rarityIndex][0], armorDefense[tierIndex][rarityIndex][1]));
+                    majorStats.put(RiftsStat.DEFENSE, NumGenerator.rollInclusive(armorDefense[tierIndex][rarityIndex][0], armorDefense[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
-                    itemWrapper.addKey(ARNamespacedKey.DEFENSE, 0);
+                    majorStats.put(RiftsStat.DEFENSE, 0);
                 }
                 break;
             case WEAPON:
                 if (tierIndex < 5 && rarityIndex < 4) {
                     int DMG_LO = NumGenerator.rollInclusive(weaponDamage[tierIndex][rarityIndex][0], weaponDamage[tierIndex][rarityIndex][1]);
-                    itemWrapper.addKey(ARNamespacedKey.DMG_LO, DMG_LO);
-                    itemWrapper.addKey(ARNamespacedKey.DMG_HI, NumGenerator.rollInclusive(DMG_LO, weaponDamage[tierIndex][rarityIndex][1]));
+                    majorStats.put(RiftsStat.DMG_LO, DMG_LO);
+                    majorStats.put(RiftsStat.DMG_HI, NumGenerator.rollInclusive(DMG_LO, weaponDamage[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 1k dmg till fallen blesses the code with a better algorithm
-                    itemWrapper.addKey(ARNamespacedKey.DMG_LO, 1000);
-                    itemWrapper.addKey(ARNamespacedKey.DMG_HI, 1000);
+                    majorStats.put(RiftsStat.DMG_LO, 1000);
+                    majorStats.put(RiftsStat.DMG_HI, 1000);
                 }
                 break;
         }
 
+        itemWrapper.addKey(ARNamespacedKey.MAJOR_STATS, majorStats);
         itemWrapper.addKey(ARNamespacedKey.REAL_ITEM);
         itemWrapper.addKey(ARNamespacedKey.TIER, tier.name());
         itemWrapper.addKey(ARNamespacedKey.RARITY, rarity.name());
@@ -424,7 +427,7 @@ public class ItemFactory {
         itemWrapper.addKey(ARNamespacedKey.MAX_DURABILITY, tier.getMaxDurability());
         itemWrapper.addKey(ARNamespacedKey.SCROLL_MAX_AMOUNT, NumGenerator.roll(10));
 
-        itemWrapper.randomizeAttributes();
+        itemWrapper.randomizeStats();
 
         stack = itemWrapper.getItem();
         ItemMeta itemMeta = stack.getItemMeta();
