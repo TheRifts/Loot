@@ -11,9 +11,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ItemFactory {
 
@@ -120,8 +118,6 @@ public class ItemFactory {
 
             armorSetHP[tierIndex][0] = intCeiling(damageRanges[tierIndex][0]*hitsToKill*getDamageTaken(armorSetDefense[tierIndex][0]));
             armorSetHP[tierIndex][1] = intCeiling(damageRanges[tierIndex][1]*hitsToKill*getDamageTaken(armorSetDefense[tierIndex][1]));
-
-            //Logger.log("HP: " + armorSetHP[tierIndex][0] + " - " + armorSetHP[tierIndex][1]);
         }
 
         int[][] hpRanges = new int[5][2];
@@ -284,15 +280,19 @@ public class ItemFactory {
 
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
     //the prophecy has come true
-    public static Set<ItemStack> newSet(Tier tier, Rarity rarity) {
-        Set<ItemStack> stackSet = new HashSet<>();
+    //the prophecy has been defeated by my OCD, can't stand the items showing up in random order
+    public static List<ItemStack> newSet(Tier tier, Rarity rarity) {
+        List<ItemStack> set = new ArrayList<>();
+        set.add(newWeapon(tier, rarity));
         for (ArmourType type : ArmourType.types) {
-            stackSet.add(newArmour(tier, rarity, type));
+            set.add(newArmour(tier, rarity, type));
         }
-        stackSet.add(newWeapon(tier, rarity, WeaponType.SWORD));
-        return stackSet;
+        return set;
     }
 
+    public static ItemStack newArmour(Tier tier, Rarity rarity) {
+        return newArmour(tier, rarity, ArmourType.getRandomArmourType());
+    }
     public static ItemStack newArmour(Tier tier, Rarity rarity, EquipmentSlot slot) {
         ArmourType armourType = ArmourType.fromEquipmentSlot(slot);
         if (armourType == null) return null;
@@ -302,6 +302,9 @@ public class ItemFactory {
         return createItem(tier, rarity, gearType.getItem(tier), ItemType.ARMOR);
     }
 
+    public static ItemStack newWeapon(Tier tier, Rarity rarity) {
+        return newWeapon(tier, rarity, WeaponType.getRandomWeaponType());
+    }
     public static ItemStack newWeapon(Tier tier, Rarity rarity, WeaponType weaponType) {
         return createItem(tier, rarity, weaponType.getItem(tier), ItemType.WEAPON);
     }

@@ -62,4 +62,7 @@ public enum WeaponType {
         }
         return null;
     }
+    public static WeaponType getRandomWeaponType() {
+        return types[NumGenerator.index(types.length)];
+    }
 }

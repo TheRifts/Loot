@@ -1,6 +1,7 @@
 package me.Lozke.data;
 
 import me.Lozke.utils.Logger;
+import me.Lozke.utils.NumGenerator;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -54,5 +55,8 @@ public enum ArmourType {
             default:
                 return null;
         }
+    }
+    public static ArmourType getRandomArmourType() {
+        return types[NumGenerator.index(types.length)];
     }
 }
