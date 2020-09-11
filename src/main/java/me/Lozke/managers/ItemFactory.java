@@ -31,9 +31,9 @@ public class ItemFactory {
     private static final int healTime = 25;
 
     private static       int[][][] weaponDamage;
-    private static       int[][][] armorDefense;
-    private static       int[][][] armorHP;
-    private static       int[][][] armorHPRegen;
+    private static       int[][][] armourDefense;
+    private static       int[][][] armourHP;
+    private static       int[][][] armourHPRegen;
 
     private static final int dropRateSeed = 10;
     private static       int[][] dropRate;
@@ -72,18 +72,18 @@ public class ItemFactory {
             }
         }
 
-        int[][] armorSetDefense = new int[5][2];
+        int[][] armourSetDefense = new int[5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
 
             if (tier.ordinal() == 0) {
-                armorSetDefense[tierIndex][0] = defenseScale/2+1;
+                armourSetDefense[tierIndex][0] = defenseScale/2+1;
             }
             else {
-                armorSetDefense[tierIndex][0] = armorSetDefense[tierIndex-1][0]+defenseScale/2;
+                armourSetDefense[tierIndex][0] = armourSetDefense[tierIndex-1][0]+defenseScale/2;
             }
-            armorSetDefense[tierIndex][1] = armorSetDefense[tierIndex][0]+defenseScale/2-1;
+            armourSetDefense[tierIndex][1] = armourSetDefense[tierIndex][0]+defenseScale/2-1;
         }
 
         int[][] defenseRanges = new int[5][2];
@@ -91,11 +91,11 @@ public class ItemFactory {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
 
-            defenseRanges[tierIndex][0] = intCeiling(armorSetDefense[tierIndex][0]/4.0);
-            defenseRanges[tierIndex][1] = intCeiling(armorSetDefense[tierIndex][1]/4.0);
+            defenseRanges[tierIndex][0] = intCeiling(armourSetDefense[tierIndex][0]/4.0);
+            defenseRanges[tierIndex][1] = intCeiling(armourSetDefense[tierIndex][1]/4.0);
         }
 
-        armorDefense = new int[5][4][2];
+        armourDefense = new int[5][4][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -106,18 +106,18 @@ public class ItemFactory {
                 int low = defenseRanges[tierIndex][0];
                 int high = defenseRanges[tierIndex][1];
 
-                armorDefense[tierIndex][rarityIndex][0] = intCeiling((high-low)*mobDropScaling[rarityIndex][0]+low);
-                armorDefense[tierIndex][rarityIndex][1] = intCeiling((high-low)*mobDropScaling[rarityIndex][1]+low);
+                armourDefense[tierIndex][rarityIndex][0] = intCeiling((high-low)*mobDropScaling[rarityIndex][0]+low);
+                armourDefense[tierIndex][rarityIndex][1] = intCeiling((high-low)*mobDropScaling[rarityIndex][1]+low);
             }
         }
 
-        int[][] armorSetHP = new int[5][2];
+        int[][] armourSetHP = new int[5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
 
-            armorSetHP[tierIndex][0] = intCeiling(damageRanges[tierIndex][0]*hitsToKill*getDamageTaken(armorSetDefense[tierIndex][0]));
-            armorSetHP[tierIndex][1] = intCeiling(damageRanges[tierIndex][1]*hitsToKill*getDamageTaken(armorSetDefense[tierIndex][1]));
+            armourSetHP[tierIndex][0] = intCeiling(damageRanges[tierIndex][0]*hitsToKill*getDamageTaken(armourSetDefense[tierIndex][0]));
+            armourSetHP[tierIndex][1] = intCeiling(damageRanges[tierIndex][1]*hitsToKill*getDamageTaken(armourSetDefense[tierIndex][1]));
         }
 
         int[][] hpRanges = new int[5][2];
@@ -125,11 +125,11 @@ public class ItemFactory {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
 
-            hpRanges[tierIndex][0] = intCeiling(armorSetHP[tierIndex][0]/4.0);
-            hpRanges[tierIndex][1] = intCeiling(armorSetHP[tierIndex][1]/4.0);
+            hpRanges[tierIndex][0] = intCeiling(armourSetHP[tierIndex][0]/4.0);
+            hpRanges[tierIndex][1] = intCeiling(armourSetHP[tierIndex][1]/4.0);
         }
 
-        armorHP = new int[5][4][2];
+        armourHP = new int[5][4][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -140,12 +140,12 @@ public class ItemFactory {
                 int low = hpRanges[tierIndex][0];
                 int high = hpRanges[tierIndex][1];
 
-                armorHP[tierIndex][rarityIndex][0] = intCeiling((high-low)*mobDropScaling[rarityIndex][0]+low);
-                armorHP[tierIndex][rarityIndex][1] = intCeiling((high-low)*mobDropScaling[rarityIndex][1]+low);
+                armourHP[tierIndex][rarityIndex][0] = intCeiling((high-low)*mobDropScaling[rarityIndex][0]+low);
+                armourHP[tierIndex][rarityIndex][1] = intCeiling((high-low)*mobDropScaling[rarityIndex][1]+low);
             }
         }
 
-        armorHPRegen = new int[5][4][2];
+        armourHPRegen = new int[5][4][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
@@ -153,8 +153,8 @@ public class ItemFactory {
                 int rarityIndex = rarity.ordinal();
                 if (rarityIndex>3) continue;
 
-                armorHPRegen[tierIndex][rarityIndex][0] = intCeiling(armorHP[tierIndex][rarityIndex][0]/(healTime/4.0));
-                armorHPRegen[tierIndex][rarityIndex][1] = intCeiling(armorHP[tierIndex][rarityIndex][1]/(healTime/4.0));
+                armourHPRegen[tierIndex][rarityIndex][0] = intCeiling(armourHP[tierIndex][rarityIndex][0]/(healTime/4.0));
+                armourHPRegen[tierIndex][rarityIndex][1] = intCeiling(armourHP[tierIndex][rarityIndex][1]/(healTime/4.0));
             }
         }
 
@@ -209,7 +209,7 @@ public class ItemFactory {
                 int rarityIndex = rarity.ordinal();
                 if (rarityIndex>3) continue;
 
-                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " defense: " + armorDefense[tierIndex][rarityIndex][0] + " - " + armorDefense[tierIndex][rarityIndex][1]);
+                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " defense: " + armourDefense[tierIndex][rarityIndex][0] + " - " + armourDefense[tierIndex][rarityIndex][1]);
             }
             Logger.log("");
         }
@@ -223,7 +223,7 @@ public class ItemFactory {
                 int rarityIndex = rarity.ordinal();
                 if (rarityIndex>3) continue;
 
-                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + armorHP[tierIndex][rarityIndex][0] + " - " + armorHP[tierIndex][rarityIndex][1]);
+                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + armourHP[tierIndex][rarityIndex][0] + " - " + armourHP[tierIndex][rarityIndex][1]);
             }
             Logger.log("");
         }
@@ -237,7 +237,7 @@ public class ItemFactory {
                 int rarityIndex = rarity.ordinal();
                 if (rarityIndex>3) continue;
 
-                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp/s: " + armorHPRegen[tierIndex][rarityIndex][0] + " - " + armorHPRegen[tierIndex][rarityIndex][1]);
+                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp/s: " + armourHPRegen[tierIndex][rarityIndex][0] + " - " + armourHPRegen[tierIndex][rarityIndex][1]);
             }
             Logger.log("");
         }
@@ -267,15 +267,15 @@ public class ItemFactory {
     }
     public static int getArmourDefense(Tier tier, Rarity rarity, RangeType type) {
         if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
-        return armorDefense[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+        return armourDefense[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourHP(Tier tier, Rarity rarity, RangeType type) {
         if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
-        return armorHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+        return armourHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourHPRegen(Tier tier, Rarity rarity, RangeType type) {
         if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
-        return armorHPRegen[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+        return armourHPRegen[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
 
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
@@ -299,7 +299,7 @@ public class ItemFactory {
         return newArmour(tier, rarity, armourType);
     }
     public static ItemStack newArmour(Tier tier, Rarity rarity, ArmourType gearType) {
-        return createItem(tier, rarity, gearType.getItem(tier), ItemType.ARMOR);
+        return createItem(tier, rarity, gearType.getItem(tier), ItemType.ARMOUR);
     }
 
     public static ItemStack newWeapon(Tier tier, Rarity rarity) {
@@ -380,10 +380,10 @@ public class ItemFactory {
         int rarityIndex = rarity.ordinal();
         HashMap<RiftsStat, Integer> majorStats = new HashMap<>();
         switch (itemType) {
-            case ARMOR:
+            case ARMOUR:
                 if (NumGenerator.roll(2) == 1) {
                     if (tierIndex < 5 && rarityIndex < 4) {
-                        majorStats.put(RiftsStat.HP_REGEN, NumGenerator.rollInclusive(armorHPRegen[tierIndex][rarityIndex][0], armorHPRegen[tierIndex][rarityIndex][1]));
+                        majorStats.put(RiftsStat.HP_REGEN, NumGenerator.rollInclusive(armourHPRegen[tierIndex][rarityIndex][0], armourHPRegen[tierIndex][rarityIndex][1]));
                     }
                     else {
                         majorStats.put(RiftsStat.HP_REGEN, 50);
@@ -393,14 +393,14 @@ public class ItemFactory {
                     majorStats.put(RiftsStat.ENERGY, 10);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
-                    majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armorHP[tierIndex][rarityIndex][0], armorHP[tierIndex][rarityIndex][1]));
+                    majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armourHP[tierIndex][rarityIndex][0], armourHP[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
                     majorStats.put(RiftsStat.HP, 0);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
-                    majorStats.put(RiftsStat.DEFENSE, NumGenerator.rollInclusive(armorDefense[tierIndex][rarityIndex][0], armorDefense[tierIndex][rarityIndex][1]));
+                    majorStats.put(RiftsStat.DEFENSE, NumGenerator.rollInclusive(armourDefense[tierIndex][rarityIndex][0], armourDefense[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm

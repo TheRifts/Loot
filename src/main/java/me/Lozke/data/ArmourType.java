@@ -34,7 +34,7 @@ public enum ArmourType {
     }
 
     public ItemStack getItem(Tier tier) {
-        Material material = Material.getMaterial(tier.getArmorMaterial() + "_" + itemType);
+        Material material = Material.getMaterial(tier.getArmourMaterial() + "_" + itemType);
         if (material == null) {
             material = Material.AIR;
             Logger.error("Invalid weapon material. Item Type: " + itemType + " Tier: " + tier);

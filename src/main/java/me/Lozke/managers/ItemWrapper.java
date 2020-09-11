@@ -96,7 +96,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         Map majorStatsMap = getMap(ARNamespacedKey.MAJOR_STATS);
         ChatColor colorizedStat;
         switch (getItemType()) {
-            case ARMOR:
+            case ARMOUR:
                 int HEALTH_POINTS = (int) majorStatsMap.get(RiftsStat.HP);
                 colorizedStat = colorizeStat(HEALTH_POINTS/(ItemFactory.getArmourHP(tier, rarity, ItemFactory.RangeType.HIGH) * 1.0));
                 lore.add(Text.colorize("&fMax Health:" + colorizedStat + " +" + HEALTH_POINTS));
@@ -308,7 +308,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
 
         ArrayList<RiftsStat> randomStats = new ArrayList<>();
         ArrayList<RiftsStat> stats = new ArrayList<>();
-        if (itemType.equals(ItemType.ARMOR)) {
+        if (itemType.equals(ItemType.ARMOUR)) {
             Collections.addAll(stats, RiftsStat.armourValues);
         }
         if (itemType.equals(ItemType.WEAPON)) {
@@ -450,7 +450,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     public ItemType getItemType() {
         if (isRealItem()) {
             HashMap<RiftsStat, Integer> stats = (HashMap<RiftsStat, Integer>) getMap(ARNamespacedKey.MAJOR_STATS);
-            if (stats.containsKey(RiftsStat.HP)) return ItemType.ARMOR;
+            if (stats.containsKey(RiftsStat.HP)) return ItemType.ARMOUR;
             if (stats.containsKey(RiftsStat.DMG_LO) && stats.containsKey(RiftsStat.DMG_HI)) return ItemType.WEAPON;
         }
         return null;

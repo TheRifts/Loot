@@ -1,7 +1,7 @@
 package me.Lozke.data;
 
 public enum ItemType {
-    ARMOR,
+    ARMOUR,
     WEAPON;
 
     public static ItemType[] types = ItemType.values();
