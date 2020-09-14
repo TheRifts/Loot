@@ -41,7 +41,7 @@ public class PouchListener implements Listener {
     @EventHandler
     public void onInventoryInteraction(InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
-        if (inventory == null || event.getCurrentItem() == null) {
+        if (inventory == null || event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
             return;
         }
 
