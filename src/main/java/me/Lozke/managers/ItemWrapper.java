@@ -231,6 +231,14 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         return item;
     }
 
+    public Map<RiftsStat, Integer> getMajorStats() {
+        return (Map<RiftsStat, Integer>) get(ARNamespacedKey.MAJOR_STATS);
+    }
+
+    public Map<RiftsStat, Integer> getMinorStats() {
+        return (Map<RiftsStat, Integer>) get(ARNamespacedKey.MINOR_STATS);
+    }
+
     //Calculations for odds of different #s of attributes
     /*
     assumes maxAttributes = 7
