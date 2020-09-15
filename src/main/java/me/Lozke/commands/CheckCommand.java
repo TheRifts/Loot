@@ -6,14 +6,15 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import me.Lozke.LootPlugin;
 import me.Lozke.data.ARNamespacedKey;
-import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.ScrollData;
+import me.Lozke.items.Scroll.Modifier;
+import me.Lozke.items.Scroll.ScrollData;
+import me.Lozke.items.Scroll.ScrollDataTag;
 import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.NamespacedKeyWrapper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.Map;
 
 @CommandAlias("verify|check")
@@ -53,26 +54,26 @@ public class CheckCommand extends BaseCommand {
             if (itemWrapper.hasKey(ARNamespacedKey.UUID)) {
                 player.sendMessage("Item UUID: " + itemWrapper.get(ARNamespacedKey.UUID));
             }
-            if (itemWrapper.hasKey(ARNamespacedKey.USED_SCROLLS)) {
-                player.sendMessage("Max Amount of Scrolls: " + itemWrapper.getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT));
-                List<ScrollData> list = (List<ScrollData>) itemWrapper.getList(ARNamespacedKey.USED_SCROLLS);
-                if (list != null) {
-                    player.sendMessage("Amount of Applied Scrolls: " + list.size());
-                    for (ScrollData scroll : list) {
-                        player.sendMessage("Success Chance: " + scroll.getSuccessPercent());
-                        player.sendMessage("Destroy Chance: " + scroll.getDestroyPercent());
-                        player.sendMessage("Scroll Type: " + scroll.getScrollType());
-                        player.sendMessage("Item Type to Enchant: " + scroll.getItemTypeToModify());
-                        Map<Modifier, Object> modifierMap = scroll.getScrollData();
-                        for (Modifier key : modifierMap.keySet()) {
-                            player.sendMessage("Modifier: " + key + " Value: " + modifierMap.get(key));
-                        }
-                    }
-                }
-            }
         }
         else {
             player.sendMessage("This is NOT a Rifts™ Item!");
+        }
+    }
+
+    @Subcommand("scroll")
+    public static void onCheckScroll(Player player) {
+        LootPlugin plugin = LootPlugin.getPluginInstance();
+        NamespacedKeyWrapper wrapper = new ItemWrapper(player.getInventory().getItemInMainHand());
+        if (wrapper.hasKey(ScrollDataTag.DATA_TAG, new ScrollDataTag())) {
+            ScrollData data = (ScrollData) wrapper.get(ScrollDataTag.DATA_TAG, new ScrollDataTag());
+            player.sendMessage("Success Chance: " + data.getSuccessPercent());
+            player.sendMessage("Destroy Chance: " + data.getDestroyPercent());
+            player.sendMessage("Scroll Type: " + data.getScrollType());
+            player.sendMessage("Item Type to Enchant: " + data.getItemTypeToModify());
+            Map<Modifier, Object> modifierMap = data.getScrollData();
+            for (Modifier key : modifierMap.keySet()) {
+                player.sendMessage("Modifier: " + key + " Value: " + modifierMap.get(key));
+            }
         }
     }
 

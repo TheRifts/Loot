@@ -1,5 +1,7 @@
-package me.Lozke.data;
+package me.Lozke.items;
 
+import me.Lozke.data.ARNamespacedKey;
+import me.Lozke.data.Tier;
 import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.Text;
 import org.bukkit.Material;

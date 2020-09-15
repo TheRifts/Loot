@@ -1,8 +1,9 @@
 package me.Lozke.listeners;
 
 import me.Lozke.data.ARNamespacedKey;
-import me.Lozke.data.Scroll.ScrollData;
+import me.Lozke.items.Scroll.ScrollData;
 import me.Lozke.data.Tier;
+import me.Lozke.items.Scroll.ScrollDataTag;
 import me.Lozke.managers.ItemWrapper;
 import me.Lozke.utils.NumGenerator;
 import org.bukkit.event.EventHandler;
@@ -30,76 +31,73 @@ public class ModifyingItemByClickListener implements Listener {
             return;
         }
 
+        //Prevent item from being swapped
+        event.setCancelled(true);
+
         switch (cursorItem.getItem().getType()) {
             case MAGMA_CREAM: //Orb
-                event.setCancelled(true);
                 if (!currentItem.getBoolean(ARNamespacedKey.CAN_ORB)) return;
                 currentItem.randomizeStats().format();
                 break;
             case BLAZE_POWDER: //Shard
-                event.setCancelled(true);
                 currentItem.randomizeStatValues().format();
                 break;
             case LEATHER:
                 if (currentItem.getTier() == Tier.T1) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case IRON_BARS:
                 if (currentItem.getTier() == Tier.T2) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case LIGHT_GRAY_DYE:
                 if (currentItem.getTier() == Tier.T3) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case LIGHT_BLUE_DYE:
                 if (currentItem.getTier() == Tier.T4) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case YELLOW_DYE:
                 if (currentItem.getTier() == Tier.T5) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case BLACK_DYE:
                 if (currentItem.getTier() == Tier.T6) {
-                    event.setCancelled(true);
                     currentItem.setDurabilityAsPercentage(currentItem.getDurabilityAsPercentage() + 0.03);
                 }
                 break;
             case MAP: //Scroll
-                Double successChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_SUCCESS_CHANCE);
-                Double roll = NumGenerator.fraction();
-                if (roll < successChance) {
-                    List<ScrollData> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
-                    scrolls.add(new ScrollData(cursorItem.getItem()));
-                    currentItem.addKey(ARNamespacedKey.USED_SCROLLS, scrolls);
-                    currentItem.format();
+                List<ScrollData> usedScrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
+                if (usedScrolls.size() >= currentItem.getInt(ARNamespacedKey.SCROLL_MAX_AMOUNT)) {
+                    event.setCancelled(false);
+                    return;
+                }
+                ScrollData scrollData = (ScrollData) cursorItem.get(ScrollDataTag.DATA_TAG, new ScrollDataTag());
+                double roll = NumGenerator.fraction();
+                if (roll < scrollData.getSuccessPercent()) {
+                    usedScrolls.add(scrollData);
                 }
                 else {
-                    Double destroyChance = cursorItem.getDouble(ARNamespacedKey.SCROLL_DESTROY_CHANCE);
                     roll = NumGenerator.fraction();
-                    if (roll < destroyChance) { //Destroy
+                    if (roll < scrollData.getDestroyPercent()) { //Destroy
                         inventory.remove(currentItem.getItem());
+                        break;
                     }
                     else { //Add null to used scrolls list if item does not get destroyed
-                        List<ScrollData> scrolls = currentItem.getList(ARNamespacedKey.USED_SCROLLS);
-                        scrolls.add(null);
-                        currentItem.addKey(ARNamespacedKey.USED_SCROLLS, scrolls);
-                        currentItem.format();
+                        usedScrolls.add(null);
                     }
                 }
+                currentItem.addKey(ARNamespacedKey.USED_SCROLLS, usedScrolls);
+                currentItem.format();
                 break;
             default:
+                event.setCancelled(false);
                 return;
         }
 

@@ -1,4 +1,4 @@
-package me.Lozke.data.Scroll;
+package me.Lozke.items.Scroll;
 
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.ItemType;
@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ScrollData implements Serializable {
@@ -21,19 +22,10 @@ public class ScrollData implements Serializable {
     private ItemType itemType;
 
     private transient ItemStack stack;
-    private transient NamespacedKeyWrapper wrapper;
 
     public ScrollData(ItemStack stack) {
         this.stack = stack;
-        this.wrapper = new NamespacedKeyWrapper(stack);
-
-        this.scrollDataMap = wrapper.getMap(ARNamespacedKey.SCROLL_DATA);
-        this.successPercent = wrapper.getDouble(ARNamespacedKey.SCROLL_SUCCESS_CHANCE);
-        this.destroyPercent = wrapper.getDouble(ARNamespacedKey.SCROLL_DESTROY_CHANCE);
-        this.scrollType = ScrollType.valueOf(wrapper.getString(ARNamespacedKey.SCROLL_SKIN));
-        this.itemType = ItemType.valueOf(wrapper.getString(ARNamespacedKey.SCROLL_TYPE));
-
-        wrapper.addKey(ARNamespacedKey.REAL_ITEM);
+        this.scrollDataMap = new HashMap<>();
     }
 
     public ScrollData() {
@@ -42,10 +34,9 @@ public class ScrollData implements Serializable {
 
     public void setScrollData(Map<Modifier, Object> scrollData) {
         this.scrollDataMap = scrollData;
-        wrapper.addKey(ARNamespacedKey.SCROLL_DATA, scrollDataMap);
     }
 
-    public Map getScrollData() {
+    public Map<Modifier, Object> getScrollData() {
         return scrollDataMap;
     }
 
@@ -59,8 +50,7 @@ public class ScrollData implements Serializable {
     }
 
     public void setSuccessPercent(double percent) {
-        this.successPercent = (percent > 0.99) ? percent / 100 : percent;
-        wrapper.addKey(ARNamespacedKey.SCROLL_SUCCESS_CHANCE, successPercent);
+        this.successPercent = (percent > 1.0) ? percent / 100 : percent;
     }
 
     public double getSuccessPercent() {
@@ -68,8 +58,7 @@ public class ScrollData implements Serializable {
     }
 
     public void setDestroyPercent(double percent) {
-        this.destroyPercent = (percent > 0.99) ? percent / 100 : percent;
-        wrapper.addKey(ARNamespacedKey.SCROLL_DESTROY_CHANCE, destroyPercent);
+        this.destroyPercent = (percent > 1.0) ? percent / 100 : percent;
     }
 
     public double getDestroyPercent() {
@@ -78,7 +67,6 @@ public class ScrollData implements Serializable {
 
     public void setItemTypeToModify(ItemType itemType) {
         this.itemType = itemType;
-        wrapper.addKey(ARNamespacedKey.SCROLL_TYPE, this.itemType.name());
     }
 
     public ItemType getItemTypeToModify() {
@@ -87,8 +75,6 @@ public class ScrollData implements Serializable {
 
     public void setScrollType(ScrollType scrollType) {
         this.scrollType = scrollType;
-        wrapper.addKey(ARNamespacedKey.SCROLL_SKIN, this.scrollType.name());
-
         Items.setCustomModelData(stack, scrollType.ordinal() + 1);
     }
 
@@ -130,6 +116,9 @@ public class ScrollData implements Serializable {
 
     public ItemStack getItem() {
         updateFormat();
+        new NamespacedKeyWrapper(stack)
+                .addKey(ScrollDataTag.DATA_TAG, new ScrollDataTag(), this)
+                .addKey(ARNamespacedKey.REAL_ITEM);
         return stack;
     }
 }

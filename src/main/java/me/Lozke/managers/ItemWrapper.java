@@ -1,8 +1,8 @@
 package me.Lozke.managers;
 
 import me.Lozke.data.*;
-import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.ScrollData;
+import me.Lozke.items.Scroll.Modifier;
+import me.Lozke.items.Scroll.ScrollData;
 import me.Lozke.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;

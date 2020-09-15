@@ -1,4 +1,4 @@
-package me.Lozke.data.Scroll;
+package me.Lozke.items.Scroll;
 
 public enum ScrollType {
     BLUE,

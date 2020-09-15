@@ -1,9 +1,10 @@
 package me.Lozke.managers;
 
 import me.Lozke.data.*;
-import me.Lozke.data.Scroll.Modifier;
-import me.Lozke.data.Scroll.ScrollData;
-import me.Lozke.data.Scroll.ScrollType;
+import me.Lozke.items.Scroll.Modifier;
+import me.Lozke.items.Scroll.ScrollData;
+import me.Lozke.items.Scroll.ScrollType;
+import me.Lozke.items.*;
 import me.Lozke.utils.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
@@ -359,8 +360,8 @@ public class ItemFactory {
 
         scroll.setScrollType(scrollType);
         scroll.setItemTypeToModify(itemType);
-        scroll.setSuccessPercent(successChance);
-        scroll.setDestroyPercent(destroyChance);
+        scroll.setSuccessPercent((successChance > 0.99) ? successChance / 100 : successChance);
+        scroll.setDestroyPercent((destroyChance > 0.99) ? destroyChance / 100 : destroyChance);
 
         for (int i = 0; i < modifierArgs.length; i = i+2) {
             if (i + 1 > modifierArgs.length) {
