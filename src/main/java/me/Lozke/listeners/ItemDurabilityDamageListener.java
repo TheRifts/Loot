@@ -15,6 +15,8 @@ public class ItemDurabilityDamageListener implements Listener {
         if (!wrapper.hasKey(ARNamespacedKey.REAL_ITEM)) return;
         else event.setDamage(0);
         wrapper.addDurability(-1);
-        wrapper.updateDurability();
+        if (wrapper.getDurabality() <= 0) {
+            event.getItem().setAmount(0);
+        }
     }
 }
