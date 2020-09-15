@@ -21,21 +21,8 @@ public class AnvilManager {
         ITEM
     }
 
-    private static      AnvilManager instance;
-    private             Map<UUID, Map<AnvilManagerValue, Object>> trackedPlayerData;
+    private       final Map<UUID, Map<AnvilManagerValue, Object>> trackedPlayerData = new HashMap<>();
     public static final String INPUT_INSTRUCTIONS = Text.colorize("&7Type &a&lY&7 to confirm this repair. Type &c&lN&7 to cancel.");
-
-    public AnvilManager() {
-        instance = this;
-        this.trackedPlayerData = new HashMap<>();
-    }
-
-    public static AnvilManager getInstance() {
-        if (instance == null) {
-            return new AnvilManager();
-        }
-        return instance;
-    }
 
     public void trackPlayer(UUID uuid, ItemStack itemStack, Item itemEntity) {
         if (trackedPlayerData.containsKey(uuid)) {

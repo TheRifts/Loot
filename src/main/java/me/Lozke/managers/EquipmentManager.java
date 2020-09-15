@@ -8,24 +8,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class EquipmentManager {
 
-    private       static EquipmentManager instance;
     public  final static EquipmentSlot[] slots = EquipmentSlot.values();
-
-    public EquipmentManager() {
-        instance = this;
-    }
-
-    public static EquipmentManager getInstance() {
-        if (instance == null) {
-            return new EquipmentManager();
-        }
-        return instance;
-    }
 
     public void updateContainer(EquipmentContainer container, Inventory inventory) {
         if (!(inventory instanceof PlayerInventory)) {
