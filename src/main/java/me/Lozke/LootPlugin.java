@@ -4,6 +4,8 @@ import co.aikar.commands.BukkitCommandManager;
 import me.Lozke.commands.*;
 import me.Lozke.data.*;
 import me.Lozke.listeners.*;
+import me.Lozke.managers.AnvilManager;
+import me.Lozke.managers.EquipmentManager;
 import me.Lozke.managers.ItemFactory;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
@@ -24,6 +26,8 @@ public class LootPlugin extends JavaPlugin {
     private static LootPlugin plugin;
     private BukkitCommandManager commandManager;
     private ItemFactory itemFactory;
+    private AnvilManager anvilManager;
+    private EquipmentManager equipmentManager;
 
     private static SmartYamlConfiguration gearData;
 
@@ -39,6 +43,10 @@ public class LootPlugin extends JavaPlugin {
 
         gearData = defaultSettingsLoad("geardata.yml");
 
+        this.itemFactory = new ItemFactory();
+        this.anvilManager = new AnvilManager();
+        this.equipmentManager = new EquipmentManager();
+
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ModifyingItemByClickListener(), this);
         pm.registerEvents(new PouchListener(), this);
@@ -53,8 +61,6 @@ public class LootPlugin extends JavaPlugin {
         commandManager.registerCommand(new Reload());
         commandManager.registerCommand(new SetDurabalityPercent());
         commandManager.registerCommand(new ValueCommand());
-
-        itemFactory = new ItemFactory();
 
         Logger.log(this, "The monkeys are cranking out loot (\u001b[32mPlugin Enabled\u001b[0m)");
     }
@@ -85,4 +91,11 @@ public class LootPlugin extends JavaPlugin {
         return itemFactory;
     }
 
+    public AnvilManager getAnvilManager() {
+        return anvilManager;
+    }
+
+    public EquipmentManager getEquipmentManager() {
+        return equipmentManager;
+    }
 }
