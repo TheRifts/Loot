@@ -7,6 +7,7 @@ import me.Lozke.listeners.*;
 import me.Lozke.managers.AnvilManager;
 import me.Lozke.managers.EquipmentManager;
 import me.Lozke.managers.ItemFactory;
+import me.Lozke.managers.StatManager;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
 import me.Lozke.utils.config.VersionedConfiguration;
@@ -28,6 +29,7 @@ public class LootPlugin extends JavaPlugin {
     private ItemFactory itemFactory;
     private AnvilManager anvilManager;
     private EquipmentManager equipmentManager;
+    private StatManager statManager;
 
     private static SmartYamlConfiguration gearData;
 
@@ -46,6 +48,7 @@ public class LootPlugin extends JavaPlugin {
         this.itemFactory = new ItemFactory();
         this.anvilManager = new AnvilManager();
         this.equipmentManager = new EquipmentManager();
+        this.statManager = new StatManager();
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ModifyingItemByClickListener(), this);
@@ -97,5 +100,9 @@ public class LootPlugin extends JavaPlugin {
 
     public EquipmentManager getEquipmentManager() {
         return equipmentManager;
+    }
+
+    public StatManager getStatManager() {
+        return statManager;
     }
 }
