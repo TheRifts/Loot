@@ -24,22 +24,23 @@ public class EquipmentManager {
         }
     }
 
-    public void updateSlot(EquipmentContainer container, EquipmentSlot slot, ItemStack stack) {
+    public boolean updateSlot(EquipmentContainer container, EquipmentSlot slot, ItemStack stack) {
         if (stack == null || stack.getType() == Material.AIR) {
             container.clearSlot(slot);
-            return;
+            return true;
         }
         if (isSameHash(container.getSlotHashCode(slot), stack.hashCode())) {
-            return;
+            return false;
         }
         ItemWrapper wrapper = new ItemWrapper(stack);
         if (!wrapper.isRealItem()) {
             container.clearSlot(slot);
-            return;
+            return true;
         }
         Map<RiftsStat, Integer> itemStats = StatManager.combineStatMaps(wrapper.getMinorStats(), wrapper.getMajorStats());
         container.setSlotHashCode(slot, stack.hashCode());
         container.setSlotStats(slot, itemStats);
+        return true;
     }
 
     private boolean isSameHash(int hash1, int hash2) {
