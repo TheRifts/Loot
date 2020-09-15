@@ -390,7 +390,7 @@ public class ItemFactory {
                     }
                 }
                 else {
-                    majorStats.put(RiftsStat.ENERGY, 10);
+                    majorStats.put(RiftsStat.ENERGY_REGEN, 10);
                 }
                 if (tierIndex < 5 && rarityIndex < 4) {
                     majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armourHP[tierIndex][rarityIndex][0], armourHP[tierIndex][rarityIndex][1]));
