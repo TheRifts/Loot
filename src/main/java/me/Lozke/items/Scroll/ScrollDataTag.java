@@ -1,6 +1,6 @@
 package me.Lozke.items.Scroll;
+
 import me.Lozke.LootPlugin;
-import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.ItemType;
 import me.Lozke.utils.NamespacedKeyWrapper;
 import org.bukkit.NamespacedKey;
