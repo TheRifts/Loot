@@ -468,7 +468,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
         int maxDurability = getInt(ARNamespacedKey.MAX_DURABILITY);
         int currentDurability = getInt(ARNamespacedKey.DURABILITY);
         addKey(ARNamespacedKey.DURABILITY, Math.min(maxDurability, currentDurability + durability));
-        return this;
+        return updateDurability();
     }
 
     public ItemWrapper setDurability(int durability) {
