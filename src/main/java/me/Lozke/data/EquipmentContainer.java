@@ -1,7 +1,10 @@
 package me.Lozke.data;
 
+import me.Lozke.LootPlugin;
 import me.Lozke.managers.EquipmentManager;
+import me.Lozke.managers.StatManager;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +20,11 @@ public class EquipmentContainer {
         for (EquipmentSlot slot : EquipmentManager.slots) {
             slotStatsMap.put(slot, new HashMap<>(0));
         }
+    }
+
+    public EquipmentContainer(PlayerInventory inventory) {
+        LootPlugin.getPluginInstance().getEquipmentManager().updateContainer(this, inventory);
+        combineStats();
     }
 
     public void clearSlot(EquipmentSlot slot) {
@@ -47,7 +55,7 @@ public class EquipmentContainer {
 
     public void combineStats() {
         combinedStats.clear();
-        combinedStats.putAll(EquipmentManager.combineStatMaps(
+        combinedStats.putAll(StatManager.combineStatMaps(
                 slotStatsMap.get(EquipmentSlot.HEAD),
                 slotStatsMap.get(EquipmentSlot.CHEST),
                 slotStatsMap.get(EquipmentSlot.LEGS),
