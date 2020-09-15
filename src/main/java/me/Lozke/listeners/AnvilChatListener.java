@@ -11,8 +11,8 @@ public class AnvilChatListener implements Listener {
 
     private AnvilManager anvilManager;
 
-    public AnvilChatListener() {
-        anvilManager = AnvilManager.getInstance();
+    public AnvilChatListener(AnvilManager anvilManager) {
+        this.anvilManager = anvilManager;
     }
 
     @EventHandler (priority = EventPriority.HIGH)

@@ -11,11 +11,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class AnvilListener implements Listener {
 
+    private AnvilManager anvilManager;
+
+    public AnvilListener(AnvilManager anvilManager) {
+        this.anvilManager = anvilManager;
+    }
+
     @EventHandler
     public void onAnvilClick(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || !(event.getClickedBlock().getBlockData().getAsString().contains("anvil"))) return;
         event.setCancelled(true);
-        if (AnvilManager.getInstance().isTracked(event.getPlayer())) {
+        if (anvilManager.isTracked(event.getPlayer())) {
             event.getPlayer().sendMessage(Text.colorize("&cYou're already repairing an item"));
             return;
         }
@@ -30,10 +36,10 @@ public class AnvilListener implements Listener {
     }
 
     private void handleRightClick(PlayerInteractEvent event) {
-        if (AnvilManager.getInstance().isTracked(event.getPlayer())) {
+        if (anvilManager.isTracked(event.getPlayer())) {
             return;
         }
-        AnvilManager.getInstance().handleEvent(event);
+        anvilManager.handleEvent(event);
     }
 
     private void handleLeftClick(PlayerInteractEvent event) {
