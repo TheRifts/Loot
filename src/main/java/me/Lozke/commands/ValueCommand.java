@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import me.Lozke.data.ARNamespacedKey;
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

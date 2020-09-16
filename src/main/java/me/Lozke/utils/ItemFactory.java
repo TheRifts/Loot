@@ -1,11 +1,10 @@
-package me.Lozke.managers;
+package me.Lozke.utils;
 
 import me.Lozke.data.*;
 import me.Lozke.items.Scroll.Modifier;
 import me.Lozke.items.Scroll.ScrollData;
 import me.Lozke.items.Scroll.ScrollType;
 import me.Lozke.items.*;
-import me.Lozke.utils.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;

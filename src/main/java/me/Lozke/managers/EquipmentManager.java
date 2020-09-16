@@ -2,6 +2,7 @@ package me.Lozke.managers;
 
 import me.Lozke.data.EquipmentContainer;
 import me.Lozke.data.RiftsStat;
+import me.Lozke.utils.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;

@@ -9,7 +9,7 @@ import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.items.Scroll.Modifier;
 import me.Lozke.items.Scroll.ScrollData;
 import me.Lozke.items.Scroll.ScrollDataTag;
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import me.Lozke.utils.NamespacedKeyWrapper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -3,7 +3,7 @@ package me.Lozke.listeners;
 import me.Lozke.data.PouchInventory;
 import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.items.Gem;
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

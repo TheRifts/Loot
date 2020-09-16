@@ -1,6 +1,6 @@
 package me.Lozke.menus;
 
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import me.Lozke.utils.ItemMenu.events.MenuClickEvent;
 import me.Lozke.utils.ItemMenu.icons.CloseIcon;
 import org.bukkit.inventory.ItemStack;

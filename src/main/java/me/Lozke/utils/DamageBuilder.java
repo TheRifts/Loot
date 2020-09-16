@@ -1,4 +1,4 @@
-package me.Lozke.managers;
+package me.Lozke.utils;
 
 import me.Lozke.data.RiftsStat;
 import me.Lozke.data.WeaponType;

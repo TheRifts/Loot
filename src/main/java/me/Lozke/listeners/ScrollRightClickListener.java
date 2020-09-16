@@ -1,6 +1,6 @@
 package me.Lozke.listeners;
 
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

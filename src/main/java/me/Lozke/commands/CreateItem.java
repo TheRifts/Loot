@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.Lozke.data.*;
 import me.Lozke.items.Scroll.ScrollType;
-import me.Lozke.managers.ItemFactory;
+import me.Lozke.utils.ItemFactory;
 import me.Lozke.utils.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -4,7 +4,7 @@ import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.items.Scroll.ScrollData;
 import me.Lozke.data.Tier;
 import me.Lozke.items.Scroll.ScrollDataTag;
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import me.Lozke.utils.NumGenerator;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

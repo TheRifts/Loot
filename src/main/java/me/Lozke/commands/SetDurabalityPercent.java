@@ -3,7 +3,7 @@ package me.Lozke.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
-import me.Lozke.managers.ItemWrapper;
+import me.Lozke.utils.ItemWrapper;
 import me.Lozke.utils.Text;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

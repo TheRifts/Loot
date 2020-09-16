@@ -6,7 +6,7 @@ import me.Lozke.data.*;
 import me.Lozke.listeners.*;
 import me.Lozke.managers.AnvilManager;
 import me.Lozke.managers.EquipmentManager;
-import me.Lozke.managers.ItemFactory;
+import me.Lozke.utils.ItemFactory;
 import me.Lozke.managers.StatManager;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.config.SmartYamlConfiguration;
