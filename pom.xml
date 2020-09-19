@@ -39,7 +39,7 @@
         <repository>
             <id>github</id>
             <name>GitHub AgorianRifts Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/AgorianRifts/Loot</url>
+            <url>https://maven.pkg.github.com/TheRifts/Loot</url>
         </repository>
     </distributionManagement>
 
@@ -53,7 +53,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/AgorianRifts/Core</url>
+            <url>https://maven.pkg.github.com/TheRifts/Core</url>
         </repository>
         <repository>
             <id>spigotmc-repo</id>
