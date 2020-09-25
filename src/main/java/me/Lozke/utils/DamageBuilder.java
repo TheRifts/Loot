@@ -1,7 +1,7 @@
 package me.Lozke.utils;
 
-import me.Lozke.data.RiftsStat;
-import me.Lozke.data.WeaponType;
+import me.Lozke.data.*;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,32 @@ public class DamageBuilder {
     private WeaponType weaponType;
     private Map<RiftsStat, Integer> statBuffs = new HashMap<>();
     private Map<RiftsStat, Integer> statDebuffs = new HashMap<>();
+
+    public DamageBuilder setAttacker(RiftsEntity entity) {
+        if (entity instanceof RiftsPlayer) {
+            RiftsPlayer player = (RiftsPlayer) entity;
+            baseDamage = player.getDamage();
+            weaponType = WeaponType.getWeaponType(Bukkit.getPlayer(player.getUUID()).getEquipment().getItemInMainHand());
+            statBuffs = player.getEquipmentContainer().getCombinedStats();
+        }
+        else if (entity instanceof RiftsMob) {
+            RiftsMob mob = (RiftsMob) entity;
+            baseDamage = mob.getDamage();
+            weaponType = WeaponType.getWeaponType(mob.getEntity().getEquipment().getItemInMainHand());
+            statBuffs = mob.getBaseStats();
+        }
+        return this;
+    }
+
+    public DamageBuilder setDefender(RiftsEntity entity) {
+        if (entity instanceof RiftsPlayer) {
+            statDebuffs = ((RiftsPlayer) entity).getEquipmentContainer().getCombinedStats();
+        }
+        else if (entity instanceof RiftsMob) {
+            statDebuffs = ((RiftsMob) entity).getBaseStats();
+        }
+        return this;
+    }
 
     public int getBaseDamage() {
         return baseDamage;
