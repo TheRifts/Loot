@@ -33,6 +33,7 @@ public enum Pouch {
                 .addKey(ARNamespacedKey.REAL_ITEM)
                 .addKey(ARNamespacedKey.GEM_WORTH, 0)
                 .addKey(ARNamespacedKey.MAX_GEM_WORTH, maxGemAmount)
+                .addKey(ARNamespacedKey.HELD_ITEMS)
                 .getItem();
     }
 
