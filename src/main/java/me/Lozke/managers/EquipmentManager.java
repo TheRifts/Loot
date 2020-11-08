@@ -2,6 +2,7 @@ package me.Lozke.managers;
 
 import me.Lozke.data.EquipmentContainer;
 import me.Lozke.data.RiftsStat;
+import me.Lozke.data.WeaponType;
 import me.Lozke.utils.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
@@ -37,6 +38,12 @@ public class EquipmentManager {
         if (!wrapper.isRealItem()) {
             container.clearSlot(slot);
             return true;
+        }
+        if (slot == EquipmentSlot.HAND) { //Guarantee the item in hand is actually a weapon
+            if (WeaponType.getWeaponType(stack) == null) {
+                container.clearSlot(slot);
+                return true;
+            }
         }
         Map<RiftsStat, Integer> itemStats = StatManager.combineStatMaps(wrapper.getMinorStats(), wrapper.getMajorStats());
         container.setSlotHashCode(slot, stack.hashCode());
