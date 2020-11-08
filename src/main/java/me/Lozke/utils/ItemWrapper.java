@@ -51,7 +51,11 @@ public class ItemWrapper extends NamespacedKeyWrapper {
     }
 
     public ItemWrapper setLore(String... strings) {
-        item.setLore(Arrays.asList(strings));
+        String[] colorizedStrings = new String[strings.length];
+        for (int i = 0; i < strings.length ; i++) {
+            colorizedStrings[i] = Text.colorize(strings[i]);
+        }
+        item.setLore(Arrays.asList(colorizedStrings));
         return this;
     }
 
