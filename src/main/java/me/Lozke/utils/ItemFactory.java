@@ -35,6 +35,8 @@ public class ItemFactory {
     private static       int[][][] armourHP;
     private static       int[][][] armourHPRegen;
 
+    private static       int[][][] mobHP;
+
     private static final int dropRateSeed = 10;
     private static       int[][] dropRate;
 
@@ -179,6 +181,31 @@ public class ItemFactory {
                 }
             }
         }
+
+        int[][] mobSetHP = new int[5][2];
+        for (Tier tier : Tier.values()) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+
+            mobSetHP[tierIndex][0] = intCeiling(damageRanges[tierIndex][0]*hitsToKill);
+            mobSetHP[tierIndex][1] = intCeiling(damageRanges[tierIndex][1]*hitsToKill);
+        }
+
+        mobHP = new int[5][4][2];
+        for (Tier tier : Tier.types) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+            for (Rarity rarity : Rarity.types) {
+                int rarityIndex = rarity.ordinal();
+                if (rarityIndex > 3) continue;
+
+                int low = mobSetHP[tierIndex][0];
+                int high = mobSetHP[tierIndex][1];
+
+                mobHP[tierIndex][rarityIndex][0] = intCeiling((high-low)*mobDropScaling[rarityIndex][0]+low);
+                mobHP[tierIndex][rarityIndex][1] = intCeiling((high-low)*mobDropScaling[rarityIndex][1]+low);
+            }
+        }
     }
     private static int intCeiling(double value) {
         return (int)Math.ceil(value);
@@ -224,6 +251,20 @@ public class ItemFactory {
                 if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + armourHP[tierIndex][rarityIndex][0] + " - " + armourHP[tierIndex][rarityIndex][1]);
+            }
+            Logger.log("");
+        }
+        Logger.log("");
+        Logger.log("");
+        Logger.log("Mob HP VALUES:");
+        for (Tier tier : Tier.values()) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+            for (Rarity rarity : Rarity.values()) {
+                int rarityIndex = rarity.ordinal();
+                if (rarityIndex>3) continue;
+
+                Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + mobHP[tierIndex][rarityIndex][0] + " - " + mobHP[tierIndex][rarityIndex][1]);
             }
             Logger.log("");
         }
@@ -276,6 +317,10 @@ public class ItemFactory {
     public static int getArmourHPRegen(Tier tier, Rarity rarity, RangeType type) {
         if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
         return armourHPRegen[tier.ordinal()][rarity.ordinal()][type.ordinal()];
+    }
+    public static int getMobHP(Tier tier, Rarity rarity, RangeType type) {
+        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        return mobHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
 
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
