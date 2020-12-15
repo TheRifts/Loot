@@ -327,6 +327,10 @@ public class ItemFactory {
         if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
         return mobHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
+    public static int getArmourEnergyRegen(Tier tier, RangeType type) {
+        if (tier.ordinal() > 4) return 0;
+        return energy[tier.ordinal()][type.ordinal()];
+    }
 
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
     //the prophecy has come true
