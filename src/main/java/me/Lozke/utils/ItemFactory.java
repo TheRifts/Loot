@@ -26,7 +26,8 @@ public class ItemFactory {
             {0.0, 0.25},
             {0.2, 0.5},
             {0.42, 0.82},
-            {0.69, 1}
+            {0.69, 1},
+            {0.92, 1.5}
     };
     private static final int healTime = 25;
 
@@ -58,13 +59,12 @@ public class ItemFactory {
             damageRanges[tierIndex][1] = intCeiling(damageRanges[tierIndex][0]*tierIncrease);
         }
 
-        weaponDamage = new int[5][4][2];
+        weaponDamage = new int[5][5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 int low = damageRanges[tierIndex][0];
                 int high = damageRanges[tierIndex][1];
@@ -97,13 +97,12 @@ public class ItemFactory {
             defenseRanges[tierIndex][1] = intCeiling(armourSetDefense[tierIndex][1]/4.0);
         }
 
-        armourDefense = new int[5][4][2];
+        armourDefense = new int[5][5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 int low = defenseRanges[tierIndex][0];
                 int high = defenseRanges[tierIndex][1];
@@ -131,13 +130,12 @@ public class ItemFactory {
             hpRanges[tierIndex][1] = intCeiling(armourSetHP[tierIndex][1]/4.0);
         }
 
-        armourHP = new int[5][4][2];
+        armourHP = new int[5][5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 int low = hpRanges[tierIndex][0];
                 int high = hpRanges[tierIndex][1];
@@ -147,26 +145,24 @@ public class ItemFactory {
             }
         }
 
-        armourHPRegen = new int[5][4][2];
+        armourHPRegen = new int[5][5][2];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 armourHPRegen[tierIndex][rarityIndex][0] = intCeiling(armourHP[tierIndex][rarityIndex][0]/(healTime/4.0));
                 armourHPRegen[tierIndex][rarityIndex][1] = intCeiling(armourHP[tierIndex][rarityIndex][1]/(healTime/4.0));
             }
         }
 
-        dropRate = new int[5][4];
+        dropRate = new int[5][5];
         for (Tier tier : Tier.values()) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex > 3) continue;
 
                 if (tierIndex != 0 || rarityIndex != 0) {
                     if (rarityIndex != 0) {
@@ -191,13 +187,12 @@ public class ItemFactory {
             mobSetHP[tierIndex][1] = intCeiling(damageRanges[tierIndex][1]*hitsToKill);
         }
 
-        mobHP = new int[5][4][2];
+        mobHP = new int[5][5][2];
         for (Tier tier : Tier.types) {
             int tierIndex = tier.ordinal();
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.types) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex > 3) continue;
 
                 int low = mobSetHP[tierIndex][0];
                 int high = mobSetHP[tierIndex][1];
@@ -220,7 +215,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " damage: " + weaponDamage[tierIndex][rarityIndex][0] + " - " + weaponDamage[tierIndex][rarityIndex][1]);
             }
@@ -234,7 +228,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " defense: " + armourDefense[tierIndex][rarityIndex][0] + " - " + armourDefense[tierIndex][rarityIndex][1]);
             }
@@ -248,7 +241,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + armourHP[tierIndex][rarityIndex][0] + " - " + armourHP[tierIndex][rarityIndex][1]);
             }
@@ -262,7 +254,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp: " + mobHP[tierIndex][rarityIndex][0] + " - " + mobHP[tierIndex][rarityIndex][1]);
             }
@@ -276,7 +267,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " hp/s: " + armourHPRegen[tierIndex][rarityIndex][0] + " - " + armourHPRegen[tierIndex][rarityIndex][1]);
             }
@@ -290,7 +280,6 @@ public class ItemFactory {
             if (tierIndex>4) continue;
             for (Rarity rarity : Rarity.values()) {
                 int rarityIndex = rarity.ordinal();
-                if (rarityIndex>3) continue;
 
                 Logger.log(tier.toString() + " level " + (rarity.ordinal()+1) + " drop rate: " + dropRate[tierIndex][rarityIndex]);
             }
@@ -427,7 +416,7 @@ public class ItemFactory {
         switch (itemType) {
             case ARMOUR:
                 if (NumGenerator.roll(2) == 1) {
-                    if (tierIndex < 5 && rarityIndex < 4) {
+                    if (tierIndex < 5 && rarityIndex < 5) {
                         majorStats.put(RiftsStat.HP_REGEN, NumGenerator.rollInclusive(armourHPRegen[tierIndex][rarityIndex][0], armourHPRegen[tierIndex][rarityIndex][1]));
                     }
                     else {
@@ -437,23 +426,23 @@ public class ItemFactory {
                 else {
                     majorStats.put(RiftsStat.ENERGY_REGEN, 10);
                 }
-                if (tierIndex < 5 && rarityIndex < 4) {
+                if (tierIndex < 5 && rarityIndex < 5) {
                     majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armourHP[tierIndex][rarityIndex][0], armourHP[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
                     majorStats.put(RiftsStat.HP, 0);
                 }
-                if (tierIndex < 5 && rarityIndex < 4) {
+                if (tierIndex < 5 && rarityIndex < 5) {
                     majorStats.put(RiftsStat.DEFENSE, NumGenerator.rollInclusive(armourDefense[tierIndex][rarityIndex][0], armourDefense[tierIndex][rarityIndex][1]));
                 }
                 else {
                     //Hardcoding to 0 hp till fallen blesses the code with a better algorithm
-                    majorStats.put(RiftsStat.DEFENSE, 0);
+                    majorStats.put(RiftsStat.DEFENSE, 5);
                 }
                 break;
             case WEAPON:
-                if (tierIndex < 5 && rarityIndex < 4) {
+                if (tierIndex < 5 && rarityIndex < 5) {
                     int DMG_LO = NumGenerator.rollInclusive(weaponDamage[tierIndex][rarityIndex][0], weaponDamage[tierIndex][rarityIndex][1]);
                     majorStats.put(RiftsStat.DMG_LO, DMG_LO);
                     majorStats.put(RiftsStat.DMG_HI, NumGenerator.rollInclusive(DMG_LO, weaponDamage[tierIndex][rarityIndex][1]));
