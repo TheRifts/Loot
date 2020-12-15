@@ -308,23 +308,23 @@ public class ItemFactory {
         HIGH
     }
     public static int getDamage(Tier tier, Rarity rarity, RangeType type) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 0;
         return weaponDamage[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourDefense(Tier tier, Rarity rarity, RangeType type) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 0;
         return armourDefense[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourHP(Tier tier, Rarity rarity, RangeType type) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 0;
         return armourHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourHPRegen(Tier tier, Rarity rarity, RangeType type) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 0;
         return armourHPRegen[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getMobHP(Tier tier, Rarity rarity, RangeType type) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) return 0;
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 0;
         return mobHP[tier.ordinal()][rarity.ordinal()][type.ordinal()];
     }
     public static int getArmourEnergyRegen(Tier tier, RangeType type) {
