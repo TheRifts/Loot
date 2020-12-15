@@ -41,6 +41,14 @@ public class ItemFactory {
     private static final int dropRateSeed = 10;
     private static       int[][] dropRate;
 
+    private static final int[][] energy = {
+            {1, 3},
+            {2, 5},
+            {3, 6},
+            {4, 7},
+            {5, 8}
+    };
+
 
     public ItemFactory() {
         instance = this;
@@ -285,6 +293,14 @@ public class ItemFactory {
             }
             Logger.log("");
         }
+        Logger.log("");
+        Logger.log("");
+        Logger.log("Energy regen VALUES:");
+        for (Tier tier : Tier.values()) {
+            int tierIndex = tier.ordinal();
+            if (tierIndex>4) continue;
+            Logger.log(tier.toString() + " energy regen: " + energy[tierIndex][0] + " - " + energy[tierIndex][1]);
+        }
     }
 
     public static enum RangeType {
@@ -424,7 +440,12 @@ public class ItemFactory {
                     }
                 }
                 else {
-                    majorStats.put(RiftsStat.ENERGY_REGEN, 10);
+                    if (tierIndex < 5 && rarityIndex < 5) {
+                        majorStats.put(RiftsStat.ENERGY_REGEN, NumGenerator.rollInclusive(energy[tierIndex][0], energy[tierIndex][1]));
+                    }
+                    else {
+                        majorStats.put(RiftsStat.ENERGY_REGEN, 10);
+                    }
                 }
                 if (tierIndex < 5 && rarityIndex < 5) {
                     majorStats.put(RiftsStat.HP, NumGenerator.rollInclusive(armourHP[tierIndex][rarityIndex][0], armourHP[tierIndex][rarityIndex][1]));
