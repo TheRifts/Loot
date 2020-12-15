@@ -115,7 +115,7 @@ public class ItemWrapper extends NamespacedKeyWrapper {
                 }
                 else if (majorStatsMap.containsKey(RiftsStat.ENERGY_REGEN)) {
                     int ENERGY_REGEN = (int) majorStatsMap.get(RiftsStat.ENERGY_REGEN);
-                    colorizedStat = colorizeStat(ENERGY_REGEN/(10 * 1.0)); //HARDCODED VALUE AHHHHHHHH
+                    colorizedStat = colorizeStat(ENERGY_REGEN/(ItemFactory.getArmourEnergyRegen(tier, ItemFactory.RangeType.HIGH) * 1.0));
                     lore.add(Text.colorize("&fEnergy Regen:" + colorizedStat + " +" + ENERGY_REGEN + "%"));
                 }
                 break;
