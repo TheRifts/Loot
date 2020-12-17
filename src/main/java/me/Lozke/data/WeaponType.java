@@ -11,11 +11,12 @@ import java.util.List;
 public enum WeaponType {
     SWORD("SWORD", true),
     AXE("AXE", true),
-    POLEARM("SHOVEL", true),
-    STAVE("HOE", true),
-    BOW("BOW", false),
-    CROSSBOW("CROSSBOW", false),
-    TRIDENT("TRIDENT", false);
+    POLEARM("SHOVEL", true);
+    //TEMPORARILY REMOVING TILL PACKET MOB DISGUISES ADDED
+    //STAVE("HOE", true),
+    //BOW("BOW", false),
+    //CROSSBOW("CROSSBOW", false),
+    //TRIDENT("TRIDENT", false);
 
     private String itemType;
     private boolean tiered;
