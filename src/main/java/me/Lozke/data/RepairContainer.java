@@ -2,6 +2,7 @@ package me.Lozke.data;
 
 import me.Lozke.managers.AnvilManager;
 import me.Lozke.utils.ItemWrapper;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +32,7 @@ public class RepairContainer {
 
     private void cacheSlot(PlayerInventory inventory, EquipmentSlot slot) {
         if (slot == EquipmentSlot.OFF_HAND) return;
+        if (inventory.getItem(slot).getType() == Material.AIR) return;
 
         ItemWrapper wrapper = new ItemWrapper(inventory.getItem(slot));
         if (!wrapper.isRealItem()) return;

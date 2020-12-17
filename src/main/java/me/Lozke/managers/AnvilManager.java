@@ -67,6 +67,7 @@ public class AnvilManager {
             for (EquipmentSlot slot : slots) {
                 if (slot == EquipmentSlot.OFF_HAND) continue;
                 ItemWrapper wrapper = new ItemWrapper(player.getInventory().getItem(slot));
+                if (!wrapper.isRealItem()) continue;
                 if (wrapper.getDurabality() == wrapper.getMaxDurability()) continue;
                 needsRepair = true;
                 break;
