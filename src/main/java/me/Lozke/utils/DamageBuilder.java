@@ -99,6 +99,8 @@ public class DamageBuilder {
                 return (int) Math.round(baseDamage * (statBuffs.getOrDefault(RiftsStat.VIT, 0) * 0.0003));
             case AXE:
             case POLEARM:
+                return (int) Math.round(baseDamage * (statBuffs.getOrDefault(RiftsStat.STR, 0) * 0.0003));
+            /*
             case TRIDENT:
                 return (int) Math.round(baseDamage * (statBuffs.getOrDefault(RiftsStat.STR, 0) * 0.0003));
             case STAVE:
@@ -106,6 +108,7 @@ public class DamageBuilder {
             case BOW:
             case CROSSBOW:
                 return (int) Math.round(baseDamage * (statBuffs.getOrDefault(RiftsStat.DEX, 0) * 0.0003));
+             */
             default:
                 return 0;
         }

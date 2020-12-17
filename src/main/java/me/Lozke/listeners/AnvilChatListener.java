@@ -24,7 +24,7 @@ public class AnvilChatListener implements Listener {
         switch (event.getMessage()) {
             case "y":
             case "Y":
-                anvilManager.repairItem(event.getPlayer());
+                anvilManager.repair(event.getPlayer());
                 break;
             case "n":
             case "N":

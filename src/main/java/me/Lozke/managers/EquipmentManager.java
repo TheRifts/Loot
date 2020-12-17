@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class EquipmentManager {
 
-    public  final static EquipmentSlot[] slots = EquipmentSlot.values();
+    public final static EquipmentSlot[] slots = EquipmentSlot.values();
 
     public void updateContainer(EquipmentContainer container, Inventory inventory) {
         if (!(inventory instanceof PlayerInventory)) {
