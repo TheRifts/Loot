@@ -35,7 +35,7 @@ public class AnvilManager {
     public void handleEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (isTracked(player)) {
-            player.sendMessage(Text.colorize("&cYou're already repairing an item"));
+            player.sendMessage(Text.colorize("&cYou're already using an anvil"));
             return;
         }
 
