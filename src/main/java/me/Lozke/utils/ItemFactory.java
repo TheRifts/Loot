@@ -38,7 +38,7 @@ public class ItemFactory {
 
     private static       int[][][] mobHP;
 
-    private static final int dropRateSeed = 10;
+    private static final int dropRateSeed = 25;
     private static       int[][] dropRate;
 
     private static final int[][] energy = {
