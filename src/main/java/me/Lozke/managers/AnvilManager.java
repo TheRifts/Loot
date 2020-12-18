@@ -78,8 +78,6 @@ public class AnvilManager {
             }
         }
 
-        RepairContainer container = new RepairContainer(player.getInventory(), type);
-
         ItemStack stack = new ItemStack(Material.AIR);
         if (type == RepairType.HAND) {
             stack = player.getInventory().getItemInMainHand();
@@ -87,18 +85,19 @@ public class AnvilManager {
         else {
             stack = new ItemStack(Material.ARMOR_STAND);
         }
-
         Location location = event.getClickedBlock().getLocation().add(.5, 1.1, .5);
         Item itemEntity = location.getWorld().dropItem(location, stack);
         itemEntity.setVelocity(new Vector());
         itemEntity.setPickupDelay(Integer.MAX_VALUE);
+
+        RepairContainer container = new RepairContainer(player.getInventory(), type);
 
         container.setItem(itemEntity);
 
         repairingContainerMap.put(player.getUniqueId(), container);
 
         if (type == RepairType.HAND) {
-            player.sendMessage(Text.colorize("&eIt will cost you &a&l" + calculateCost(container) + "G &eto repair your '" + player.getInventory().getItemInMainHand() + "&a'"));
+            player.sendMessage(Text.colorize("&eIt will cost you &a&l" + calculateCost(container) + "G &eto repair your '" + stack.getItemMeta().getDisplayName() + "&a'"));
         }
         else {
             player.sendMessage(Text.colorize("&eIt will cost you &a&l" + calculateCost(container) + "G &eto repair your items"));
