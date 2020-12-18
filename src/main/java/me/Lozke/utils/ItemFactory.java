@@ -177,7 +177,7 @@ public class ItemFactory {
                         dropRate[tierIndex][rarityIndex] = dropRate[tierIndex][rarityIndex - 1] + tierIndex + 2;
                     }
                     else {
-                        dropRate[tierIndex][rarityIndex] = dropRate[tierIndex - 1][rarityIndex + 3] + (tierIndex + 2)*2;
+                        dropRate[tierIndex][rarityIndex] = dropRate[tierIndex - 1][rarityIndex + 4] + (tierIndex + 2)*2;
                     }
                 }
                 else {
