@@ -8,10 +8,11 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class EquipmentContainer {
 
-    private final Map<EquipmentSlot, Integer> slotHashCodeMap = new HashMap<>();
+    private final Map<EquipmentSlot, UUID> slotUUIDMap = new HashMap<>();
     private final Map<EquipmentSlot, Map<RiftsStat, Integer>> slotStatsMap = new HashMap<>();
 
     private final Map<RiftsStat, Integer> combinedStats = new HashMap<>();
@@ -28,16 +29,16 @@ public class EquipmentContainer {
     }
 
     public void clearSlot(EquipmentSlot slot) {
-        this.slotHashCodeMap.remove(slot);
+        this.slotUUIDMap.remove(slot);
         this.slotStatsMap.get(slot).clear();
     }
 
-    public int getSlotHashCode(EquipmentSlot slot) {
-        return slotHashCodeMap.getOrDefault(slot, 0);
+    public UUID getSlotUUID(EquipmentSlot slot) {
+        return slotUUIDMap.get(slot);
     }
 
-    public void setSlotHashCode(EquipmentSlot slot, int hash) {
-        this.slotHashCodeMap.put(slot, hash);
+    public void setSlotUUID(EquipmentSlot slot, UUID uuid) {
+        this.slotUUIDMap.put(slot, uuid);
     }
 
     public Map<RiftsStat, Integer> getSlotStats(EquipmentSlot slot) {

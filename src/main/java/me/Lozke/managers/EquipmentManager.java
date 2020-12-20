@@ -1,5 +1,6 @@
 package me.Lozke.managers;
 
+import me.Lozke.data.ARNamespacedKey;
 import me.Lozke.data.EquipmentContainer;
 import me.Lozke.data.RiftsStat;
 import me.Lozke.data.WeaponType;
@@ -11,33 +12,39 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class EquipmentManager {
 
     public final static EquipmentSlot[] slots = EquipmentSlot.values();
 
-    public void updateContainer(EquipmentContainer container, Inventory inventory) {
+    public boolean updateContainer(EquipmentContainer container, Inventory inventory) {
         if (!(inventory instanceof PlayerInventory)) {
-            return;
+            return false;
         }
+        boolean updated = false;
         for (EquipmentSlot slot : slots) {
+            if (slot == EquipmentSlot.OFF_HAND) continue;
             ItemStack newEquipment = ((PlayerInventory) inventory).getItem(slot);
-            updateSlot(container, slot, newEquipment);
+            if (updateSlot(container, slot, newEquipment) && !updated) updated = true;
         }
+        return updated;
     }
 
     public boolean updateSlot(EquipmentContainer container, EquipmentSlot slot, ItemStack stack) {
         if (stack == null || stack.getType() == Material.AIR) {
+            if (container.getSlotUUID(slot) == null) return false; //Slot is already cleared
             container.clearSlot(slot);
             return true;
-        }
-        if (isSameHash(container.getSlotHashCode(slot), stack.hashCode())) {
-            return false;
         }
         ItemWrapper wrapper = new ItemWrapper(stack);
         if (!wrapper.isRealItem()) {
+            if (container.getSlotUUID(slot) == null) return false; //Slot is already cleared
             container.clearSlot(slot);
             return true;
+        }
+        if (isSameUUID(container.getSlotUUID(slot), (UUID) wrapper.get(ARNamespacedKey.UUID))) {
+            return false;
         }
         if (slot == EquipmentSlot.HAND) { //Guarantee the item in hand is actually a weapon
             if (WeaponType.getWeaponType(stack) == null) {
@@ -46,12 +53,13 @@ public class EquipmentManager {
             }
         }
         Map<RiftsStat, Integer> itemStats = StatManager.combineStatMaps(wrapper.getMinorStats(), wrapper.getMajorStats());
-        container.setSlotHashCode(slot, stack.hashCode());
+        container.setSlotUUID(slot, (UUID) wrapper.get(ARNamespacedKey.UUID));
         container.setSlotStats(slot, itemStats);
         return true;
     }
 
-    private boolean isSameHash(int hash1, int hash2) {
-        return hash1 == hash2;
+    private boolean isSameUUID(UUID uuid1, UUID uuid2) {
+        if (uuid1 == null || uuid2 == null) return false;
+        return uuid1.equals(uuid2);
     }
 }
