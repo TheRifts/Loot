@@ -488,6 +488,7 @@ public class ItemFactory {
         itemWrapper.addKey(ARNamespacedKey.DURABILITY, tier.getMaxDurability());
         itemWrapper.addKey(ARNamespacedKey.MAX_DURABILITY, tier.getMaxDurability());
         itemWrapper.addKey(ARNamespacedKey.SCROLL_MAX_AMOUNT, NumGenerator.roll(10));
+        itemWrapper.addKey(ARNamespacedKey.UUID, UUID.randomUUID());
 
         itemWrapper.randomizeStats();
 
