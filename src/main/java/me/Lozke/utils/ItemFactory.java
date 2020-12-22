@@ -500,9 +500,7 @@ public class ItemFactory {
     }
 
     public static int getKillsToDrop(Tier tier, Rarity rarity) {
-        if (tier.ordinal() > 4 || rarity.ordinal() > 3) {
-            return 1;
-        }
+        if (tier.ordinal() > 4 || rarity.ordinal() > 4) return 1;
         double value = NumGenerator.fraction();
         int tierDropRate = dropRate[tier.ordinal()][rarity.ordinal()];
         int thresholdLow = tierDropRate/2;
