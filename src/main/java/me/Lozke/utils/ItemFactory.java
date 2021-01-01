@@ -332,6 +332,22 @@ public class ItemFactory {
         return energy[tier.ordinal()][type.ordinal()];
     }
 
+    public static List<ItemStack> newTrainerSet() {
+        List<ItemStack> set = newSet(Tier.types[0], Rarity.types[0]);
+        for (ItemStack stack : set) {
+            ItemWrapper wrapper = new ItemWrapper(stack);
+            Map<RiftsStat, Integer> statMap = wrapper.getMap(ARNamespacedKey.MAJOR_STATS);
+            for (RiftsStat stat : statMap.keySet()) {
+                int val = statMap.get(stat);
+                val -= (val * 0.15);
+                statMap.put(stat, val);
+            }
+            wrapper.addKey(ARNamespacedKey.MAJOR_STATS, statMap);
+            wrapper.format();
+        }
+        return set;
+    }
+
     //lol this would be the perfect place to return a Set<ItemStack>... just saying...
     //the prophecy has come true
     //the prophecy has been defeated by my OCD, can't stand the items showing up in random order

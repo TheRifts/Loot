@@ -12,6 +12,13 @@ import org.bukkit.inventory.ItemStack;
 @CommandAlias("create")
 public class CreateItem extends BaseCommand {
 
+    @Subcommand("trainer")
+    public static void createTrainerSet(Player player) {
+        for (ItemStack item : ItemFactory.newTrainerSet()) {
+            player.getInventory().addItem(item);
+        }
+    }
+
     @Subcommand("set")
     @Syntax("tier rarity")
     @CommandCompletion("@tier @rarity")
