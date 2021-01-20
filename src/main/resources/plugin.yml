@@ -1,8 +1,8 @@
-name: Loot
+name: RiftsLoot
 version: 1.0.0
 main: me.Lozke.LootPlugin
 author: Lozke
 description: Let us pray it does loot things.
 api-version: 1.16
-depend: [AgorianRifts]
-softdepend: [PlayerMechanics, MobMechanics]
+depend: [RiftsCore]
+softdepend: [RiftsCombat]
