@@ -1,8 +1,12 @@
 package me.Lozke.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.ArrayList;
 
 //TODO: Move all item display and min-max values to yml
+@AllArgsConstructor
 public enum RiftsStat {
     HP(ItemType.ARMOUR),
     HP_REGEN(ItemType.ARMOUR),
@@ -53,37 +57,14 @@ public enum RiftsStat {
     public static final RiftsStat[] armourValues = getArmourValues();
     public static final RiftsStat[] weaponValues = getWeaponValues();
 
-    private final ItemType itemType;
-    private final String loreDisplay;
-    private final String itemDisplay;
-    private final int min;
-    private final int max;
+    @Getter private final ItemType itemType;
+    @Getter private final String loreDisplay;
+    @Getter private final String itemDisplay;
+    @Getter private final int min;
+    @Getter private final int max;
 
-    RiftsStat(ItemType itemType, String loreDisplay, String itemDisplay, int min, int max) {
-        this.itemType = itemType;
-        this.loreDisplay = loreDisplay;
-        this.itemDisplay = itemDisplay;
-        this.min = min;
-        this.max = max;
-    }
     RiftsStat(ItemType itemType) {
         this(itemType, "", "", -1, -1);
-    }
-
-    public ItemType getItemType() {
-        return itemType;
-    }
-    public String getLoreDisplay() {
-        return loreDisplay;
-    }
-    public String getItemDisplay() {
-        return itemDisplay;
-    }
-    public int getMin() {
-        return min;
-    }
-    public int getMax() {
-        return max;
     }
 
     private static RiftsStat[] getArmourValues() {

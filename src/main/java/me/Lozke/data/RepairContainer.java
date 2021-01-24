@@ -1,5 +1,6 @@
 package me.Lozke.data;
 
+import lombok.Data;
 import me.Lozke.managers.AnvilManager;
 import me.Lozke.utils.ItemWrapper;
 import org.bukkit.Material;
@@ -11,9 +12,10 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class RepairContainer {
 
-    private Map<EquipmentSlot, ItemStack> slotItemMap = new HashMap<>();
+    private final Map<EquipmentSlot, ItemStack> slotItemMap = new HashMap<>();
     private Item item;
 
     public RepairContainer(PlayerInventory inventory, AnvilManager.RepairType type) {
@@ -40,16 +42,5 @@ public class RepairContainer {
 
         slotItemMap.put(slot, inventory.getItem(slot));
         inventory.setItem(slot, null);
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-    public Item getItem() {
-        return item;
-    }
-
-    public Map<EquipmentSlot, ItemStack> getCachedItems() {
-        return slotItemMap;
     }
 }

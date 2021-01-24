@@ -1,5 +1,7 @@
 package me.Lozke.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import me.Lozke.utils.Logger;
 import me.Lozke.utils.NumGenerator;
 import org.bukkit.Material;
@@ -8,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
+@AllArgsConstructor
 public enum WeaponType {
     SWORD("SWORD", true),
     AXE("AXE", true),
@@ -18,19 +21,10 @@ public enum WeaponType {
     //CROSSBOW("CROSSBOW", false),
     //TRIDENT("TRIDENT", false);
 
-    private String itemType;
-    private boolean tiered;
-
-    WeaponType(String itemType, boolean tiered) {
-        this.itemType = itemType;
-        this.tiered = tiered;
-    }
+    @Getter private final String itemType;
+    @Getter private final boolean tiered;
 
     public static WeaponType[] types = WeaponType.values();
-
-    public String getItemType() {
-        return itemType;
-    }
 
     public ItemStack getItem() {
         return getItem(Tier.T1);

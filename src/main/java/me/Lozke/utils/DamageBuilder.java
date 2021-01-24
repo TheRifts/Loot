@@ -17,7 +17,7 @@ public class DamageBuilder {
         if (entity instanceof RiftsPlayer) {
             RiftsPlayer player = (RiftsPlayer) entity;
             baseDamage = player.getDamage();
-            weaponType = WeaponType.getWeaponType(Bukkit.getPlayer(player.getUUID()).getEquipment().getItemInMainHand());
+            weaponType = WeaponType.getWeaponType(Bukkit.getPlayer(player.getUuid()).getEquipment().getItemInMainHand());
             statBuffs = player.getEquipmentContainer().getCombinedStats();
         }
         else if (entity instanceof RiftsMob) {

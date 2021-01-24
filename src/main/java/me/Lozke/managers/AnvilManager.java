@@ -110,7 +110,7 @@ public class AnvilManager {
         container.getItem().remove(); //Delete the item entity icon
 
         //Return the players gear
-        Map<EquipmentSlot, ItemStack> items = container.getCachedItems();
+        Map<EquipmentSlot, ItemStack> items = container.getSlotItemMap();
         PlayerInventory inventory = Bukkit.getPlayer(uuid).getInventory();
         for (EquipmentSlot slot : items.keySet()) {
             inventory.setItem(slot, items.get(slot));
@@ -130,7 +130,7 @@ public class AnvilManager {
     }
 
     public void repair(UUID uuid) {
-        Collection<ItemStack> items = repairingContainerMap.get(uuid).getCachedItems().values();
+        Collection<ItemStack> items = repairingContainerMap.get(uuid).getSlotItemMap().values();
         for (ItemStack item : items) {
             ItemWrapper wrapper = new ItemWrapper(item);
             if (!wrapper.isRealItem()) continue;;
